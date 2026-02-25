@@ -5,6 +5,7 @@ public class Main {
 
     public static void main(String[] args){
         displayLogo();
+        UserRegistry.initializeData(); // Initilaize login credentials data
         
         System.out.println("\n  Welcome to Courier & Logistics Management System!");
 
@@ -16,7 +17,7 @@ public class Main {
             switch(choice){
                 case 1 -> senderPortal();
                 case 2 -> courierPortal();
-                case 3 -> adminPortal();
+                case 3 -> adminLogin();
                 case 4 -> trackShipment();
                 case 0 -> {
                     System.out.println("\n  Thank you for using CourierPro. Goodbye!\n");
@@ -40,27 +41,43 @@ public class Main {
 
     // ADMIN PORTAL (3) & LOGIN
     public static void adminLogin(){
+        System.out.println("\n  ╔══════════════════════════════════════════╗");
+        System.out.println("  ║               ADMIN LOGIN                ║");
+        System.out.println("  ╚══════════════════════════════════════════╝");
         System.out.print("  Enter Login ID -> ");
-        String id = input.next();
-        System.out.print("  Enter password -> ");
-        String password = input.next();
+        String idInput = input.next();
 
-        Admin user = UserRegistry.checkAdmin(id, password);
-
-        if(user != null){
-            System.out.println("Access Granted! Welcome " + user.getName());
-            adminPortal.run(user);
+        // Check if ID exists or not
+        if(UserRegistry.checkAdminIdExists(idInput)){
+            System.out.print("  Enter Password -> ");
+            String passInput = input.next();
+    
+            // Search the admins list(registry) for matching credentials, return specific object if found, or 'null' if no matches
+            // bc checkAdmin returns entire "Admin Object", it also requires Admin data type
+            Admin user = UserRegistry.checkAdmin(idInput, passInput);
+            
+            if(user != null){
+                System.out.println("  Access Granted! Welcome " + user.getName());
+                adminPortal(user);
+            }
+            else{
+                System.out.println("  [!] Invalid credentials, please try again.");
+            }
         }
         else{
-            System.out.println("  [!] Invalid credentials, please try again.");
+            System.out.println("  >> Error: Login ID does not exist.");
         }
     }
 
-    public static void adminPortal(){
+    public static void adminPortal(Admin user){
+        // Admin (data type) parameter to access the "Admin Objects" to display details
+
         boolean active = true;
         while(active){
             System.out.println("\n  ╔══════════════════════════════════════════╗");
-            System.out.println("  ║              ADMIN PORTAL                ║");
+            System.out.println("  ║               ADMIN PORTAL               ║");
+            System.out.printf("  ║ %-40s ║\n", "Welcome, " + user.getName());
+            System.out.printf("  ║ %-40s ║\n", "Role -> " + user.getAdminRole());
             System.out.println("  ╚══════════════════════════════════════════╝");
             System.out.println("\n  [ SHIPMENT CONTROL ]");
             System.out.println("   1. Assign Driver to Shipment");    
@@ -72,7 +89,8 @@ public class Main {
             System.out.println("   6. Manage Fleet & Maintenance");   
             System.out.println("   7. View Driver Delivery Lists");    
             System.out.println("\n  [ SYSTEM ]");
-            System.out.println("   0. Back to Main Menu");
+            System.out.println("   8. View My Profile");
+            System.out.println("   0. Back to Main Menu (Logout)");
             System.out.println("  ──────────────────────────────────────────");
 
             System.out.print("  Choice: ");
@@ -85,8 +103,9 @@ public class Main {
                 case 5 -> viewAllShipments();
                 case 6 -> manageFleetMaintenance();
                 case 7 -> displayDriverWorkload();
+                case 8 -> viewAdminProfile();
                 case 0 -> {
-                    System.out.println("  Returning to Main Menu...");
+                    System.out.println("  Logging out...");
                     active = false;
                 }
                 default -> System.out.println("  [!] Invalid option.");
@@ -126,6 +145,19 @@ public class Main {
 
     public static void displayDriverWorkload(){
         System.out.println("7");
+    }
+    
+    public static void viewAdminProfile(){
+        System.out.print("\n  Your Admin ID -> ");
+        String id = input.next();
+
+        Admin user = UserRegistry.getAdminById(id);
+        if(user != null){
+            user.displayInfo();
+        }
+        else{
+            System.out.println("  >> Error: Admin ID not found.");
+        }
     }
 
     // DISPLAY DESIGN
