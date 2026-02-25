@@ -10,15 +10,14 @@
 */
 
 public abstract class Person{  
-    private String personID;
-    private String name;
-    private String email;
-    private String phoneNum;
+    private String personID, loginID, name, password, email, phoneNum;
 
     // Parameterized Constructor (When create object, we call this)
-    Person(String personID, String name, String email, String phoneNum){
+    public Person(String personID, String loginID, String name, String password, String email, String phoneNum){
         this.personID = personID;
+        this.loginID = loginID;
         setName(name);
+        this.password = password;
         this.email = email;
         this.phoneNum = phoneNum;
     }
@@ -30,6 +29,15 @@ public abstract class Person{
 
     public void setPersonID(String personID){
         this.personID = personID;
+    }
+
+    // Getter & Setter for "loginID"
+    public String getLoginID(){
+        return loginID;
+    }
+
+    public void setLoginID(String loginID){
+        this.loginID = loginID;
     }
 
     // Getter & Setter for "name"
@@ -45,6 +53,15 @@ public abstract class Person{
         else{
             this.name = name;
         }
+    }
+
+    // Getter & Setter for "password"
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 
     // Getter & Setter for "email"

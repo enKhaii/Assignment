@@ -5,6 +5,7 @@ public class Main {
 
     public static void main(String[] args){
         displayLogo();
+        
         System.out.println("\n  Welcome to Courier & Logistics Management System!");
 
         boolean running = true;
@@ -37,7 +38,24 @@ public class Main {
         System.out.println("Courier");
     }
 
-    // ADMIN PORTAL (3)
+    // ADMIN PORTAL (3) & LOGIN
+    public static void adminLogin(){
+        System.out.print("  Enter Login ID -> ");
+        String id = input.next();
+        System.out.print("  Enter password -> ");
+        String password = input.next();
+
+        Admin user = UserRegistry.checkAdmin(id, password);
+
+        if(user != null){
+            System.out.println("Access Granted! Welcome " + user.getName());
+            adminPortal.run(user);
+        }
+        else{
+            System.out.println("  [!] Invalid credentials, please try again.");
+        }
+    }
+
     public static void adminPortal(){
         boolean active = true;
         while(active){
@@ -131,6 +149,5 @@ public class Main {
         System.out.println("| |__| (_) | |_| | |  | |  __/ |  |  __/| | | (_) |");
         System.out.println(" \\____\\___/ \\__,_|_|  |_|\\___|_|  |_|   |_|  \\___/ ");
         System.out.println("====================================================");
-
     }
 }
