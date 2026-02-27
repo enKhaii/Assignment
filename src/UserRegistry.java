@@ -1,3 +1,7 @@
+/*
+    UserRegistry - stores main objects (Sender, Courier, Admin), also consists method for login
+*/
+
 import java.util.ArrayList;
 
 public class UserRegistry{
