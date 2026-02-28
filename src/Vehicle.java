@@ -21,8 +21,8 @@ public class Vehicle {
     private double maxLoadKg;
     private LocalDate lastMaintenanceDate, nextMaintenanceDate;
 
-    // Parameterized Constructor
-    public Vehicle(String vehicleID, String plateNumber, VehicleType type, VehicleStatus status, double maxLoadKg, LocalDate lastMaintenanceDate, LocalDate nextMaintenanceDate, String assignedCourierID){
+    // Parameterized Constructor (receive 4 parameters)
+    public Vehicle(String vehicleID, String plateNumber, VehicleType type, double maxLoadKg){
         this.vehicleID = vehicleID;
         this.plateNumber = plateNumber;
         this.type = type;

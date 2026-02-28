@@ -4,6 +4,6 @@
 
 class VehicleNotFoundException extends Exception{
     public VehicleNotFoundException(String vehicleID){
-        super("Vehicle not found with ID: " + vehicleID);
+        super("  >> Error: Vehicle ID \"" + vehicleID + "\" not found.");
     }
 }

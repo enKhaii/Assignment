@@ -1,7 +1,10 @@
 import java.util.Scanner;
 
 public class Main {
+    // GLOBAL VARIABLES
     static Scanner input = new Scanner(System.in);
+
+    static FleetManagement fleetManagement = new FleetManagement(fleetManager, input);
 
     public static void main(String[] args){
         displayLogo();
@@ -12,7 +15,7 @@ public class Main {
         boolean running = true;
         while(running){
             displayMainMenu();
-            System.out.print("  Select portal: ");
+            System.out.print("  Select portal -> ");
             int choice = input.nextInt();
             switch(choice){
                 case 1 -> senderPortal();
@@ -23,7 +26,7 @@ public class Main {
                     System.out.println("\n  Thank you for using CourierPro. Goodbye!\n");
                     running = false;
                 }
-                default -> System.out.println("  [!] Invalid option.");
+                default -> System.out.println("  [!] Invalid option. Please try again.");
             }
         }
         input.close();
@@ -93,7 +96,7 @@ public class Main {
             System.out.println("   0. Back to Main Menu (Logout)");
             System.out.println("  ──────────────────────────────────────────");
 
-            System.out.print("  Choice: ");
+            System.out.print("  Choice -> ");
             int choice = input.nextInt();
             switch(choice){
                 case 1 -> assignCourier();

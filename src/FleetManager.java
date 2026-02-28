@@ -4,24 +4,27 @@
     Does not Handle: User input or menus (FleetManagement job)
 */
 import java.util.List;
+
 import java.util.ArrayList;
 
 public class FleetManager {
     // Data storage to store all vehicles in "Fleet"
     // List - stores item in order, can add, remove, search
     // List<Vehicle> - can only hold "Vehicle" object, does not accept other like "String"
-    private final List<Vehicle> vehicles = new ArrayList<>();
+    private final List<Vehicle> vehicles;
     
     // Constructor
     public FleetManager(){
         this.vehicles = new ArrayList<>();
     }
 
+
+    // CRUD OPERATIONS
     // ---------- CREATE, READ(GET DATA) OPERATIONS METHODS -----------
     public void addVehicle(Vehicle vehicle){
         for(Vehicle v : vehicles){
             // Check if the vehicleID already exists or not, if exists, throw exception
-            if(v.getVehicleID().equalsIgnoreCase(v.getVehicleID())){
+            if(v.getVehicleID().equalsIgnoreCase(vehicle.getVehicleID())){
                 throw new IllegalArgumentException("  [!] Vehicle ID " + vehicle.getVehicleID() + " already exists.");
             }
         }
@@ -85,16 +88,79 @@ public class FleetManager {
 
         // if vehicle is going MAINTENANCE or IN_USE
         if(!v.isAvailable()){
-            throw new IllegalStateException("  [!] Vehicle " + vehicleID + " is not available (Status: " + v.getStatus());
+            throw new IllegalStateException("  [!] Vehicle " + vehicleID + " is not available. (Status: " + v.getStatus());
         }
 
         // if all good, then assign
         v.setAssignedCourierID(courierID);
         v.setStatus(Vehicle.VehicleStatus.IN_USE);
 
-        System.out.println("  [✓] Vehicle " + vehicleID + " assigned to courier " + courierID);
+        System.out.println("  [✓] Vehicle " + vehicleID + " assigned to courier " + courierID + ".");
         return true; 
     }
 
+    // - release vehicle from vehicle assignment, status = available again
+    public boolean releaseVehicle(String vehicleID) throws VehicleNotFoundException{
+        Vehicle v = findByID(vehicleID);
+
+        if(v == null){
+            throw new VehicleNotFoundException(vehicleID);
+        }
+
+        // make CourierID null, which means vehicle not assigned
+        v.setAssignedCourierID(null);
+
+        // make VehicleStatus = AVAILABLE again
+        v.setStatus(Vehicle.VehicleStatus.AVAILABLE);
+
+        System.out.println("  [✓] Vehicle " + vehicleID + " released and now AVAILABLE.");
+        return true;
+    }
+
     
+    // ---------- DELETE OPERATIONS METHOD ----------
+    // remove a car from the list
+    public boolean removeVehicle(String vehicleID) throws VehicleNotFoundException{
+        Vehicle v = findByID(vehicleID);
+
+        if(v == null){
+            throw new VehicleNotFoundException(vehicleID);
+        }
+
+        // Check if vehicle in_use or not, if in_use, stop the operation
+        if (v.getStatus() == Vehicle.VehicleStatus.IN_USE){
+            throw new IllegalStateException("  [!] Cannot remove a Vehicle currently in use.");
+        }
+
+        // If no problem then remove
+        // ???.remove() = remove elements from array list
+        vehicles.remove(v);
+
+        System.out.println("  [✓] Vehicle " + vehicleID + " removed from fleet.");
+        return true;
+    }
+
+    // Display
+    public void displayAll(){
+        if(vehicles.isEmpty()){
+            System.out.println("  \n[!] No vehicles in the fleet.");
+            return; // Exit the method early
+        }
+
+        System.out.println("\n  ╔═══════════════════════════════════════════════════════╗");
+        System.out.println("  ║                    FLEET OVERVIEW                     ║");
+        System.out.println("  ╚═══════════════════════════════════════════════════════╝");
+
+        System.out.println("  Total Vehicles:  " + vehicles.size() + "\n");
+
+        System.out.printf("  %-10s %-12s %-12s %-18s %-15s%n", "ID", "Plate", "Type", "Status", "Maintenance");
+        System.out.println("  " + "─".repeat(70));
+
+        // Loop through all the elements and display each vehicle
+        for(Vehicle v: vehicles){
+            System.out.println(v);  // call the toString method in Vehicle.java
+        }
+
+        System.out.println();
+    }
 }
