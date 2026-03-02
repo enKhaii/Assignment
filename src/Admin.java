@@ -10,7 +10,7 @@ public class Admin extends Person{
         DISPATCH_OFFICER    // Basic access to view shipments and update statuses only
     }
 
-    private Role adminRole;
+    private Role adminRole; 
     private String department;
 
 
