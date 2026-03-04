@@ -27,13 +27,13 @@ public class FleetManagement{
                 input.nextLine(); // clear input buffer
 
                 switch(choice){
-                    case 1 -> addVehicle();
+                    case 1 -> addVehicle(); 
                     case 2 -> viewAllVehicles();
-                    case 3 -> viewVehicleDetails();
-                    case 4 -> updateVehicleInfo();
-                    case 5 -> inputheduleMaintenance();
+                    case 3 -> viewVehicleDetails(); 
+                    case 4 -> updateVehicleInfo(); 
+                    case 5 -> scheduleMaintenance(); 
                     case 6 -> completeMaintenance();
-                    case 7 -> removeVehicle();
+                    case 7 -> removeVehicle(); 
                     case 8 -> viewMaintenanceDue();
                     case 0 -> {
                         System.out.println("  [i] Returning to Admin Portal...");
@@ -59,7 +59,7 @@ public class FleetManagement{
             // PRE-INCREMENT, increment first then use
             String id = "VHE" + (++vehicleIdCounter);
 
-            System.out.print("  Plate Number (e.g. WHL999) --> ");
+            System.out.print("  Plate Number (e.g. WHL999) -> ");
             String plateNum = input.next();
 
             // Default vehicle is VAN
@@ -104,7 +104,7 @@ public class FleetManagement{
     }
 
     private void viewVehicleDetails(){
-        System.out.print("  Enter Vehicle ID ->");
+        System.out.print("  Enter Vehicle ID -> ");
         String vehicleID = input.next();
         input.nextLine();
 
@@ -130,7 +130,7 @@ public class FleetManagement{
                 return; // Stop the operation immediately
             }
 
-            System.out.println("  Current Information: ");
+            System.out.println("\n  Current Information: ");
             v.displayInfo();
 
             System.out.println("\n  What would you like to update?");
@@ -143,7 +143,7 @@ public class FleetManagement{
 
             switch(choice){
                 case 1 -> {
-                    System.out.print("  New Plate Number (e.g. WHL999) -> ");
+                    System.out.print("\n  New Plate Number (e.g. WHL999) -> ");
                     String newPlate = input.next();
                     input.nextLine();
                     v.setPlateNumber(newPlate);
@@ -183,7 +183,7 @@ public class FleetManagement{
         }
     }
 
-    private void inputheduleMaintenance(){
+    private void scheduleMaintenance(){
         System.out.print("  Enter Vehicle ID -> ");
         String vehicleID = input.next();
 
@@ -213,8 +213,8 @@ public class FleetManagement{
         }
 
         // if Status not equal (!=) UNDER_MAINTENANCE, don't continue operation
-        if(v.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
-            System.out.println("  [!] Vehicle is not under maintenance!");
+        if(v.getStatus() != Vehicle.VehicleStatus.UNDER_MAINTENANCE){
+            System.out.println("\n  [!] Vehicle is not under maintenance!");
             System.out.println("  >>> Current Status: " + v.getStatus());
         }
 
@@ -235,7 +235,7 @@ public class FleetManagement{
             System.out.println("\n  Vehicle to be removed:");
             v.displayInfo();
 
-            System.out.println("  Are you sure to confirm delete the vehicle? (Y/N) -> ");
+            System.out.print("  Are you sure to confirm delete the vehicle? (Y/N) -> ");
             String confirm = input.next();
             input.nextLine();
 
@@ -254,24 +254,36 @@ public class FleetManagement{
     }
 
     private void viewMaintenanceDue(){
-        List<Vehicle> due = fleetManager.getVehiclesDueForMaintenance();
+        List<Vehicle> due = fleetManager.getVehiclesNeedingMaintenance();
 
         if(due.isEmpty()){
-            System.out.println("\n  [✓] No vehicles are due for maintenance.");
+            System.out.println("\n  [✓] No vehicles need maintenance attention.");
             return;
         }
 
         System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
-        System.out.println("  ║              VEHICLES DUE FOR MAINTENANCE              ║");
+        System.out.println("  ║               VEHICLES NEEDING MAINTENANCE             ║");
         System.out.println("  ╚════════════════════════════════════════════════════════╝");
         System.out.println("  Total: " + due.size() + " vehicle(s)");
         System.out.println();
-        System.out.printf("  %-10s %-15s %-12s %-15s%n", "ID", "Plate", "Type", "Next Maint");
-        System.out.println("  " + "─".repeat(60));
+        System.out.printf("  %-10s %-15s %-12s %-20s %-15s%n", "ID", "Plate", "Type", "Status", "Next Maint");
+        System.out.println("  " + "─".repeat(75));
 
         for (Vehicle v : due){
-            System.out.printf("  %-10s %-15s %-12s %-15s ⚠%n", v.getVehicleID(), v.getPlateNumber(),
-                v.getType(), v.getNextMaintenanceDate());
+            // do .toString() because need to display it out so convert to String
+            String statusDisplay = v.getStatus().toString();
+            String maintenanceDisplay = v.getNextMaintenanceDate().toString();
+
+            String actionNeeded = "";
+            if(v.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
+                actionNeeded = "In Progress";
+            }
+            else if(v.isMaintenanceDue()){
+                actionNeeded = "Schedule Now";
+            }
+
+        System.out.printf("  %-10s %-12s %-12s %-20s %-15s %-18s%n", v.getVehicleID(), v.getPlateNumber(),
+            v.getType(), statusDisplay, maintenanceDisplay, actionNeeded);
         }
         System.out.println();
     }
@@ -280,7 +292,7 @@ public class FleetManagement{
     // Menu Design
     private void displayMenu(){
         System.out.println("\n  ╔══════════════════════════════════════╗");
-        System.out.println("  ║      FLEET MANAGEMENT MENU           ║");
+        System.out.println("  ║         FLEET MANAGEMENT MENU        ║");
         System.out.println("  ╠══════════════════════════════════════╣");
         System.out.println("  ║  1.  Add Vehicle                     ║");
         System.out.println("  ║  2.  View All Vehicles               ║");
@@ -290,6 +302,7 @@ public class FleetManagement{
         System.out.println("  ║  6.  Complete Maintenance            ║");
         System.out.println("  ║  7.  Remove Vehicle                  ║");
         System.out.println("  ║  8.  View Vehicles Due for Maint     ║");
+        System.out.println("  ║  0.  Return to Admin Portal          ║");
         System.out.println("  ╚══════════════════════════════════════╝");
         System.out.print("  Choice -> ");
     }

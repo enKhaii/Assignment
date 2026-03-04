@@ -88,7 +88,8 @@ public class Vehicle {
 
     // METHODS, Check if the current date has reached or passed the maintenance date
     public boolean isMaintenanceDue(){
-        return LocalDate.now().isAfter(nextMaintenanceDate) || LocalDate.now().isEqual(nextMaintenanceDate);
+        LocalDate today = LocalDate.now();
+        return today.isAfter(nextMaintenanceDate) || today.isEqual(nextMaintenanceDate);
         // return true if passed or equal nextMaintenanceDate 
     }
     
@@ -105,7 +106,7 @@ public class Vehicle {
         this.lastMaintenanceDate = LocalDate.now();
         this.nextMaintenanceDate = LocalDate.now().plusMonths(3);
         this.assignedCourierID = null;  // null because vehicle going maintenance, which means no courier assigned
-        System.out.println("  [✓] Vehicle " + vehicleID + " scheduled for maintenance.");
+        System.out.println("\n  [✓] Vehicle " + vehicleID + " scheduled for maintenance.");
     }
 
     public void completeMaintenance(){
@@ -114,21 +115,26 @@ public class Vehicle {
     }
 
     // Display Info (For every details of that vehicle, e.g. picked a specific vehicle and making decision)
-    public void displayInfo(){
         // ... : ... ? ... - ternary operator | result = (condition) ? valueIfTrue : valueIfFalse
         // printf %n - new line
-        System.out.println("  ┌──────────────────────────────────────┐");
-        System.out.printf ("  │  Vehicle ID  : %-21s│%n", vehicleID);
-        System.out.printf ("  │  Plate       : %-21s│%n", plateNumber);
-        System.out.printf ("  │  Type        : %-21s│%n", type);
-        System.out.printf ("  │  Status      : %-21s│%n", status);
-        System.out.printf ("  │  Max Load    : %-18.1f kg│%n", maxLoadKg);
-        System.out.printf ("  │  Last Maint  : %-21s│%n", lastMaintenanceDate);
-        System.out.printf ("  │  Next Maint  : %-21s│%n", nextMaintenanceDate);
-        System.out.printf ("  │  Courier     : %-21s│%n", assignedCourierID != null ? assignedCourierID : "Unassigned");
-        System.out.printf ("  │  Maint Due   : %-21s│%n", isMaintenanceDue() ? "*** YES ***" : "No");
-        System.out.println("  └──────────────────────────────────────┘");
+    public void displayInfo() {
+        String maxLoadKgText = String.format("%.1f kg", maxLoadKg);
+
+        System.out.println("  ┌────────────────────────────────────────┐");
+        System.out.println(String.format("  │  Vehicle ID  : %-24s│", vehicleID));
+        System.out.println(String.format("  │  Plate       : %-24s│", plateNumber));
+        System.out.println(String.format("  │  Type        : %-24s│", type));
+        System.out.println(String.format("  │  Status      : %-24s│", status));
+        System.out.println(String.format("  │  Max Load    : %-21s│", maxLoadKgText));        
+        System.out.println(String.format("  │  Last Maint  : %-24s│", lastMaintenanceDate));
+        System.out.println(String.format("  │  Next Maint  : %-24s│", nextMaintenanceDate));
+        System.out.println(String.format("  │  Courier     : %-24s│", 
+                assignedCourierID != null ? assignedCourierID : "Unassigned"));
+        System.out.println(String.format("  │  Maint Due?  : %-24s│", 
+                isMaintenanceDue() ? "Yes" : "No"));
+        System.out.println("  └────────────────────────────────────────┘");
     }
+
 
     // toString method (Polymorphism)
     @Override   // Override 

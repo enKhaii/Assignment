@@ -31,7 +31,7 @@ public class FleetManager {
         // If vehicleID didn't exists, add it into arrayList<> vehicles
         vehicles.add(vehicle);
 
-        System.out.println("  [✓] Vehicle added: " + vehicle.getVehicleID() + " (" + vehicle.getPlateNumber() + ")");
+        System.out.println("\n  [✓] Vehicle added: " + vehicle.getVehicleID() + " (" + vehicle.getPlateNumber() + ")");
     }
 
     public Vehicle findByID(String vehicleID){
@@ -57,11 +57,11 @@ public class FleetManager {
         return availableList;
     }
 
-    public List<Vehicle> getVehiclesDueForMaintenance(){
+    public List<Vehicle> getVehiclesNeedingMaintenance(){
         List<Vehicle> dueList = new ArrayList<>();
 
         for(Vehicle v : vehicles){
-            if(v.isMaintenanceDue()){
+            if(v.isMaintenanceDue() || v.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
                 dueList.add(v);
             }
         }
@@ -160,7 +160,5 @@ public class FleetManager {
         for(Vehicle v: vehicles){
             System.out.println(v);  // call the toString method in Vehicle.java
         }
-
-        System.out.println();
     }
 }
