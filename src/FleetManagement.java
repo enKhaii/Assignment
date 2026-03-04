@@ -31,7 +31,7 @@ public class FleetManagement{
                     case 2 -> viewAllVehicles();
                     case 3 -> viewVehicleDetails();
                     case 4 -> updateVehicleInfo();
-                    case 5 -> scheduleMaintenance();
+                    case 5 -> inputheduleMaintenance();
                     case 6 -> completeMaintenance();
                     case 7 -> removeVehicle();
                     case 8 -> viewMaintenanceDue();
@@ -50,7 +50,7 @@ public class FleetManagement{
 
 
     // OPERATIONS
-    public void addVehicle(){
+    private void addVehicle(){
         try{
             System.out.println("\n  ╔═══════════════════════════════════════╗");
             System.out.println("  ║            ADD NEW VEHICLE            ║");
@@ -99,11 +99,11 @@ public class FleetManagement{
         }
     }
 
-    public void viewAllVehicles(){
+    private void viewAllVehicles(){
         fleetManager.displayAll();
     }
 
-    public void viewVehicleDetails(){
+    private void viewVehicleDetails(){
         System.out.print("  Enter Vehicle ID ->");
         String vehicleID = input.next();
         input.nextLine();
@@ -119,7 +119,7 @@ public class FleetManagement{
         }
     }
 
-    public void updateVehicleInfo(){
+    private void updateVehicleInfo(){
         try{
             System.out.print("  Enter Vehicle ID -> ");
             String vehicleID = input.next();
@@ -183,6 +183,100 @@ public class FleetManagement{
         }
     }
 
+    private void inputheduleMaintenance(){
+        System.out.print("  Enter Vehicle ID -> ");
+        String vehicleID = input.next();
+
+        Vehicle v = fleetManager.findByID(vehicleID);
+        if(v == null){
+            System.out.println("  [!] Vehicle not found: " + vehicleID);
+            return; // Stop the operation immediately
+        }
+
+        // if Status = IN_USE, stop operation
+        if(v.getStatus() == Vehicle.VehicleStatus.IN_USE){
+            System.out.println("  [!] Cannot inputhedule maintenance - vehicle is currently in use.");
+            return;
+        }
+
+        v.scheduleMaintenance();
+    }
+
+    private void completeMaintenance(){
+        System.out.print("  Enter Vehicle ID -> ");
+        String vehicleID = input.next();
+
+        Vehicle v = fleetManager.findByID(vehicleID);
+        if(v == null){
+            System.out.println("  [!] Vehicle not found: " + vehicleID);
+            return; // Stop the operation immediately
+        }
+
+        // if Status not equal (!=) UNDER_MAINTENANCE, don't continue operation
+        if(v.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
+            System.out.println("  [!] Vehicle is not under maintenance!");
+            System.out.println("  >>> Current Status: " + v.getStatus());
+        }
+
+        v.completeMaintenance();
+    }
+
+    private void removeVehicle(){
+        try{
+            System.out.print("  Enter Vehicle ID -> ");
+            String vehicleID = input.next();
+
+            Vehicle v = fleetManager.findByID(vehicleID);
+            if(v == null){
+                System.out.println("  [!] Vehicle not found: " + vehicleID);
+                return; // Stop the operation immediately
+            }
+
+            System.out.println("\n  Vehicle to be removed:");
+            v.displayInfo();
+
+            System.out.println("  Are you sure to confirm delete the vehicle? (Y/N) -> ");
+            String confirm = input.next();
+            input.nextLine();
+
+            if(confirm.equalsIgnoreCase("y")){
+                fleetManager.removeVehicle(vehicleID);
+            }
+            else{
+                System.out.println("  [i] Remove operation cancelled.");
+            }
+        }catch(VehicleNotFoundException e){
+            // e.getMessage() = Retrive and print the exception message
+            System.out.println("  [!] " + e.getMessage());
+        }catch(IllegalStateException e){
+            System.out.println("  [!] " + e.getMessage());
+        }
+    }
+
+    private void viewMaintenanceDue(){
+        List<Vehicle> due = fleetManager.getVehiclesDueForMaintenance();
+
+        if(due.isEmpty()){
+            System.out.println("\n  [✓] No vehicles are due for maintenance.");
+            return;
+        }
+
+        System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
+        System.out.println("  ║              VEHICLES DUE FOR MAINTENANCE              ║");
+        System.out.println("  ╚════════════════════════════════════════════════════════╝");
+        System.out.println("  Total: " + due.size() + " vehicle(s)");
+        System.out.println();
+        System.out.printf("  %-10s %-15s %-12s %-15s%n", "ID", "Plate", "Type", "Next Maint");
+        System.out.println("  " + "─".repeat(60));
+
+        for (Vehicle v : due){
+            System.out.printf("  %-10s %-15s %-12s %-15s ⚠%n", v.getVehicleID(), v.getPlateNumber(),
+                v.getType(), v.getNextMaintenanceDate());
+        }
+        System.out.println();
+    }
+
+
     // Menu Design
     private void displayMenu(){
         System.out.println("\n  ╔══════════════════════════════════════╗");
@@ -198,7 +292,5 @@ public class FleetManagement{
         System.out.println("  ║  8.  View Vehicles Due for Maint     ║");
         System.out.println("  ╚══════════════════════════════════════╝");
         System.out.print("  Choice -> ");
-}
-
-
+    }
 }

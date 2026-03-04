@@ -4,6 +4,7 @@ public class Main {
     // GLOBAL VARIABLES
     static Scanner input = new Scanner(System.in);
 
+    static FleetManager fleetManager = new FleetManager();
     static FleetManagement fleetManagement = new FleetManagement(fleetManager, input);
 
     public static void main(String[] args){
@@ -104,7 +105,7 @@ public class Main {
                 case 3 -> calculateReviewShipmentFees();
                 case 4 -> handleDeliveryFailure();
                 case 5 -> viewAllShipments();
-                case 6 -> manageFleetMaintenance();
+                case 6 -> fleetManagement.show();
                 case 7 -> displayDriverWorkload();
                 case 8 -> viewAdminProfile();
                 case 0 -> {
@@ -140,10 +141,6 @@ public class Main {
 
     public static void viewAllShipments(){
         System.out.println("5");
-    }
-
-    public static void manageFleetMaintenance(){
-        System.out.println("6");
     }
 
     public static void displayDriverWorkload(){
