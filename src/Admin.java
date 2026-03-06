@@ -64,5 +64,6 @@ public class Admin extends Person{
         System.out.printf ("  ║  Role       : %-23s║%n", adminRole);
         System.out.printf ("  ║  Department : %-23s║%n", department);
         System.out.println("  ╚══════════════════════════════════════╝");
+        System.out.println();
     }
 }

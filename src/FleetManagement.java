@@ -173,7 +173,7 @@ public class FleetManagement{
                     }
                 }
                 case 0 -> {
-                    System.out.println("  [i] Update cancelled.");
+                    System.out.println("\n  [i] Update cancelled.");
                 }
                 default -> System.out.println("  [!] Invalid option. Please try again.");
             }
@@ -266,8 +266,8 @@ public class FleetManagement{
         System.out.println("  ╚════════════════════════════════════════════════════════╝");
         System.out.println("  Total: " + due.size() + " vehicle(s)");
         System.out.println();
-        System.out.printf("  %-10s %-15s %-12s %-20s %-15s%n", "ID", "Plate", "Type", "Status", "Next Maint");
-        System.out.println("  " + "─".repeat(75));
+        System.out.printf("  %-10s %-12s %-12s %-20s %-15s %-15s%n", "ID", "Plate", "Type", "Status", "Next Maint", "Action");        
+        System.out.println("  " + "─".repeat(90));
 
         for (Vehicle v : due){
             // do .toString() because need to display it out so convert to String

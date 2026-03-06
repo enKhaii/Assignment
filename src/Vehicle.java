@@ -111,7 +111,7 @@ public class Vehicle {
 
     public void completeMaintenance(){
         this.status = VehicleStatus.AVAILABLE;
-        System.out.println("  [✓] Vehicle " + vehicleID + " maintenance complete - now AVAILABLE.");
+        System.out.println("\n  [✓] Vehicle " + vehicleID + " maintenance complete - now AVAILABLE.");
     }
 
     // Display Info (For every details of that vehicle, e.g. picked a specific vehicle and making decision)
@@ -120,18 +120,27 @@ public class Vehicle {
     public void displayInfo() {
         String maxLoadKgText = String.format("%.1f kg", maxLoadKg);
 
+        String maintennanceDueStatus;
+        if(status == VehicleStatus.UNDER_MAINTENANCE){
+            maintennanceDueStatus = "In Progress";
+        }
+        else if(isMaintenanceDue()){
+            maintennanceDueStatus = "Yes - Overdue";
+        }
+        else{
+            maintennanceDueStatus = "No";
+        }
+
         System.out.println("  ┌────────────────────────────────────────┐");
         System.out.println(String.format("  │  Vehicle ID  : %-24s│", vehicleID));
         System.out.println(String.format("  │  Plate       : %-24s│", plateNumber));
         System.out.println(String.format("  │  Type        : %-24s│", type));
         System.out.println(String.format("  │  Status      : %-24s│", status));
-        System.out.println(String.format("  │  Max Load    : %-21s│", maxLoadKgText));        
+        System.out.println(String.format("  │  Max Load    : %-24s│", maxLoadKgText));        
         System.out.println(String.format("  │  Last Maint  : %-24s│", lastMaintenanceDate));
         System.out.println(String.format("  │  Next Maint  : %-24s│", nextMaintenanceDate));
-        System.out.println(String.format("  │  Courier     : %-24s│", 
-                assignedCourierID != null ? assignedCourierID : "Unassigned"));
-        System.out.println(String.format("  │  Maint Due?  : %-24s│", 
-                isMaintenanceDue() ? "Yes" : "No"));
+        System.out.println(String.format("  │  Courier     : %-24s│", assignedCourierID != null ? assignedCourierID : "Unassigned"));
+        System.out.println(String.format("  │  Maint Due?  : %-24s│", maintennanceDueStatus));
         System.out.println("  └────────────────────────────────────────┘");
     }
 

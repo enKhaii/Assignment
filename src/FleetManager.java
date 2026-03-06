@@ -153,12 +153,25 @@ public class FleetManager {
 
         System.out.println("  Total Vehicles:  " + vehicles.size() + "\n");
 
-        System.out.printf("  %-10s %-12s %-12s %-18s %-15s%n", "ID", "Plate", "Type", "Status", "Maintenance");
+        System.out.printf("  %-10s %-12s %-12s %-20s %-15s%n", "ID", "Plate", "Type", "Status", "Maintenance");
         System.out.println("  " + "─".repeat(70));
 
         // Loop through all the elements and display each vehicle
         for(Vehicle v: vehicles){
-            System.out.println(v);  // call the toString method in Vehicle.java
+            String maintenanceStatus;
+
+            if(v.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
+                maintenanceStatus = "In Progress";
+            }
+            else if(v.isMaintenanceDue()){
+                maintenanceStatus = "Overdue";
+            }
+            else{
+                maintenanceStatus = "Up To Date";
+            }
+
+        System.out.printf("  %-10s %-12s %-12s %-20s %-18s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(),
+                v.getStatus(), maintenanceStatus);        
         }
     }
 }
