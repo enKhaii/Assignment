@@ -1,8 +1,44 @@
 /*
     Vehicle -  Blueprint class for attributes of a fleet unit, such as plate number, fuel type, etc
     enum - defines fixed role (only accepts Role.??? rather than any String)
-
 */
+
+/*
+ * ════════════════════════════════════════════════════════════════════════════
+ *                   VEHICLE CLASS - TODO LIST
+ *            Enhancements for Courier Integration
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * CURRENT STATUS: ✅ READY FOR COURIER INTEGRATION
+ * ────────────────────────────────────────────────────────────────────────────
+ * ✅ Has assignedCourierID field (String)
+ * ✅ Has getAssignedCourierID() getter
+ * ✅ Has setAssignedCourierID() setter
+ * ✅ Status enum includes IN_USE (used when assigned to courier)
+ * ✅ displayInfo() shows courier assignment
+ * 
+ * ────────────────────────────────────────────────────────────────────────────
+ * OPTIONAL ENHANCEMENTS:
+ * ────────────────────────────────────────────────────────────────────────────
+ * [ ] Add method: isAssignedToCourier()
+ *     public boolean isAssignedToCourier() {
+ *         return assignedCourierID != null;
+ *     }
+ * 
+ * [ ] Add method: canBeAssigned()
+ *     public boolean canBeAssigned() {
+ *         return status == VehicleStatus.AVAILABLE && !isMaintenanceDue();
+ *     }
+ * 
+ * [ ] Update displayInfo() to show more courier details:
+ *     - Instead of just courier ID, show courier name (requires Courier object)
+ *     - Add "Assignment Date" field (requires new LocalDate field)
+ * 
+ * ════════════════════════════════════════════════════════════════════════════
+ * NO MAJOR CHANGES NEEDED - CLASS IS READY! ✅
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
 import java.time.LocalDate;
 
 public class Vehicle {
@@ -106,12 +142,12 @@ public class Vehicle {
         this.lastMaintenanceDate = LocalDate.now();
         this.nextMaintenanceDate = LocalDate.now().plusMonths(3);
         this.assignedCourierID = null;  // null because vehicle going maintenance, which means no courier assigned
-        System.out.println("\n  [✓] Vehicle " + vehicleID + " scheduled for maintenance.");
+        System.out.println("\n  [DONE] Vehicle " + vehicleID + " scheduled for maintenance.");
     }
 
     public void completeMaintenance(){
         this.status = VehicleStatus.AVAILABLE;
-        System.out.println("\n  [✓] Vehicle " + vehicleID + " maintenance complete - now AVAILABLE.");
+        System.out.println("\n  [DONE] Vehicle " + vehicleID + " maintenance complete - now AVAILABLE.");
     }
 
     // Display Info (For every details of that vehicle, e.g. picked a specific vehicle and making decision)

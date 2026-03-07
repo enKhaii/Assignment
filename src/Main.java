@@ -183,3 +183,52 @@ public class Main {
         System.out.println("====================================================");
     }
 }
+
+/*
+ * ════════════════════════════════════════════════════════════════════════════
+ *                   MAIN - ADMIN PORTAL TODO LIST
+ *            Courier-Fleet Integration Tasks
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * COORDINATION WITH FLEET MODULE:
+ * ────────────────────────────────────────────────────────────────────────────
+ * [ ] When removing courier (in manageCouriers):
+ *     - Check if courier has assigned vehicle
+ *     - Code:
+ *       Vehicle v = fleetManagement.fleetManager.findByAssignedCourier(courierId);
+ *       if (v != null) {
+ *           System.out.println("Cannot remove - courier has assigned vehicle!");
+ *           System.out.println("Please release vehicle first.");
+ *           return;
+ *       }
+ * 
+ * [ ] Add helper method: findCourierById(String courierId)
+ *     - Used by: FleetManagement to validate courier exists
+ *     - Returns: Courier object or null
+ *     static Courier findCourierById(String courierId) {
+ *         for (Courier c : couriers) {
+ *             if (c.getCourierId().equalsIgnoreCase(courierId)) {
+ *                 return c;
+ *             }
+ *         }
+ *         return null;
+ *     }
+ * 
+ * ────────────────────────────────────────────────────────────────────────────
+ * ADMIN REPORTS ENHANCEMENT:
+ * ────────────────────────────────────────────────────────────────────────────
+ * [ ] Add to systemReports() menu:
+ *     - Option: "View Courier-Vehicle Assignments"
+ *     - Shows table of which courier has which vehicle
+ *     - Can delegate to: fleetManagement.viewCourierVehicleAssignments()
+ * 
+ * ════════════════════════════════════════════════════════════════════════════
+ * SEED DATA ENHANCEMENT:
+ * ════════════════════════════════════════════════════════════════════════════
+ * [ ] In seedData(), assign some vehicles to couriers for testing:
+ *     // After adding vehicles and couriers
+ *     fleetManager.assignToCourier("VHL501", "CRR301");
+ *     fleetManager.assignToCourier("VHL502", "CRR302");
+ * 
+ * ════════════════════════════════════════════════════════════════════════════
+ */     

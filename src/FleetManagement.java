@@ -1,6 +1,91 @@
 /*
     FleetManagement - Handles all fleet management UI and also the methods
 */
+
+/*
+ * ════════════════════════════════════════════════════════════════════════════
+ *                   FLEET MANAGEMENT - TODO LIST
+ *            Features to Implement for Courier Integration
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * PRIORITY 1: VEHICLE-COURIER ASSIGNMENT ⭐
+ * ────────────────────────────────────────────────────────────────────────────
+ * [ ] Add menu option 11: "Assign Vehicle to Courier"
+ *     - Show available vehicles (status = AVAILABLE)
+ *     - Ask admin to select vehicle ID
+ *     - Ask admin to enter courier ID
+ *     - Call: fleetManager.assignToCourier(vehicleId, courierId)
+ *     - Vehicle status → IN_USE
+ *     - Vehicle.assignedCourierID → set to courier ID
+ * 
+ * [ ] Add menu option 12: "Release Vehicle from Courier"
+ *     - Show vehicles IN_USE
+ *     - Ask admin to select vehicle ID
+ *     - Call: fleetManager.releaseVehicle(vehicleId)
+ *     - Vehicle status → AVAILABLE
+ *     - Vehicle.assignedCourierID → set to null
+ * 
+ * [ ] Create method: assignVehicleToCourier()
+ *     private void assignVehicleToCourier() {
+ *         // 1. Display available vehicles
+ *         // 2. Get vehicle ID from admin
+ *         // 3. Get courier ID from admin
+ *         // 4. Validate courier exists (call Main.findCourierById())
+ *         // 5. Call fleetManager.assignToCourier(vehicleId, courierId)
+ *         // 6. Show success message
+ *     }
+ * 
+ * [ ] Create method: releaseVehicleFromCourier()
+ *     private void releaseVehicleFromCourier() {
+ *         // 1. Display vehicles currently IN_USE
+ *         // 2. Get vehicle ID from admin
+ *         // 3. Call fleetManager.releaseVehicle(vehicleId)
+ *         // 4. Show success message
+ *     }
+ * 
+ * ────────────────────────────────────────────────────────────────────────────
+ * PRIORITY 2: ENHANCED DISPLAY & REPORTS
+ * ────────────────────────────────────────────────────────────────────────────
+ * [ ] Update displayMenu() - add options 11 and 12
+ * 
+ * [ ] Optional: Create viewCourierVehicleAssignments()
+ *     private void viewCourierVehicleAssignments() {
+ *         // Display table showing:
+ *         // Courier ID | Name | Vehicle ID | Vehicle Type | Status
+ *         // Loop through all couriers
+ *         // For each courier, find assigned vehicle using:
+ *         //   fleetManager.findByAssignedCourier(courierId)
+ *     }
+ * 
+ * ────────────────────────────────────────────────────────────────────────────
+ * VALIDATION RULES TO ADD:
+ * ────────────────────────────────────────────────────────────────────────────
+ * [ ] In assignVehicleToCourier():
+ *     - Check vehicle is not UNDER_MAINTENANCE
+ *     - Check courier exists
+ *     - Check courier doesn't already have a vehicle assigned
+ * 
+ * [ ] In scheduleMaintenance():
+ *     - Already done! ✅ (checks if vehicle IN_USE)
+ * 
+ * ════════════════════════════════════════════════════════════════════════════
+ * INTEGRATION WITH TEAMMATES:
+ * ════════════════════════════════════════════════════════════════════════════
+ * Courier Module (teammate's responsibility):
+ *   - Display assigned vehicle in Courier Portal
+ *   - Release vehicle when courier goes OFF_DUTY
+ *   - Show error if courier tries to take shipment without vehicle
+ * 
+ * Admin Module (coordinate with teammate):
+ *   - Can't remove courier if vehicle assigned (check first)
+ *   - Add courier-vehicle report to Admin Reports section
+ * 
+ * Shipment Module (teammate's responsibility):
+ *   - Before assigning shipment, check courier has vehicle
+ *   - Validate parcel weight doesn't exceed vehicle capacity
+ * 
+ * ════════════════════════════════════════════════════════════════════════════
+ */
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -42,7 +127,7 @@ public class FleetManagement{
                     default -> System.out.println("  [!] Invalid option. Please try again.");
                 }
             } catch(InputMismatchException e){
-                System.out.println("  [!] Invalid input! Please enter a number.");
+                System.out.println("\n  [!] Invalid input! Please enter a number.");
                 input.nextLine(); // clear the wrong input
             }
         }
@@ -50,6 +135,30 @@ public class FleetManagement{
 
 
     // OPERATIONS
+    private boolean isValidPlateNumber(String plate){ // For checking Plate Number only
+        // check length (6-8), example ABC123, ABC1234
+        if(plate.length() < 6 || plate.length() >= 8){
+            return false;
+        }
+
+        // boolean for checking contains digits or letters
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+        for(char c : plate.toCharArray()){  // toCharArray = convert String into new character array
+            if(!Character.isLetterOrDigit(c)){
+                return false;   // if there's symbols(\ , . - +), return false,
+            }
+            if(Character.isDigit(c)){   // to use isDigit/Letter, need to use Character.?????
+                hasLetter = true;
+            }
+            if(Character.isDigit(c)){
+                hasDigit = true;
+            }
+        }
+
+        return hasLetter && hasDigit; // return true if hasLetter and hasDigit = true
+    }
+
     private void addVehicle(){
         try{
             System.out.println("\n  ╔═══════════════════════════════════════╗");
@@ -61,6 +170,13 @@ public class FleetManagement{
 
             System.out.print("  Plate Number (e.g. WHL999) -> ");
             String plateNum = input.next();
+
+            // if isValidPlateNumber = false, error and return(stop operation)
+            if(!isValidPlateNumber(plateNum)){
+                System.out.println("\n  [!] Invalid Plate Number format!");
+                System.out.println("  [i] Must be 6-8 characters with letters and numbers only.");
+                return;
+            }
 
             // Default vehicle is VAN
             System.out.println("\n  Vehicle Type:");
@@ -91,10 +207,10 @@ public class FleetManagement{
             Vehicle vehicle = new Vehicle(id, plateNum, type, maxLoad);
             fleetManager.addVehicle(vehicle);   // add this new vehicle to fleetManager VEHICLE data storage
 
-            System.out.println("  [✓] Vehicle ID \"" + id + "\" added successfully.");
+            System.out.println("\n  [DONE] Success: " + vehicle.getVehicleID() + " | Registered to Plate: " + vehicle.getPlateNumber());
 
         } catch(InputMismatchException e){
-            System.out.println("  [!] Invalid input! Please enter valid data.");
+            System.out.println("\n  [!] Invalid input! Please enter valid data.");
             input.nextLine(); // clear buffer to reset input
         }
     }
@@ -111,7 +227,7 @@ public class FleetManagement{
         // get the vehicle object
         Vehicle v = fleetManager.findByID(vehicleID);
         if(v == null){  // if v = nothing then error
-            System.out.println("  [!] Vehicle not found: " + vehicleID);
+            System.out.println("\n  [!] Vehicle not found: " + vehicleID);
         }
         else{
             System.out.println();
@@ -126,7 +242,7 @@ public class FleetManagement{
 
             Vehicle v = fleetManager.findByID(vehicleID);
             if(v == null){
-                System.out.println("  [!] Vehicle not found: " + vehicleID);
+                System.out.println("\n  [!] Vehicle not found: " + vehicleID);
                 return; // Stop the operation immediately
             }
 
@@ -147,7 +263,7 @@ public class FleetManagement{
                     String newPlate = input.next();
                     input.nextLine();
                     v.setPlateNumber(newPlate);
-                    System.out.println("  [✓] Plate number updated to -> " + newPlate);
+                    System.out.println("\n  [DONE] Plate number updated to -> " + newPlate);
                 }
                 case 2 -> {
                     System.out.println(" \n  Status Options:");
@@ -166,10 +282,10 @@ public class FleetManagement{
                         case 2: // if case 1 it will fall till case 3 because no break
                         case 3: // so don't need to repeatedly write the same code
                             v.setStatus(statuses[statusChoice - 1]);
-                            System.out.println("  [✓] Status updated to -> " + statuses[statusChoice - 1]);
+                            System.out.println("\n  [DONE] Status updated to -> " + statuses[statusChoice - 1]);
                             break;
                         default:
-                            System.out.println("  [!] Invalid status choice.");
+                            System.out.println("\n  [!] Invalid status choice.");
                     }
                 }
                 case 0 -> {
@@ -178,7 +294,7 @@ public class FleetManagement{
                 default -> System.out.println("  [!] Invalid option. Please try again.");
             }
         } catch(InputMismatchException e){
-            System.out.println("  [!] Invalid input!");
+            System.out.println("\n  [!] Invalid input!");
             input.nextLine(); // reset buffer (clear input)
         }
     }
@@ -189,13 +305,13 @@ public class FleetManagement{
 
         Vehicle v = fleetManager.findByID(vehicleID);
         if(v == null){
-            System.out.println("  [!] Vehicle not found: " + vehicleID);
+            System.out.println("\n  [!] Vehicle not found: " + vehicleID);
             return; // Stop the operation immediately
         }
 
         // if Status = IN_USE, stop operation
         if(v.getStatus() == Vehicle.VehicleStatus.IN_USE){
-            System.out.println("  [!] Cannot inputhedule maintenance - vehicle is currently in use.");
+            System.out.println("\n  [!] Cannot schedule maintenance - vehicle is currently in use.");
             return;
         }
 
@@ -208,7 +324,7 @@ public class FleetManagement{
 
         Vehicle v = fleetManager.findByID(vehicleID);
         if(v == null){
-            System.out.println("  [!] Vehicle not found: " + vehicleID);
+            System.out.println("\n  [!] Vehicle not found: " + vehicleID);
             return; // Stop the operation immediately
         }
 
@@ -216,6 +332,7 @@ public class FleetManagement{
         if(v.getStatus() != Vehicle.VehicleStatus.UNDER_MAINTENANCE){
             System.out.println("\n  [!] Vehicle is not under maintenance!");
             System.out.println("  >>> Current Status: " + v.getStatus());
+            return; // if UNDER_MAINTENANCE, stop the operation
         }
 
         v.completeMaintenance();
@@ -228,12 +345,18 @@ public class FleetManagement{
 
             Vehicle v = fleetManager.findByID(vehicleID);
             if(v == null){
-                System.out.println("  [!] Vehicle not found: " + vehicleID);
+                System.out.println("\n  [!] Vehicle not found: " + vehicleID);
                 return; // Stop the operation immediately
             }
 
             System.out.println("\n  Vehicle to be removed:");
             v.displayInfo();
+
+            if(v.getStatus() == Vehicle.VehicleStatus.IN_USE){
+                System.out.println("\n  [!] Cannot remove this vehicle - currently in use!");
+                System.out.println("  [i] Please release the vehicle from courier assignment first.");
+                return;
+            }
 
             System.out.print("  Are you sure to confirm delete the vehicle? (Y/N) -> ");
             String confirm = input.next();
@@ -241,15 +364,17 @@ public class FleetManagement{
 
             if(confirm.equalsIgnoreCase("y")){
                 fleetManager.removeVehicle(vehicleID);
+                System.out.println("\n  [DONE] Vehicle " + vehicleID + " removed from fleet.");
+
             }
             else{
-                System.out.println("  [i] Remove operation cancelled.");
+                System.out.println("\n  [ℹ] Remove operation cancelled.");
             }
         }catch(VehicleNotFoundException e){
             // e.getMessage() = Retrive and print the exception message
-            System.out.println("  [!] " + e.getMessage());
+            System.out.println("\n  [!] " + e.getMessage());
         }catch(IllegalStateException e){
-            System.out.println("  [!] " + e.getMessage());
+            System.out.println("\n  [!] " + e.getMessage());
         }
     }
 
@@ -257,12 +382,12 @@ public class FleetManagement{
         List<Vehicle> due = fleetManager.getVehiclesNeedingMaintenance();
 
         if(due.isEmpty()){
-            System.out.println("\n  [✓] No vehicles need maintenance attention.");
+            System.out.println("\n  [i] No vehicles under maintenance or need maintenance.");
             return;
         }
 
         System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
-        System.out.println("  ║               VEHICLES NEEDING MAINTENANCE             ║");
+        System.out.println("  ║                   VEHICLES MAINTENANCE                 ║");
         System.out.println("  ╚════════════════════════════════════════════════════════╝");
         System.out.println("  Total: " + due.size() + " vehicle(s)");
         System.out.println();
@@ -301,7 +426,7 @@ public class FleetManagement{
         System.out.println("  ║  5.  Schedule Maintenance            ║");
         System.out.println("  ║  6.  Complete Maintenance            ║");
         System.out.println("  ║  7.  Remove Vehicle                  ║");
-        System.out.println("  ║  8.  View Vehicles Due for Maint     ║");
+        System.out.println("  ║  8.  View Vehicles Maint Status      ║");
         System.out.println("  ║  0.  Return to Admin Portal          ║");
         System.out.println("  ╚══════════════════════════════════════╝");
         System.out.print("  Choice -> ");
