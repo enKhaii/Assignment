@@ -1,4 +1,5 @@
-/*
+/*  
+    FleetManager a.k.a VehicleRegistry
     FleetManager - Handles logic and data storage related to "Fleet"
     Handles: Data storage(ArrayList)
     Does not Handle: User input or menus (FleetManagement job)

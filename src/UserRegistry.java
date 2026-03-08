@@ -1,12 +1,14 @@
 /*
     UserRegistry - stores main objects (Sender, Courier, Admin), also consists method for login
+    Registry -
 */
 
 import java.util.ArrayList;
 
 public class UserRegistry{
+    // ArrayList<x> means this ArrayList can only hold object created in 'x.java'
     private static ArrayList<Admin> admins = new ArrayList<>();
-    //private ArrayList<Courier> couriers = new ArrayList<>();
+    // private ArrayList<Courier> couriers = new ArrayList<>();
 
     public static void initializeData(){
         // Admin Objects

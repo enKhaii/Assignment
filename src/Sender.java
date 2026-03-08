@@ -1,5 +1,5 @@
 
-//Sender - Represents a customer who sends parcels
+// Sender - Represents a customer who sends parcels
 // Inherits from Person abstract class
 
 public class Sender extends Person {
