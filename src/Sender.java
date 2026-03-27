@@ -31,7 +31,7 @@ public class Sender extends Person {
     @Override
     public void displayInfo() {
         System.out.println("  ┌──────────────────────────────────────────┐");
-        System.out.println("  │            SENDER PROFILE                │");
+        System.out.println("  │              SENDER PROFILE              │");
         System.out.println("  ├──────────────────────────────────────────┤");
         System.out.printf ("  │  ID       : %-27s│%n", getPersonID());
         System.out.printf ("  │  Name     : %-27s│%n", getName());

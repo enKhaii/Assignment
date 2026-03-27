@@ -88,7 +88,7 @@ public class Parcel {
     }
 
     // Need Insurance cause shipping value items
-    public double getInsuranceFee(){
+    public double calculateInsuranceFee(){
         if(declaredValue <= 0){
             return 0;
         }

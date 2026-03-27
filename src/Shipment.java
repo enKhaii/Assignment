@@ -2,7 +2,6 @@
     Shipment - Represents a delivery shipment
 */
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 public class Shipment {
     // Shipping speed category
     public enum ShippingSpeed{  // enum can be a class like Vehicle.java
-        STANDARD(5.00, "3-5 Days"), // RM5.00 per kg, shipment time 3-5 days
+        STANDARD(5.00, "3-5 Days"), // RM5.00 per k g, shipment time 3-5 days
         EXPRESS(9.50, "1-2 Days");  // RM9.50 per kg, shipment time 1-2 days
 
 
@@ -84,8 +83,209 @@ public class Shipment {
 
 
     // ATTRIBUTES
+    // FINAL because if changed midway, system loses package (after assigned, cannot change)
     private final String trackingID;    // Unique ID for tracking (e.g. TRK10001)
     private final String senderID;      // ID that who sent the package (delivery)
-    // FINAL because if changed midway, system loses package
-    private String courierID;           // Who's delivering this package ID (can be null)
+    private String courierID;           // Who's delivering this package ID (can be null, no one delivering)
+    
+    private final Parcel parcel;        // Composition - parcel details
+
+    private final String pickupAddress;
+    private final String deliveryAddress;
+    private final double distance;      // km
+
+    private final ShippingSpeed speed;
+    private ShipmentStatus status;
+
+    // Fees
+    private final double baseFee;       // Based on weight x fee
+    private final double distanceFee;   // distance x RM0.05/km
+    private final double insuranceFee;  // from Parcel.java
+    private final double totalFee;
+
+    // Status Tracking (COMPOSITION - owned by Shipment)
+    private final List<StatusLog> statusHistory;
+
+    // Timestamps
+    private final LocalDateTime createdAt;  // Order created at ???
+    private LocalDateTime deliveredAt;      // Order delivered at ???
+
+
+    // CONSTRUCTOR
+    public Shipment(String trackingID, String senderID, Parcel parcel, String pickupAddress, String deliveryAddress, double distance, ShippingSpeed speed){
+        this.trackingID = trackingID;
+        this.senderID = senderID;
+        this.parcel = parcel;
+        this.pickupAddress = pickupAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.distance = distance;
+        this.speed = speed;
+
+        // Calculate fees
+        this.baseFee = parcel.getChargeableWeight() * speed.getRatePerKg();
+        this.distanceFee = distance * 0.05;
+        this.insuranceFee = parcel.calculateInsuranceFee();
+        this.totalFee = baseFee + distanceFee + insuranceFee;
+
+        // Initialize status
+        this.status = ShipmentStatus.PENDING_PAYMENT;
+        this.statusHistory = new ArrayList<>();
+        this.statusHistory.add(new StatusLog(ShipmentStatus.PENDING_PAYMENT, "Shipment created"));
+
+        // Timestamps
+        this.createdAt = LocalDateTime.now();
+        this.deliveredAt = null;    // null because not assigned yet
+        this.courierID = null;      
+    }
+
+    // GETTERS
+    public String getTrackingID(){
+        return trackingID;
+    }
+
+    public String getSenderID(){
+        return senderID;
+    }
+
+    public String getCourierID(){
+        return courierID;
+    }
+
+    public Parcel getParcel(){
+        return parcel;
+    }
+
+    public String getPickupAddress(){
+        return pickupAddress;
+    }
+
+    public String getDeliveryAddress(){
+        return deliveryAddress;
+    }
+
+    public double getDistance(){
+        return distance;
+    }
+
+    public ShippingSpeed getSpeed(){
+        return speed;
+    }
+
+    public ShipmentStatus getStatus(){
+        return status;
+    }
+
+    public double getBaseFee(){
+        return baseFee;
+    }
+
+    public double getDistanceFee(){
+        return distanceFee;
+    }
+
+    public double getInsuranceFee(){
+        return insuranceFee;
+    }
+
+    public double getTotalFee(){
+        return totalFee;
+    }
+
+    public List<StatusLog> getStatusHistory(){
+        return new ArrayList<>(statusHistory);
+    }
+
+    public LocalDateTime getCreatedAt(){
+        return createdAt;
+    }
+
+    public LocalDateTime getDeliveredAt(){
+        return deliveredAt;
+    }
+
+
+    // SETTERS
+    public void setCourierID(String courierID){
+        this.courierID = courierID;
+    }
+
+
+    // STATUS MANAGEMENT
+    public void updateStatus(ShipmentStatus newStatus, String note){
+        this.status = newStatus;
+        this.statusHistory.add(new StatusLog(newStatus, note));
+
+        // If status = DELIVERED, record timestamp to assign deliveredAt
+        if(newStatus == ShipmentStatus.DELIVERED){
+            this.deliveredAt = LocalDateTime.now();
+        }
+    }
+
+    // Check if shipment can be cancelled (like pending_payment or paid, others status cannot be cancelled e.g. in progress)
+    public boolean canBeCancelled(){
+        return status == ShipmentStatus.PENDING_PAYMENT || status == ShipmentStatus.PAID;
+    }
+
+    // Check if payment is confirmed
+    public boolean isPaid(){
+        return status != ShipmentStatus.PENDING_PAYMENT;
+    }
+
+
+    // DISPLAY METHODS
+    public void displaySummary(){
+        System.out.printf("  %-12s %-15s %-20s RM %-10.2f%n", trackingID, senderID, status, totalFee);
+    }
+
+    public void displayFullDetails(){
+        System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
+        System.out.println("  ║                    SHIPMENT DETAILS                    ║");
+        System.out.println("  ╚════════════════════════════════════════════════════════╝"); 
+        System.out.println("\n  SHIPMENT INFORMATION:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  Tracking ID       : " + trackingID);
+        System.out.println("  Status            : " + status);
+        System.out.println("  Sender ID         : " + senderID);
+        System.out.println("  Courier ID        : " + (courierID != null ? courierID : "Not assigned"));
+        System.out.println("  Shipping Speed    : " + speed + " (" + speed.getDeliveryTime() + ")");
+        System.out.println("\n  DELIVERY DETAILS:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  Pickup Address    : " + pickupAddress);
+        System.out.println("  Delivery Address  : " + deliveryAddress);
+        System.out.println("  Distance          : " + distance + " km");
+        System.out.println("\n  PARCEL INFORMATION:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  Content Type      : " + parcel.getContentType());
+        System.out.printf("  Weight            : %.2f kg%n", parcel.getWeight());
+        System.out.printf("  Dimensions        : %.1f x %.1f x %.1f cm%n", parcel.getLength(), parcel.getWidth(), parcel.getHeight());
+        System.out.printf("  Declared Value    : RM %.2f%n", parcel.getDeclaredValue());        
+        System.out.println("\n  FEE BREAKDOWN:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.printf("  Base Fee          : RM %.2f (%.2f kg x RM %.2f/kg)%n", baseFee, parcel.getChargeableWeight(), speed.getRatePerKg());
+        System.out.printf("  Distance Fee      : RM %.2f (%.1f km x RM 0.05/km)%n", distanceFee, distance);
+        System.out.printf("  Insurance Fee     : RM %.2f%n", insuranceFee);
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.printf("  TOTAL FEE         : RM %.2f%n", totalFee);        
+        System.out.println("\n  TIMESTAMPS:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  Created           : " + createdAt);
+
+        if (deliveredAt != null) {
+            System.out.println("  Delivered         : " + deliveredAt);
+        }
+
+        System.out.println();
+    }
+
+    public void displayTrackingHistory(){
+        System.out.println("\n  TRACKING HISTORY:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        
+        for (StatusLog log : statusHistory) {
+            System.out.printf("  [%s] %s - %s%n",
+                log.getTimeStamp().toString().substring(0, 19),
+                log.getShipmentStatus(), log.getNote());
+        }
+        System.out.println();
+    }
 }

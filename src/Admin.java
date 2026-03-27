@@ -56,7 +56,7 @@ public class Admin extends Person{
     public void displayInfo(){
         // %-?s, the - means left allignment, default will be right allignment
         System.out.println("  ╔══════════════════════════════════════╗");
-        System.out.println("  ║         ADMIN INFORMATION            ║");
+        System.out.println("  ║           ADMIN INFORMATION          ║");
         System.out.println("  ╠══════════════════════════════════════╣");
         System.out.printf ("  ║  ID         : %-23s║%n", getPersonID());
         System.out.printf ("  ║  Name       : %-23s║%n", getName());
