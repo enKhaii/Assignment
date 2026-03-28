@@ -15,6 +15,7 @@ public class UserRegistry{
         admins.add(new Admin("ADM01", "CHONG123", "Chong Wen Liang", "chongwliang99", "cwenliang22@gmail.com", "017-284-1288", Admin.Role.SUPER_ADMIN));
         admins.add(new Admin("ADM02", "ROHINKUMAR00", "Raj Rohin Kumar", "rohinkumar5421@", "rohinkumar092@hotmail.com", "011-4824-2995",  Admin.Role.OPERATIONS_MANAGER));
         admins.add(new Admin("ADM03", "KYODUSLIM67", "Kyodus Lim Kai Yuan", "kyodus0123@$", "cwenliang22@gmail.com", "017-284-1288",  Admin.Role.DISPATCH_OFFICER));        
+        System.out.println("  [DONE] User credentials loaded.");
     }
 
     // Main.java calls this to check if "LOGIN" ID exists before login

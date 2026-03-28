@@ -7,9 +7,15 @@ public class Main {
     static FleetManager fleetManager = new FleetManager();
     static FleetManagement fleetManagement = new FleetManagement(fleetManager, input);
 
+    static ShipmentRegistry shipmentRegistry = new ShipmentRegistry();
+    static ShipmentManagement shipmentManagement = new ShipmentManagement(shipmentRegistry, input);
+
+    static QuickTrack quickTrack = new QuickTrack(shipmentRegistry, input);
+
     public static void main(String[] args){
         displayLogo();
-        UserRegistry.initializeData(); // Initilaize login credentials data
+        UserRegistry.initializeData();      // Initialize login credentials data
+        shipmentRegistry.initializeData();  // Initialize shipments sample data
         
         System.out.println("\n  Welcome to Courier & Logistics Management System!");
 
@@ -22,7 +28,7 @@ public class Main {
                 case 1 -> senderPortal();
                 case 2 -> courierPortal();
                 case 3 -> adminLogin();
-                case 4 -> trackShipment();
+                case 4 -> quickTrack.track();
                 case 0 -> {
                     System.out.println("\n  Thank you for using CourierPro. Goodbye!\n");
                     running = false;
@@ -100,47 +106,31 @@ public class Main {
             System.out.print("  Choice -> ");
             int choice = input.nextInt();
             switch(choice){
-                case 1 -> assignCourier();
-                case 2 -> updateShipmentStatus();
-                case 3 -> calculateReviewShipmentFees();
+                case 1 -> assignDriverToShipment();
+                case 2 -> shipmentManagement.show();
+                case 3 -> shipmentManagement.show();
                 case 4 -> handleDeliveryFailure();
-                case 5 -> viewAllShipments();
+                case 5 -> shipmentManagement.show();
                 case 6 -> fleetManagement.show();
                 case 7 -> displayDriverWorkload();
                 case 8 -> viewAdminProfile();
                 case 0 -> {
-                    System.out.println("  Logging out...");
+                    System.out.println("  [i] Logging out...");
                     active = false;
                 }
-                default -> System.out.println("  [!] Invalid option.");
+                default -> System.out.println("  [!] Invalid option. Please enter a number.");
             }
         }
     }
 
-    // QUICK TRACK METHOD (4)
-    public static void trackShipment(){
-        System.out.println("NULL");
-    }
 
     // ADMIN METHODS
-    public static void assignCourier(){
+    public static void assignDriverToShipment(){
         System.out.println("1");
-    }
-
-    public static void updateShipmentStatus(){
-        System.out.println("2");
-    }
-
-    public static void calculateReviewShipmentFees(){
-        System.out.println("3");
     }
 
     public static void handleDeliveryFailure(){
         System.out.println("4");
-    }
-
-    public static void viewAllShipments(){
-        System.out.println("5");
     }
 
     public static void displayDriverWorkload(){
