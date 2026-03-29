@@ -94,13 +94,12 @@ public class ShipmentManagement {
                 System.out.println("  Status: " + status);
                 System.out.println("  Found: " + filtered.size() + " shipment(s)");
                 System.out.println();
-                System.out.printf("  %-12s %-15s %-20s %-12s%n", "Tracking ID", "Sender", "Status", "Total Fee");
+                System.out.printf("  %-15s %-15s %-20s %-12s%n", "Tracking ID", "Sender", "Status", "Total Fee");
                 System.out.println("  " + "─".repeat(70));
                 
                 for (Shipment s : filtered) {
-                    System.out.printf("  %-12s %-15s %-20s RM %-10.2f%n", s.getTrackingID(), s.getSenderID(), s.getStatus(), s.getTotalFee());
+                    System.out.printf("  %-15s %-15s %-20s RM %-10.2f%n", s.getTrackingID(), s.getSenderID(), s.getStatus(), s.getTotalFee());
                 }
-                System.out.println();
             }
         }
         else{
@@ -116,10 +115,10 @@ public class ShipmentManagement {
         Shipment s = shipmentRegistry.findByTrackingID(trackingID);
 
         if(s == null){
-            System.out.println("  [!] Shipment \" + trackingID + \" not found.");
+            System.out.println("\n  [!] Shipment \"" + trackingID + "\" not found.");
         }
         else{
-            System.out.println("  \n [DONE] Shipment Found.");
+            System.out.println("\n  [DONE] Shipment Found.");
             s.displayFullDetails();
         }
     }
@@ -140,13 +139,12 @@ public class ShipmentManagement {
             System.out.println("  Sender ID: " + senderID);
             System.out.println("  Found: " + results.size() + " shipment(s)");
             System.out.println();
-            System.out.printf("  %-12s %-20s %-12s%n", "Tracking ID", "Status", "Total Fee");
+            System.out.printf("  %-15s %-20s %-12s%n", "Tracking ID", "Status", "Total Fee");
             System.out.println("  " + "─".repeat(60));
             
             for (Shipment s : results) {
-                System.out.printf("  %-12s %-20s RM %-10.2f%n", s.getTrackingID(), s.getStatus(), s.getTotalFee());
+                System.out.printf("  %-15s %-20s RM %-10.2f%n", s.getTrackingID(), s.getStatus(), s.getTotalFee());
             }
-            System.out.println();
         }
     }
 
@@ -157,11 +155,11 @@ public class ShipmentManagement {
         Shipment s = shipmentRegistry.findByTrackingID(trackingID);
 
         if(s == null){
-            System.out.println("  [!] Shipment \" + trackingID + \" not found.");
+            System.out.println("\n  [!] Shipment \"" + trackingID + "\" not found.");
         }
         else{
             s.displayFullDetails();
-            System.out.print("\n  View Tracking History?? (Y/N) -> ");
+            System.out.print("\n  View Tracking History? (Y/N) -> ");
             String showHistory = input.next();
 
             if(showHistory.equalsIgnoreCase("Y")){
@@ -177,7 +175,7 @@ public class ShipmentManagement {
         Shipment s = shipmentRegistry.findByTrackingID(trackingID);
 
         if(s == null){
-            System.out.println("  [!] Shipment \" + trackingID + \" not found.");
+            System.out.println("\n  [!] Shipment \"" + trackingID + "\" not found.");
             return;  
         }
 
@@ -189,7 +187,7 @@ public class ShipmentManagement {
         System.out.println("  ╚════════════════════════════════════════════════════════╝");
         System.out.println("  Tracking ID: " + s.getTrackingID());
         System.out.println("\n  PARCEL DETAILS:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Content Type      : " + p.getContentType());
         System.out.printf("  Weight            : %.2f kg%n", p.getWeight());
         System.out.printf("  Dimensions        : %.1f x %.1f x %.1f cm%n", p.getLength(), p.getWidth(), p.getHeight());
@@ -197,19 +195,17 @@ public class ShipmentManagement {
         System.out.printf("  Chargeable Weight : %.2f kg%n", p.getChargeableWeight());
         System.out.printf("  Declared Value    : RM %.2f%n", p.getDeclaredValue());
         System.out.println("\n  FEE CALCULATION:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.printf("  Base Fee          : RM %.2f (%.2f kg x RM %.2f/kg)%n", s.getBaseFee(), p.getChargeableWeight(), s.getSpeed().getRatePerKg());
         System.out.printf("  Distance Fee      : RM %.2f (%.1f km x RM 0.05/km)%n", s.getDistanceFee(), s.getDistance());
         System.out.printf("  Insurance Fee     : RM %.2f%n", s.getInsuranceFee());
-        System.out.println("  ─────────────────────────────────────────────────────────");
         System.out.printf("  TOTAL FEE         : RM %.2f%n", s.getTotalFee());
         System.out.println("\n  DELIVERY DETAILS:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Shipping Speed    : " + s.getSpeed() + " (" + s.getSpeed().getDeliveryTime() + ")");
         System.out.println("  Distance          : " + s.getDistance() + " km");
         System.out.println("  Pickup Address    : " + s.getPickupAddress());
         System.out.println("  Delivery Address  : " + s.getDeliveryAddress());
-        System.out.println();
     }
 
     private void updateShipmentStatus(){
@@ -219,7 +215,7 @@ public class ShipmentManagement {
         Shipment s = shipmentRegistry.findByTrackingID(trackingID);
 
         if(s == null){
-            System.out.println("  [!] Shipment \" + trackingID + \" not found.");
+            System.out.println("\n  [!] Shipment \"" + trackingID + "\" not found.");
             return;  
         }
 
@@ -266,8 +262,7 @@ public class ShipmentManagement {
 
             s.updateStatus(newStatus, note);
 
-            System.out.println("\n  [DONE] Status Updated Successfully!");
-            System.out.println("  New Status: " + newStatus);
+            System.out.println("\n  [DONE] Status Updated Successfully! New Status -> " + newStatus);
         } 
         else {
             System.out.println("\n  [i] Update cancelled.");
@@ -276,7 +271,7 @@ public class ShipmentManagement {
 
     // Menu Design
     private void displayMenu(){
-        System.out.println("\n  ╔══════════════════════════════════════╗");
+        System.out.println("\n\n  ╔══════════════════════════════════════╗");
         System.out.println("  ║          SHIPMENT MANAGEMENT         ║");
         System.out.println("  ╠══════════════════════════════════════╣");
         System.out.println("  ║  1.  Display All Shipments           ║");

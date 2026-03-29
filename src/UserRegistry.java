@@ -15,20 +15,20 @@ public class UserRegistry{
         admins.add(new Admin("ADM01", "CHONG123", "Chong Wen Liang", "chongwliang99", "cwenliang22@gmail.com", "017-284-1288", Admin.Role.SUPER_ADMIN));
         admins.add(new Admin("ADM02", "ROHINKUMAR00", "Raj Rohin Kumar", "rohinkumar5421@", "rohinkumar092@hotmail.com", "011-4824-2995",  Admin.Role.OPERATIONS_MANAGER));
         admins.add(new Admin("ADM03", "KYODUSLIM67", "Kyodus Lim Kai Yuan", "kyodus0123@$", "cwenliang22@gmail.com", "017-284-1288",  Admin.Role.DISPATCH_OFFICER));        
-        System.out.println("  [DONE] User credentials loaded.");
-
+        
         Courier c1 = new Courier("CRR01", "AHMAD01", "Ahmad Malik",
-                "ahmad1234", "ahmad@swiftroute.my", "012-345-6789", "D1234567");
+        "ahmad1234", "ahmad@courierpro.my", "012-345-6789", "D1234567");
         c1.setDutyStatus(true);
         c1.setAssignedVehicleID("VHE501");
- 
+        
         Courier c2 = new Courier("CRR02", "RAZIF02", "Mohd Razif bin Johari",
-                "razif5678", "razif@swiftroute.my", "019-876-5432", "D7654321");
+        "razif5678", "razif@courierpro.my", "019-876-5432", "D7654321");
         c2.setDutyStatus(true);
         c2.setAssignedVehicleID("VHE502");
- 
+        
         couriers.add(c1);
         couriers.add(c2);
+        System.out.println("  [DONE] User credentials loaded.");
     }
 
     public static void assignSampleShipments(ShipmentRegistry shipmentRegistry){
@@ -84,7 +84,7 @@ public class UserRegistry{
     }
 
 
- public static boolean checkCourierIdExists(String loginID) {
+    public static boolean checkCourierIdExists(String loginID) {
         for (Courier c : couriers) {
             if (c.getLoginID().trim().equalsIgnoreCase(loginID.trim())) return true;
         }
@@ -110,5 +110,3 @@ public class UserRegistry{
         return couriers;
     }
 }
-
-

@@ -31,7 +31,7 @@ public class CourierPortal {
                     case 6 -> courier.displayInfo();
                     case 7 -> toggleDuty();
                     case 0 -> {
-                        System.out.println("  [i] Logging out...");
+                        System.out.println("\n  [i] Logging out...");
                         inCourierMenu = false;
                     }
                     default -> System.out.println("  [!] Invalid option. Please try again.");
@@ -47,7 +47,7 @@ public class CourierPortal {
  
     private void pickUpShipment() {
         System.out.println("\n  ╔══════════════════════════════════════════╗");
-        System.out.println("  ║             PICK UP SHIPMENT             ║");
+        System.out.println("  ║              PICK UP SHIPMENT            ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
         System.out.print("  Enter Tracking ID -> ");
         String id = input.next();
@@ -57,12 +57,13 @@ public class CourierPortal {
  
     private void updateStatus() {
         System.out.println("\n  ╔══════════════════════════════════════════╗");
-        System.out.println("  ║           UPDATE SHIPMENT STATUS         ║");
+        System.out.println("  ║          UPDATE SHIPMENT STATUS          ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
         System.out.print("  Enter Tracking ID -> ");
         String id = input.next();
         input.nextLine();
- 
+    
+        if (!courier.isReadyToUpdateStatus(id)) return;
         System.out.println("\n  Update to:");
         System.out.println("   1. IN_TRANSIT");
         System.out.println("   2. OUT_FOR_DELIVERY");
@@ -78,27 +79,28 @@ public class CourierPortal {
         };
  
         if (newStatus != null) {
-            System.out.print("  Add note (optional, press Enter to skip) -> ");
+            System.out.print("  Add note (Optional, press Enter to skip) -> ");
             String note = input.nextLine();
             if (note.trim().isEmpty()) note = "Status updated by courier " + courier.getName();
             courier.updateShipmentStatus(id, newStatus, note);
         } else {
-            System.out.println("  [!] Invalid choice.");
+            System.out.println("\n  [!] Invalid choice.");
         }
     }
  
     private void markDelivered() {
         System.out.println("\n  ╔══════════════════════════════════════════╗");
-        System.out.println("  ║           MARK AS DELIVERED              ║");
+        System.out.println("  ║             MARK AS DELIVERED            ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
         System.out.print("  Enter Tracking ID -> ");
         String id = input.next();
         input.nextLine();
- 
+        
+        if (!courier.isReadyForDelivery(id)) return;
         System.out.print("  Received by (name of person who signed) -> ");
         String receivedBy = input.nextLine();
- 
         courier.markDelivered(id, receivedBy);
+ 
     }
  
     private void reportFailed() {
@@ -108,7 +110,8 @@ public class CourierPortal {
         System.out.print("  Enter Tracking ID -> ");
         String id = input.next();
         input.nextLine();
- 
+        
+        if (!courier.isReadyForReport(id)) return;
         System.out.println("\n  Reason for failure:");
         System.out.println("   1. Receiver not home");
         System.out.println("   2. Wrong address");
@@ -135,7 +138,7 @@ public class CourierPortal {
         courier.setDutyStatus(!courier.isOnDuty());
     }
  
-    // ─── MENU DESIGN (same style as FleetManagement) ─────────
+    // ─── MENU DESIGN ─────────
     private void displayMenu() {
         System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║         COURIER (DRIVER) PORTAL          ║");

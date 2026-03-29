@@ -1,7 +1,5 @@
 /*
     Courier - Represents a delivery driver in the system
-    Extends Person (Inheritance)
-    OOP Concepts: Inheritance, Encapsulation, Polymorphism, Abstraction
 */
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ public class Courier extends Person {
     private ArrayList<Shipment> assignedShipments;  // daily delivery list
 
     // ─── Constructor ──────────────────────────────────────────
-    // Matches Person(personID, loginID, name, password, email, phoneNum) exactly
+    // Matches Person(personID, loginID, name, password, email, phoneNum)
     public Courier(String personID, String loginID, String name,
                    String password, String email, String phoneNum,
                    String licenseNumber) {
@@ -32,7 +30,7 @@ public class Courier extends Person {
     // ─── Polymorphism: Override abstract method from Person ───
     @Override
     public void displayInfo() {
-        System.out.println("  ╔══════════════════════════════════════════╗");
+        System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║           COURIER INFORMATION            ║");
         System.out.println("  ╠══════════════════════════════════════════╣");
         System.out.printf ("  ║  ID         : %-27s║%n", getPersonID());
@@ -56,7 +54,7 @@ public class Courier extends Person {
     public void receiveShipment(Shipment shipment) {
         assignedShipments.add(shipment);
         shipment.setCourierID(getPersonID());   // link shipment to this courier
-        System.out.println("  [✓] Shipment " + shipment.getTrackingID()
+        System.out.println("  [DONE] Shipment " + shipment.getTrackingID()
                 + " assigned to " + getName());
     }
 
@@ -64,29 +62,29 @@ public class Courier extends Person {
      * View all shipments assigned today.
      */
     public void viewDailyDeliveryList() {
-        System.out.println("\n  ╔══════════════════════════════════════════╗");
-        System.out.println("  ║          DAILY DELIVERY LIST             ║");
-        System.out.printf ("  ║  Driver  : %-30s║%n", getName());
-        System.out.printf ("  ║  Vehicle : %-30s║%n",
+        System.out.println("\n  ╔════════════════════════════════════════════╗");
+        System.out.println("  ║             DAILY DELIVERY LIST            ║");
+        System.out.printf ("  ║  Driver  : %-30s  ║%n", getName());
+        System.out.printf ("  ║  Vehicle : %-30s  ║%n",
                 assignedVehicleID != null ? assignedVehicleID : "Not Assigned");
-        System.out.printf ("  ║  Total   : %-30s║%n",
+        System.out.printf ("  ║  Total   : %-30s  ║%n",
                 assignedShipments.size() + " shipment(s)");
-        System.out.println("  ╠══════════════════════════════════════════╣");
+        System.out.println("  ╠════════════════════════════════════════════╣");
 
         if (assignedShipments.isEmpty()) {
-            System.out.println("  ║  No shipments assigned today.            ║");
+            System.out.println("  ║  No shipments assigned today.              ║");
         } else {
             for (int i = 0; i < assignedShipments.size(); i++) {
                 Shipment s = assignedShipments.get(i);
                 System.out.printf("  ║  %d. %-39s║%n", i + 1, s.getTrackingID());
-                System.out.printf("  ║     To : %-32s║%n", s.getDeliveryAddress().length() > 32
+                System.out.printf("  ║     To : %-32s  ║%n", s.getDeliveryAddress().length() > 32
                         ? s.getDeliveryAddress().substring(0, 29) + "..."
                         : s.getDeliveryAddress());
-                System.out.printf("  ║     Status : %-28s║%n", s.getStatus());
-                System.out.println("  ║                                          ║");
+                System.out.printf("  ║     Status : %-28s  ║%n", s.getStatus());
+                System.out.println("  ║                                            ║");
             }
         }
-        System.out.println("  ╚══════════════════════════════════════════╝");
+        System.out.println("  ╚════════════════════════════════════════════╝");
     }
 
     /**
@@ -95,65 +93,110 @@ public class Courier extends Person {
     public void pickUpShipment(String trackingID) {
         Shipment s = findShipment(trackingID);
         if (s == null) {
-            System.out.println("  [!] Shipment not found in your list: " + trackingID);
+            System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
+            return;
+        }
+        if (s.getStatus() == Shipment.ShipmentStatus.DELIVERED) {
+            System.out.println("\n  [!] Shipment already delivered, cannot pick up.");
+            return;
+        }
+        if (s.getStatus() == Shipment.ShipmentStatus.PICKED_UP) {
+            System.out.println("\n  [!] Shipment already picked up.");
             return;
         }
         if (s.getStatus() != Shipment.ShipmentStatus.PAID) {
-            System.out.println("  [!] Cannot pick up — current status: " + s.getStatus());
+            System.out.println("\n  [!] Cannot pick up - Current status: " + s.getStatus());
             return;
         }
         s.updateStatus(Shipment.ShipmentStatus.PICKED_UP, "Picked up by courier " + getName());
-        System.out.println("  [✓] Picked up: " + trackingID);
+        System.out.println("\n  [DONE] Picked up: " + trackingID);
     }
 
     /**
      * Update shipment to IN_TRANSIT or OUT_FOR_DELIVERY.
      */
-    public void updateShipmentStatus(String trackingID, Shipment.ShipmentStatus newStatus, String note) {
+    public boolean isReadyToUpdateStatus(String trackingID){
         Shipment s = findShipment(trackingID);
         if (s == null) {
-            System.out.println("  [!] Shipment not found in your list: " + trackingID);
-            return;
+            System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
+            return false;
         }
+        if (s.getStatus() == Shipment.ShipmentStatus.DELIVERED) {
+            System.out.println("\n  [!] Shipment already delivered, cannot change status.");
+            return false;
+        }
+        if (s.getStatus() == Shipment.ShipmentStatus.OUT_FOR_DELIVERY) {
+            System.out.println("\n  [!] Shipment is out for delivery, cannot change status.");
+        }
+        return true;    // no errors
+    }
+
+    public void updateShipmentStatus(String trackingID, Shipment.ShipmentStatus newStatus, String note) {
+        Shipment s = findShipment(trackingID);
+
         s.updateStatus(newStatus, note);
-        System.out.println("  [✓] Status updated to " + newStatus + " for " + trackingID);
+        System.out.println("\n  [DONE] Status updated to " + newStatus + " for " + trackingID);
     }
 
     /**
      * Mark a shipment as delivered.
-     * @param receivedBy  name of person who received/signed
+     * receivedBy = name of person who received/signed
      */
-    public void markDelivered(String trackingID, String receivedBy) {
+    public boolean isReadyForDelivery(String trackingID){
         Shipment s = findShipment(trackingID);
+
         if (s == null) {
-            System.out.println("  [!] Shipment not found in your list: " + trackingID);
-            return;
+            System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
+            return false;
         }
         if (s.getStatus() == Shipment.ShipmentStatus.DELIVERED) {
-            System.out.println("  [!] Already delivered: " + trackingID);
-            return;
+            System.out.println("\n  [!] Already delivered: " + trackingID);
+            return false;
         }
+        if (s.getStatus() != Shipment.ShipmentStatus.OUT_FOR_DELIVERY) {
+            System.out.println("\n  [!] Shipment is not out for delivery! Current status: " + s.getStatus());
+            return false;
+        }
+
+        return true; // passed all the checks
+    }
+
+    public void markDelivered(String trackingID, String receivedBy) {
+        Shipment s = findShipment(trackingID);
         s.updateStatus(Shipment.ShipmentStatus.DELIVERED,
                 "Delivered. Received by: " + receivedBy);
         deliveredCount++;
-        System.out.println("  [✓] Delivered: " + trackingID
+        System.out.println("\n  [DONE] Delivered: " + trackingID
                 + " | Signed by: " + receivedBy);
+        
     }
 
     /**
      * Report a failed delivery — logs reason and reschedules.
      */
+    public boolean isReadyForReport(String trackingID){
+        Shipment s = findShipment(trackingID);
+        if (s.getStatus() == Shipment.ShipmentStatus.DELIVERED) {
+            System.out.println("\n  [!] Shipment already delivered.");
+        }
+        if (s.getStatus() != Shipment.ShipmentStatus.OUT_FOR_DELIVERY) {
+            System.out.println("\n  [!] Shipment is not out for delivery! Cannot report as failed delivery attempt.");
+            return false;
+        }
+        return true;    // passed the check
+    }
+
     public void reportFailedDelivery(String trackingID, String reason) {
         Shipment s = findShipment(trackingID);
         if (s == null) {
-            System.out.println("  [!] Shipment not found in your list: " + trackingID);
+            System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
             return;
         }
         s.updateStatus(Shipment.ShipmentStatus.FAILED_ATTEMPT,
                 "Failed delivery attempt. Reason: " + reason);
-        System.out.println("  [✓] Failure logged for " + trackingID);
-        System.out.println("  Reason: " + reason);
-        System.out.println("  [i] Shipment marked FAILED_ATTEMPT — Admin will reschedule.");
+        System.out.println("\n  [DONE] Failure logged for " + trackingID);
+        System.out.println("  [i]  Reason: " + reason);
+        System.out.println("  [i] Shipment marked FAILED_ATTEMPT - Admin will reschedule.");
     }
 
     /**
@@ -161,7 +204,7 @@ public class Courier extends Person {
      */
     public void setDutyStatus(boolean onDuty) {
         this.isOnDuty = onDuty;
-        System.out.println("  [✓] " + getName() + " is now "
+        System.out.println("\n  [DONE] " + getName() + " is now "
                 + (onDuty ? "ON DUTY" : "OFF DUTY"));
     }
 

@@ -13,12 +13,11 @@ public class Main {
     static QuickTrack quickTrack = new QuickTrack(shipmentRegistry, input);
 
     public static void main(String[] args){
-        displayLogo();
         UserRegistry.initializeData();      // Initialize login credentials data
         shipmentRegistry.initializeData();  // Initialize shipments sample data
-
-        UserRegistry.assignSampleShipments(shipmentRegistry);
+        UserRegistry.assignSampleShipments(shipmentRegistry);   // Assigned sample shipments to Courier
         
+        displayLogo();
         System.out.println("\n  Welcome to Courier & Logistics Management System!");
 
         boolean running = true;
@@ -66,16 +65,16 @@ public class Main {
                 CourierPortal portal = new CourierPortal(user, input);
                 portal.show();
             } else {
-                System.out.println("  [!] Invalid credentials, please try again.");
+                System.out.println("\n  [!] Invalid credentials, please try again.");
             }
         } else {
-            System.out.println("  >> Error: Login ID does not exist.");
+            System.out.println("\n  >> Error: Login ID does not exist.");
         }
     }
 
     // ADMIN PORTAL (3) & LOGIN
     public static void adminLogin(){
-        System.out.println("\n  ╔══════════════════════════════════════════╗");
+        System.out.println("\n\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║               ADMIN LOGIN                ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
         System.out.print("  Enter Login ID -> ");
@@ -95,11 +94,11 @@ public class Main {
                 adminPortal(user);
             }
             else{
-                System.out.println("  [!] Invalid credentials, please try again.");
+                System.out.println("\n  [!] Invalid credentials, please try again.");
             }
         }
         else{
-            System.out.println("  >> Error: Login ID does not exist.");
+            System.out.println("\n  >> Error: Login ID does not exist.");
         }
     }
 
@@ -108,7 +107,7 @@ public class Main {
 
         boolean active = true;
         while(active){
-            System.out.println("\n  ╔══════════════════════════════════════════╗");
+            System.out.println("\n\n  ╔══════════════════════════════════════════╗");
             System.out.println("  ║               ADMIN PORTAL               ║");
             System.out.printf("  ║ %-40s ║\n", "Welcome, " + user.getName());
             System.out.printf("  ║ %-40s ║\n", "Role -> " + user.getAdminRole());
@@ -139,10 +138,10 @@ public class Main {
                 case 7 -> displayDriverWorkload();
                 case 8 -> viewAdminProfile();
                 case 0 -> {
-                    System.out.println("  [i] Logging out...");
+                    System.out.println("\n  [i] Logging out...");
                     active = false;
                 }
-                default -> System.out.println("  [!] Invalid option. Please enter a number.");
+                default -> System.out.println("\n  [!] Invalid option. Please enter a number.");
             }
         }
     }
@@ -170,22 +169,22 @@ public class Main {
             user.displayInfo();
         }
         else{
-            System.out.println("  >> Error: Admin ID not found.");
+            System.out.println("\n  >> Error: Admin ID not found.");
         }
     }
 
     // DISPLAY DESIGN
     public static void displayMainMenu(){
         System.out.println();
-        System.out.println("  ╔══════════════════════════════════════════╗");
-        System.out.println("  ║   COURIER & LOGISTICS MANAGEMENT SYSTEM  ║");
-        System.out.println("  ╠══════════════════════════════════════════╣");
-        System.out.println("  ║  1. Sender Portal                        ║");
-        System.out.println("  ║  2. Courier (Driver) Portal              ║");
-        System.out.println("  ║  3. Admin Portal                         ║");
-        System.out.println("  ║  4. Quick Track (Enter ID)               ║");
-        System.out.println("  ║  0. Exit                                 ║");
-        System.out.println("  ╚══════════════════════════════════════════╝");
+        System.out.println("  ╔═══════════════════════════════════════════╗");
+        System.out.println("  ║   COURIER & LOGISTICS MANAGEMENT SYSTEM   ║");
+        System.out.println("  ╠═══════════════════════════════════════════╣");
+        System.out.println("  ║  1. Sender Portal                         ║");
+        System.out.println("  ║  2. Courier (Driver) Portal               ║");
+        System.out.println("  ║  3. Admin Portal                          ║");
+        System.out.println("  ║  4. Quick Track (Enter ID)                ║");
+        System.out.println("  ║  0. Exit                                  ║");
+        System.out.println("  ╚═══════════════════════════════════════════╝");
     }
 
     public static void displayLogo(){

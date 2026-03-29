@@ -54,6 +54,10 @@ public class QuickTrack{
         System.out.println("  Current Status    : " + s.getStatus());
         displayStatusDetails(s.getStatus());
         System.out.println("  Shipping Speed    : " + s.getSpeed() + " (" + s.getSpeed().getDeliveryTime() + ")");
+
+        if(s.getStatus() == Shipment.ShipmentStatus.PENDING_PAYMENT){
+            System.out.printf("  Total Fee         : RM %.2f\n", s.getTotalFee());
+        }
         
         // Delivery details
         System.out.println("\n  DELIVERY DETAILS:");
@@ -98,7 +102,7 @@ public class QuickTrack{
 
     // Status Message Method
     private void displayStatusMessage(Shipment.ShipmentStatus status) {
-        System.out.println("  WHAT HAPPENS NEXT?");
+        System.out.println("\n  WHAT HAPPENS NEXT?");
         System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         
         String message = switch (status){

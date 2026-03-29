@@ -264,11 +264,10 @@ public class Shipment {
         System.out.printf("  Base Fee          : RM %.2f (%.2f kg x RM %.2f/kg)%n", baseFee, parcel.getChargeableWeight(), speed.getRatePerKg());
         System.out.printf("  Distance Fee      : RM %.2f (%.1f km x RM 0.05/km)%n", distanceFee, distance);
         System.out.printf("  Insurance Fee     : RM %.2f%n", insuranceFee);
-        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.printf("  TOTAL FEE         : RM %.2f%n", totalFee);        
         System.out.println("\n  TIMESTAMPS:");
         System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
-        System.out.println("  Created           : " + createdAt);
+        System.out.println("  Created           : " + createdAt.toString().substring(0, 19).replace('T', ' '));
 
         if (deliveredAt != null) {
             System.out.println("  Delivered         : " + deliveredAt);
@@ -286,6 +285,5 @@ public class Shipment {
                 log.getTimeStamp().toString().substring(0, 19).replace('T', ' '),
                 log.getShipmentStatus(), log.getNote());
         }
-        System.out.println();
     }
 }
