@@ -129,13 +129,13 @@ public class ShipmentRegistry {
 
         // Sample Shipment 3 - Clothing (Standard - PENDING PAYMENT)
         Parcel parcel3 = new Parcel(Parcel.ContentType.CLOTHING, "Winter Jacket and Accessories", 1.2, 50, 40, 15, 250.00);
-        Shipment shipment3 = new Shipment("TRK10003", "SDN101", parcel3, "18, Jalan Todak 2, Pusat Bandar Seberang Jaya, 13700 Perai, Pulau Pinang", "No. 88, Jalan Sultan Ismail, 20200 Kuala Terengganu, Terengganu", 400.0, Shipment.ShippingSpeed.STANDARD);
+        Shipment shipment3 = new Shipment("TRK10003", "SDN101", parcel3, "18, Jalan Todak 2, 13700 Perai, Pulau Pinang", "No 88, Jalan Sultan Ismail, 20200 Kuala Terengganu, Terengganu", 400.0, Shipment.ShippingSpeed.STANDARD);
         shipments.add(shipment3);
         // no status updated cause it stays PENDING_PAYMENT
 
         // Sample Shipment 4 - Fragile (Express)
         Parcel parcel4 = new Parcel(Parcel.ContentType.FRAGILE, "Glass Vase - Antique", 2.0, 35, 35, 40, 800.00);
-        Shipment shipment4 = new Shipment("TRK10004", "SDN102", parcel4, "15, Jalan Merdeka, Taman Melaka Raya, 75000 Melaka, Melaka", "26, Jalan BU 4A, Jalan BU 4, Taman Bachang Utama, 75300 Bachang, Melaka", 15.0, Shipment.ShippingSpeed.EXPRESS);
+        Shipment shipment4 = new Shipment("TRK10004", "SDN102", parcel4, "15, Jalan Merdeka, Taman Melaka Raya, 75000 Melaka, Melaka", "26, Jalan BU 4A, Taman Bachang Utama, 75300 Bachang, Melaka", 15.0, Shipment.ShippingSpeed.EXPRESS);
         shipments.add(shipment4);
         shipment4.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
         shipment4.updateStatus(Shipment.ShipmentStatus.PICKED_UP, "Picked up from Sender");
@@ -144,6 +144,7 @@ public class ShipmentRegistry {
         // Sample Shipment 5 - Food (Express)
         Parcel parcel5 = new Parcel(Parcel.ContentType.FOOD, "Fresh Seafood - Premium Lobster", 5.0, 60, 40, 20, 500.00);
         Shipment shipment5 = new Shipment("TRK10005", "SDN101", parcel5, "167, Jalan Sungai Keladi 2, 42000 Port Klang, Selangor", "6226, Jalan Kota Raja, Kawasan 1, 41000 Klang, Selangor", 20.0, Shipment.ShippingSpeed.EXPRESS);
+        shipments.add(shipment5);
         shipment5.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
         shipment5.updateStatus(Shipment.ShipmentStatus.PICKED_UP, "Picked up from Sender");
         shipment5.updateStatus(Shipment.ShipmentStatus.IN_TRANSIT, "Package in transit");

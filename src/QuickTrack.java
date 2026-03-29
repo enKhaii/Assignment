@@ -35,27 +35,24 @@ public class QuickTrack{
         System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
         System.out.println("  ║                   SHIPMENT NOT FOUND                   ║");
         System.out.println("  ╚════════════════════════════════════════════════════════╝");
-        System.out.println("\n  The tracking ID \"" + trackingID + "\" was not found.\n");
+        System.out.println("\n  >> The tracking ID \"" + trackingID + "\" was not found.\n");
         System.out.println("  Please check:");
-        System.out.println("  • Tracking number is correct");
-        System.out.println("  • No extra spaces or characters");
-        System.out.println("  • Tracking ID format: TRK10001, TRK10002, etc.");
+        System.out.println("  - Tracking number is correct");
+        System.out.println("  - No extra spaces or characters");
+        System.out.println("  - Tracking ID format: TRK10001, TRK10002, etc.");
         System.out.println();
     }
 
     private void displayTrackingInfo(Shipment s){
         System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
         System.out.println("  ║                SHIPMENT TRACKING DETAILS               ║");
-        System.out.println("  ╚════════════════════════════════════════════════════════╝");
-        System.out.println();
-
-        // Current Status (display)
-        displayStatus(s.getStatus());
+        System.out.println("  ╚════════════════════════════════════════════════════════╝\n");
 
         System.out.println("  SHIPMENT INFORMATION:");
         System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Tracking ID       : " + s.getTrackingID());
         System.out.println("  Current Status    : " + s.getStatus());
+        displayStatusDetails(s.getStatus());
         System.out.println("  Shipping Speed    : " + s.getSpeed() + " (" + s.getSpeed().getDeliveryTime() + ")");
         
         // Delivery details
@@ -70,6 +67,7 @@ public class QuickTrack{
         System.out.println("\n  PARCEL INFORMATION:");
         System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Content Type      : " + p.getContentType());
+        System.out.println("  Descrption        : " + p.getDescription());
         System.out.printf("  Weight            : %.2f kg%n", p.getWeight());
         System.out.printf("  Dimensions        : %.1f x %.1f x %.1f cm%n", p.getLength(), p.getWidth(), p.getHeight());
         
@@ -83,22 +81,19 @@ public class QuickTrack{
     }
 
     // Display Status Method
-    private void displayStatus(Shipment.ShipmentStatus status){
+    private void displayStatusDetails(Shipment.ShipmentStatus status){
         String statusMsg = switch(status){
-            case PENDING_PAYMENT -> "         PENDING PAYMENT - Please complete payment";
-            case PAID -> "         PAID - Your shipment will be picked up soon";
-            case PICKED_UP -> "         PICKED UP - Package collected from sender";
-            case IN_TRANSIT -> "         IN TRANSIT - Your package is on the way";
-            case OUT_FOR_DELIVERY -> "         OUT FOR DELIVERY - Arriving soon!";
-            case DELIVERED -> "         DELIVERED - Package delivered successfully";
-            case FAILED_ATTEMPT -> "          DELIVERY FAILED - Contact courier";
-            case CANCELLED -> "         CANCELLED - Shipment cancelled";
+            case PENDING_PAYMENT -> "Awaiting payment confirmation";
+            case PAID -> "Payment received - Preparing for pickup";
+            case PICKED_UP -> "Package collected from sender";
+            case IN_TRANSIT -> "Package is on the way";
+            case OUT_FOR_DELIVERY -> "Out for delivery - Arriving soon";
+            case DELIVERED -> "Package delivered successfully";
+            case FAILED_ATTEMPT -> "Delivery attempt failed";
+            case CANCELLED -> "Shipment has been cancelled";
         };
 
-        System.out.println("  ┌────────────────────────────────────────────────────────┐");
-        System.out.println("  │" + statusMsg + " │");
-        System.out.println("  └────────────────────────────────────────────────────────┘");
-        System.out.println();
+        System.out.println("  Details           : " + statusMsg);
     }
 
     // Status Message Method

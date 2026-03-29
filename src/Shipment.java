@@ -234,7 +234,7 @@ public class Shipment {
 
     // DISPLAY METHODS
     public void displaySummary(){
-        System.out.printf("  %-12s %-15s %-20s RM %-10.2f%n", trackingID, senderID, status, totalFee);
+        System.out.printf("  %-15s %-15s %-20s RM %-10.2f%n", trackingID, senderID, status, totalFee);
     }
 
     public void displayFullDetails(){
@@ -242,32 +242,32 @@ public class Shipment {
         System.out.println("  ║                    SHIPMENT DETAILS                    ║");
         System.out.println("  ╚════════════════════════════════════════════════════════╝"); 
         System.out.println("\n  SHIPMENT INFORMATION:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Tracking ID       : " + trackingID);
         System.out.println("  Status            : " + status);
         System.out.println("  Sender ID         : " + senderID);
         System.out.println("  Courier ID        : " + (courierID != null ? courierID : "Not assigned"));
         System.out.println("  Shipping Speed    : " + speed + " (" + speed.getDeliveryTime() + ")");
         System.out.println("\n  DELIVERY DETAILS:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Pickup Address    : " + pickupAddress);
         System.out.println("  Delivery Address  : " + deliveryAddress);
         System.out.println("  Distance          : " + distance + " km");
         System.out.println("\n  PARCEL INFORMATION:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Content Type      : " + parcel.getContentType());
         System.out.printf("  Weight            : %.2f kg%n", parcel.getWeight());
         System.out.printf("  Dimensions        : %.1f x %.1f x %.1f cm%n", parcel.getLength(), parcel.getWidth(), parcel.getHeight());
         System.out.printf("  Declared Value    : RM %.2f%n", parcel.getDeclaredValue());        
         System.out.println("\n  FEE BREAKDOWN:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.printf("  Base Fee          : RM %.2f (%.2f kg x RM %.2f/kg)%n", baseFee, parcel.getChargeableWeight(), speed.getRatePerKg());
         System.out.printf("  Distance Fee      : RM %.2f (%.1f km x RM 0.05/km)%n", distanceFee, distance);
         System.out.printf("  Insurance Fee     : RM %.2f%n", insuranceFee);
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.printf("  TOTAL FEE         : RM %.2f%n", totalFee);        
         System.out.println("\n  TIMESTAMPS:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Created           : " + createdAt);
 
         if (deliveredAt != null) {
@@ -279,11 +279,11 @@ public class Shipment {
 
     public void displayTrackingHistory(){
         System.out.println("\n  TRACKING HISTORY:");
-        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         
         for (StatusLog log : statusHistory) {
             System.out.printf("  [%s] %s - %s%n",
-                log.getTimeStamp().toString().substring(0, 19),
+                log.getTimeStamp().toString().substring(0, 19).replace('T', ' '),
                 log.getShipmentStatus(), log.getNote());
         }
         System.out.println();
