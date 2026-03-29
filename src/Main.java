@@ -16,6 +16,8 @@ public class Main {
         displayLogo();
         UserRegistry.initializeData();      // Initialize login credentials data
         shipmentRegistry.initializeData();  // Initialize shipments sample data
+
+        UserRegistry.assignSampleShipments(shipmentRegistry);
         
         System.out.println("\n  Welcome to Courier & Logistics Management System!");
 
@@ -46,7 +48,29 @@ public class Main {
 
     // COURIER(DRIVER) PORTAL (2)
     public static void courierPortal(){
-        System.out.println("Courier");
+        System.out.println("\n  ╔══════════════════════════════════════════╗");
+        System.out.println("  ║         COURIER (DRIVER) LOGIN           ║");
+        System.out.println("  ╚══════════════════════════════════════════╝");
+        System.out.print("  Enter Login ID -> ");
+        String idInput = input.next();
+ 
+        if (UserRegistry.checkCourierIdExists(idInput)) {
+            System.out.print("  Enter Password -> ");
+            String passInput = input.next();
+ 
+            Courier user = UserRegistry.checkCourier(idInput, passInput);
+ 
+            if (user != null) {
+                System.out.println("  Access Granted! Welcome, " + user.getName());
+                // Create CourierPortal with the logged-in courier + shared scanner
+                CourierPortal portal = new CourierPortal(user, input);
+                portal.show();
+            } else {
+                System.out.println("  [!] Invalid credentials, please try again.");
+            }
+        } else {
+            System.out.println("  >> Error: Login ID does not exist.");
+        }
     }
 
     // ADMIN PORTAL (3) & LOGIN
