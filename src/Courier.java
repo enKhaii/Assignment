@@ -54,7 +54,7 @@ public class Courier extends Person {
     public void receiveShipment(Shipment shipment) {
         assignedShipments.add(shipment);
         shipment.setCourierID(getPersonID());   // link shipment to this courier
-        System.out.println("  [DONE] Shipment " + shipment.getTrackingID()
+        System.out.println("\n  [DONE] Shipment " + shipment.getTrackingID()
                 + " assigned to " + getName());
     }
 
@@ -117,6 +117,7 @@ public class Courier extends Person {
      */
     public boolean isReadyToUpdateStatus(String trackingID){
         Shipment s = findShipment(trackingID);
+
         if (s == null) {
             System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
             return false;
@@ -127,6 +128,7 @@ public class Courier extends Person {
         }
         if (s.getStatus() == Shipment.ShipmentStatus.OUT_FOR_DELIVERY) {
             System.out.println("\n  [!] Shipment is out for delivery, cannot change status.");
+            return false;
         }
         return true;    // no errors
     }
@@ -163,6 +165,7 @@ public class Courier extends Person {
 
     public void markDelivered(String trackingID, String receivedBy) {
         Shipment s = findShipment(trackingID);
+
         s.updateStatus(Shipment.ShipmentStatus.DELIVERED,
                 "Delivered. Received by: " + receivedBy);
         deliveredCount++;
@@ -176,8 +179,14 @@ public class Courier extends Person {
      */
     public boolean isReadyForReport(String trackingID){
         Shipment s = findShipment(trackingID);
+
+        if (s == null) {
+            System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
+            return false;
+        }
         if (s.getStatus() == Shipment.ShipmentStatus.DELIVERED) {
             System.out.println("\n  [!] Shipment already delivered.");
+            return false;
         }
         if (s.getStatus() != Shipment.ShipmentStatus.OUT_FOR_DELIVERY) {
             System.out.println("\n  [!] Shipment is not out for delivery! Cannot report as failed delivery attempt.");
@@ -188,14 +197,11 @@ public class Courier extends Person {
 
     public void reportFailedDelivery(String trackingID, String reason) {
         Shipment s = findShipment(trackingID);
-        if (s == null) {
-            System.out.println("\n  [!] Shipment not found in your list: " + trackingID);
-            return;
-        }
+
         s.updateStatus(Shipment.ShipmentStatus.FAILED_ATTEMPT,
                 "Failed delivery attempt. Reason: " + reason);
         System.out.println("\n  [DONE] Failure logged for " + trackingID);
-        System.out.println("  [i]  Reason: " + reason);
+        System.out.println("  [i] Reason: " + reason);
         System.out.println("  [i] Shipment marked FAILED_ATTEMPT - Admin will reschedule.");
     }
 

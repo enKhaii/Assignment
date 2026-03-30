@@ -5,6 +5,8 @@
     Does not Handle: User input or menus (FleetManagement job)
 */
 
+// ADD SAMPLE VEHICLE VHE501 and VHE502 AS IT"S ALREADY ASSIGNED TO COURIERS
+
 /*
  * ════════════════════════════════════════════════════════════════════════════
  *                   FLEET MANAGER - TODO LIST
@@ -164,6 +166,12 @@ public class FleetManager {
         v.setAssignedCourierID(courierID);
         v.setStatus(Vehicle.VehicleStatus.IN_USE);
 
+        // 
+        Courier courier = UserRegistry.getCourierById(courierID);
+        if(courier != null){
+            courier.setAssignedVehicleID(vehicleID);
+        }
+
         System.out.println("  [DONE] Vehicle " + vehicleID + " assigned to courier " + courierID + ".");
         return true; 
     }
@@ -174,6 +182,15 @@ public class FleetManager {
 
         if(v == null){
             throw new VehicleNotFoundException(vehicleID);
+        }
+
+        // Remove vehicle from Courier object
+        String courierID = v.getAssignedCourierID();
+        if(courierID != null){
+            Courier courier = UserRegistry.getCourierById(courierID);
+            if(courier != null){
+                courier.setAssignedVehicleID(null);
+            }
         }
 
         // make CourierID null, which means vehicle not assigned
@@ -241,5 +258,18 @@ public class FleetManager {
         System.out.printf("  %-10s %-12s %-12s %-20s %-18s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(),
                 v.getStatus(), maintenanceStatus);        
         }
+    }
+
+    // Vehicle Sample for VHE501 and VHE502, ALREADY ASSIGNED
+    public void initializeData(){
+        Vehicle v1 = new Vehicle("VHL501", "WKL1234", Vehicle.VehicleType.VAN, 500.0);
+        v1.setStatus(Vehicle.VehicleStatus.IN_USE);
+        v1.setAssignedCourierID("CR001");
+        vehicles.add(v1);
+        
+        Vehicle v2 = new Vehicle("VHL502", "WKL5678", Vehicle.VehicleType.MOTORCYCLE, 50.0);
+        v2.setAssignedCourierID("CR002");
+        v2.setStatus(Vehicle.VehicleStatus.IN_USE);
+        vehicles.add(v2);
     }
 }

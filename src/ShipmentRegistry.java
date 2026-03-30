@@ -84,7 +84,7 @@ public class ShipmentRegistry {
             throw new IllegalStateException("\n  [!] Cannot cancel shipment in status: " + s.getStatus());
         }
 
-        s.updateStatus(Shipment.ShipmentStatus.CANCELLED, "Cancelled By User");
+        s.updateStatus(Shipment.ShipmentStatus.CANCELLED, "Cancelled Due to Unforeseen Reasons");
         System.out.println("  [DONE] Shipment " + trackingID + " cancelled.");
         return true;
     } 
@@ -120,7 +120,7 @@ public class ShipmentRegistry {
         shipments.add(shipment1);
         shipment1.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
 
-        // Sample Shipment 2 - Documents (Standard)
+        // Sample Shipment 2 - Documents (Standard)        System.out.printf("  %-12s %-15s %-20s%n",
         Parcel parcel2 = new Parcel(Parcel.ContentType.DOCUMENTS, "Legal documents - Contract paper", 0.5, 30, 20, 2, 100.00);
         Shipment shipment2 = new Shipment("TRK10002", "SDN102", parcel2, "12 Lorong Keramat 21 Kampung Datok Keramat, 54000 Kuala Lumpur", "9 Jalan Ambong Kanan 1 Kepong Baru, 52100 Kuala Lumpur", 10.0, Shipment.ShippingSpeed.STANDARD);
         shipments.add(shipment2);

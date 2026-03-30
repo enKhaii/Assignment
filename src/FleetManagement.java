@@ -68,23 +68,6 @@
  * [ ] In scheduleMaintenance():
  *     - Already done! ✅ (checks if vehicle IN_USE)
  * 
- * ════════════════════════════════════════════════════════════════════════════
- * INTEGRATION WITH TEAMMATES:
- * ════════════════════════════════════════════════════════════════════════════
- * Courier Module (teammate's responsibility):
- *   - Display assigned vehicle in Courier Portal
- *   - Release vehicle when courier goes OFF_DUTY
- *   - Show error if courier tries to take shipment without vehicle
- * 
- * Admin Module (coordinate with teammate):
- *   - Can't remove courier if vehicle assigned (check first)
- *   - Add courier-vehicle report to Admin Reports section
- * 
- * Shipment Module (teammate's responsibility):
- *   - Before assigning shipment, check courier has vehicle
- *   - Validate parcel weight doesn't exceed vehicle capacity
- * 
- * ════════════════════════════════════════════════════════════════════════════
  */
 import java.util.InputMismatchException;
 import java.util.List;
@@ -120,6 +103,8 @@ public class FleetManagement{
                     case 6 -> completeMaintenance();
                     case 7 -> removeVehicle(); 
                     case 8 -> viewMaintenanceDue();
+                    case 9 -> assignVehicleToCourier();
+                    case 10 -> releaseVehicleFromCourier();
                     case 0 -> {
                         System.out.println("  [i] Returning to Admin Portal...");
                         inFleetMenu = false;
@@ -413,6 +398,13 @@ public class FleetManagement{
         System.out.println();
     }
 
+    private void assignVehicleToCourier(){
+
+    }
+
+    private void releaseVehicleFromCourier(){
+        
+    }
 
     // Menu Design
     private void displayMenu(){

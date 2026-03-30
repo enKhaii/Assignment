@@ -35,7 +35,7 @@ public class ShipmentManagement {
                     case 6 -> reviewShippingFees();
                     case 7 -> updateShipmentStatus();
                     case 0 -> {
-                        System.out.println("  [i] Returning to Admin Portal...");
+                        System.out.println("\n  [i] Returning to Admin Portal...");
                         inShipmentMenu = false;
                     }
                     default -> System.out.println("  [!] Invalid option. Please try again.");

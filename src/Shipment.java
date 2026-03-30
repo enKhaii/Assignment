@@ -256,6 +256,7 @@ public class Shipment {
         System.out.println("\n  PARCEL INFORMATION:");
         System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
         System.out.println("  Content Type      : " + parcel.getContentType());
+        System.out.println("  Descrption        : " + parcel.getDescription());
         System.out.printf("  Weight            : %.2f kg%n", parcel.getWeight());
         System.out.printf("  Dimensions        : %.1f x %.1f x %.1f cm%n", parcel.getLength(), parcel.getWidth(), parcel.getHeight());
         System.out.printf("  Declared Value    : RM %.2f%n", parcel.getDeclaredValue());        
