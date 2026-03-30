@@ -3,42 +3,6 @@
     enum - defines fixed role (only accepts Role.??? rather than any String)
 */
 
-/*
- * ════════════════════════════════════════════════════════════════════════════
- *                   VEHICLE CLASS - TODO LIST
- *            Enhancements for Courier Integration
- * ════════════════════════════════════════════════════════════════════════════
- * 
- * CURRENT STATUS: ✅ READY FOR COURIER INTEGRATION
- * ────────────────────────────────────────────────────────────────────────────
- * ✅ Has assignedCourierID field (String)
- * ✅ Has getAssignedCourierID() getter
- * ✅ Has setAssignedCourierID() setter
- * ✅ Status enum includes IN_USE (used when assigned to courier)
- * ✅ displayInfo() shows courier assignment
- * 
- * ────────────────────────────────────────────────────────────────────────────
- * OPTIONAL ENHANCEMENTS:
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] Add method: isAssignedToCourier()
- *     public boolean isAssignedToCourier() {
- *         return assignedCourierID != null;
- *     }
- * 
- * [ ] Add method: canBeAssigned()
- *     public boolean canBeAssigned() {
- *         return status == VehicleStatus.AVAILABLE && !isMaintenanceDue();
- *     }
- * 
- * [ ] Update displayInfo() to show more courier details:
- *     - Instead of just courier ID, show courier name (requires Courier object)
- *     - Add "Assignment Date" field (requires new LocalDate field)
- * 
- * ════════════════════════════════════════════════════════════════════════════
- * NO MAJOR CHANGES NEEDED - CLASS IS READY! ✅
- * ════════════════════════════════════════════════════════════════════════════
- */
-
 import java.time.LocalDate;
 
 public class Vehicle {

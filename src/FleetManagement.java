@@ -2,73 +2,7 @@
     FleetManagement - Handles all fleet management UI and also the methods
 */
 
-/*
- * ════════════════════════════════════════════════════════════════════════════
- *                   FLEET MANAGEMENT - TODO LIST
- *            Features to Implement for Courier Integration
- * ════════════════════════════════════════════════════════════════════════════
- * 
- * PRIORITY 1: VEHICLE-COURIER ASSIGNMENT ⭐
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] Add menu option 11: "Assign Vehicle to Courier"
- *     - Show available vehicles (status = AVAILABLE)
- *     - Ask admin to select vehicle ID
- *     - Ask admin to enter courier ID
- *     - Call: fleetManager.assignToCourier(vehicleId, courierId)
- *     - Vehicle status → IN_USE
- *     - Vehicle.assignedCourierID → set to courier ID
- * 
- * [ ] Add menu option 12: "Release Vehicle from Courier"
- *     - Show vehicles IN_USE
- *     - Ask admin to select vehicle ID
- *     - Call: fleetManager.releaseVehicle(vehicleId)
- *     - Vehicle status → AVAILABLE
- *     - Vehicle.assignedCourierID → set to null
- * 
- * [ ] Create method: assignVehicleToCourier()
- *     private void assignVehicleToCourier() {
- *         // 1. Display available vehicles
- *         // 2. Get vehicle ID from admin
- *         // 3. Get courier ID from admin
- *         // 4. Validate courier exists (call Main.findCourierById())
- *         // 5. Call fleetManager.assignToCourier(vehicleId, courierId)
- *         // 6. Show success message
- *     }
- * 
- * [ ] Create method: releaseVehicleFromCourier()
- *     private void releaseVehicleFromCourier() {
- *         // 1. Display vehicles currently IN_USE
- *         // 2. Get vehicle ID from admin
- *         // 3. Call fleetManager.releaseVehicle(vehicleId)
- *         // 4. Show success message
- *     }
- * 
- * ────────────────────────────────────────────────────────────────────────────
- * PRIORITY 2: ENHANCED DISPLAY & REPORTS
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] Update displayMenu() - add options 11 and 12
- * 
- * [ ] Optional: Create viewCourierVehicleAssignments()
- *     private void viewCourierVehicleAssignments() {
- *         // Display table showing:
- *         // Courier ID | Name | Vehicle ID | Vehicle Type | Status
- *         // Loop through all couriers
- *         // For each courier, find assigned vehicle using:
- *         //   fleetManager.findByAssignedCourier(courierId)
- *     }
- * 
- * ────────────────────────────────────────────────────────────────────────────
- * VALIDATION RULES TO ADD:
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] In assignVehicleToCourier():
- *     - Check vehicle is not UNDER_MAINTENANCE
- *     - Check courier exists
- *     - Check courier doesn't already have a vehicle assigned
- * 
- * [ ] In scheduleMaintenance():
- *     - Already done! ✅ (checks if vehicle IN_USE)
- * 
- */
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -77,7 +11,7 @@ public class FleetManagement{
     //
     private FleetManager fleetManager;
     private Scanner input;  // shared in constructor (shared with Main.java)
-    private int vehicleIdCounter = 500; // id start with 500 e.g. VHE501, VHE502
+    private int vehicleIdCounter = 502; // id start with 502 e.g. VHE503, VHE504, 501 and 502 are sample vehicle
 
     // Constructor
     public FleetManagement(FleetManager fleetManager, Scanner input){
@@ -150,12 +84,10 @@ public class FleetManagement{
             System.out.println("  ║            ADD NEW VEHICLE            ║");
             System.out.println("  ╚═══════════════════════════════════════╝");
 
-            // PRE-INCREMENT, increment first then use
-            String id = "VHE" + (++vehicleIdCounter);
-
+            
             System.out.print("  Plate Number (e.g. WHL999) -> ");
             String plateNum = input.next();
-
+            
             // if isValidPlateNumber = false, error and return(stop operation)
             if(!isValidPlateNumber(plateNum)){
                 System.out.println("\n  [!] Invalid Plate Number format!");
@@ -189,13 +121,15 @@ public class FleetManagement{
                 }
             }
             
+            // PRE-INCREMENT, increment first then use
+            String id = "VHE" + (++vehicleIdCounter);
             Vehicle vehicle = new Vehicle(id, plateNum, type, maxLoad);
             fleetManager.addVehicle(vehicle);   // add this new vehicle to fleetManager VEHICLE data storage
 
             System.out.println("\n  [DONE] Success: " + vehicle.getVehicleID() + " | Registered to Plate: " + vehicle.getPlateNumber());
 
         } catch(InputMismatchException e){
-            System.out.println("\n  [!] Invalid input! Please enter valid data.");
+            System.out.println("\n  [!] Invalid input! Please enter a number.");
             input.nextLine(); // clear buffer to reset input
         }
     }
@@ -399,10 +333,201 @@ public class FleetManagement{
     }
 
     private void assignVehicleToCourier(){
+        System.out.println("\n  ╔══════════════════════════════════════════╗");
+        System.out.println("  ║        ASSIGN VEHICLE TO COURIER         ║");
+        System.out.println("  ╚══════════════════════════════════════════╝");
 
+        try{
+            // Show available vehicle (status = AVAILABLE)
+            List<Vehicle> available = fleetManager.getAvailableVehicles();
+
+            if(available.isEmpty()){
+                System.out.println("\n  [!] No available vehicles.");
+                System.out.println("  [i] All vehicles are either \"IN_USE\" or \"UNDER_MAINTENANCE\" ");
+                return;
+            }
+
+            System.out.println("\n  Available Vehicles:\n");
+            System.out.printf("  %-10s %-12s %-12s %-10s%n", "ID", "Plate", "Type", "Max Load");
+            System.out.println("  " + "─".repeat(60));
+        
+            for (Vehicle v : available){
+                System.out.printf("  %-10s %-12s %-12s %.1f kg%n", v.getVehicleID(), v.getPlateNumber(), v.getType(), v.getMaxLoadKg());
+            }
+
+            // Check if available
+            System.out.print("\n  Enter Vehicle ID -> ");
+            String vehicleID = input.next();
+            input.nextLine(); // clear buffer
+
+            Vehicle v = fleetManager.findByID(vehicleID);
+
+            if(!v.isAvailable()){
+                System.out.println("\n  [!] Vehicle \"" + vehicleID + "\" is not available.");
+                System.out.println("  [i] Current Status -> " + v.getStatus());
+                return;
+            }
+
+            // Get available couriers
+            ArrayList<Courier> couriers = UserRegistry.getAllCouriers();
+
+            if(couriers.isEmpty()){
+                System.out.println("\n  [!] No couriers available in the system.");
+                return;
+            }
+
+            System.out.println("\n\n  Available Couriers:\n");
+            System.out.printf("  %-10s %-32s %-12s %-15s%n", "ID", "Name", "Status", "Current Vehicle");
+            System.out.println("  " + "─".repeat(72));
+            
+            for (Courier c : couriers) {
+                System.out.printf("  %-10s %-32s %-12s %-15s%n", c.getPersonID(), c.getName(), c.isOnDuty() ? "ON DUTY" : "OFF DUTY", c.getAssignedVehicleID() != null ? c.getAssignedVehicleID() : "None");
+            }
+
+            System.out.print("\n  Enter Courier ID -> ");
+            String courierID = input.next();
+            input.nextLine();
+
+            Courier courier = UserRegistry.getCourierById(courierID);
+
+            if(courier == null){
+                System.out.println("\n  [!] Courier \"" + courierID + "\" not found.");
+                return;
+            }
+
+            // if assigned vehicle ID = ???, means already got vehicle assigned
+            if(courier.getAssignedVehicleID() != null){
+                System.out.println("\n  [!] Courier already has a vehicle assigned, ID -> \"" + courier.getAssignedVehicleID() + "\"");
+                System.out.print("  Replace with " + vehicleID + "? (Y/N) -> ");
+                String confirm = input.next();
+                input.nextLine();
+
+                if(!confirm.equalsIgnoreCase("Y")){
+                    System.out.println("\n  [i] Assignment cancelled.");
+                    return;
+                }
+            }
+            
+            
+            // Summary and Confirmation
+            System.out.println("\n  ─────── Assignment Summary ───────");
+            System.out.println("  Vehicle : " + " [" + v.getVehicleID() + "] " + v.getPlateNumber());
+            System.out.println("  Courier : " + courier.getName() + " (" + courierID + ")");
+            System.out.print("\n  Confirm assignment? (Y/N) -> ");
+            String confirm = input.next();
+            input.nextLine();
+
+            if(confirm.equalsIgnoreCase("Y")){
+                // Call FleetManager to assign (will update both vehicle and courier)
+                // Release old vehicle first before assigning
+                try{
+                    fleetManager.releaseVehicle(courier.getAssignedVehicleID());
+                } catch(VehicleNotFoundException e){
+                    // Nothing, cause if not found, continue anyway
+                }
+
+                fleetManager.assignToCourier(vehicleID, courierID);
+
+                System.out.println("\n  ╔═══════════════════════════════════════╗");
+                System.out.println("  ║     VEHICLE ASSIGNED SUCCESSFULLY     ║");
+                System.out.println("  ╚═══════════════════════════════════════╝");
+                System.out.println("  [i] " + courier.getName() + " can now use " + vehicleID + ".");
+            }
+            else{
+                System.out.println("\n  [i] Assignment cancelled.");
+            }
+            } catch (VehicleNotFoundException e){
+                System.out.println("\n  [!] " + e.getMessage());
+            } catch (IllegalStateException e){
+                System.out.println("\n  [!] " + e.getMessage());
+            } catch (InputMismatchException e){
+                System.out.println("\n  [!] Invalid input!");
+                input.nextLine();
+            }
     }
 
     private void releaseVehicleFromCourier(){
+        try{
+            System.out.println("\n  ╔══════════════════════════════════════════╗");
+            System.out.println("  ║       RELEASE VEHICLE FROM COURIER       ║");
+            System.out.println("  ╚══════════════════════════════════════════╝");
+
+            List<Vehicle> inUse = fleetManager.getVehiclesByStatus(Vehicle.VehicleStatus.IN_USE);
+
+            if(inUse.isEmpty()){
+                System.out.println("\n  [!] No vehicles currently assigned to couriers.");
+            }
+
+            System.out.println("\n  Vehicles Currently Assigned:");
+            System.out.printf("  %-10s %-12s %-12s %-15s%n", "Vehicle ID", "Plate", "Type", "Assigned To");
+            System.out.println("  " + "─".repeat(60));
+
+            for(Vehicle v : inUse){
+                String courierName = "Unknown";
+                if(v.getAssignedCourierID() != null){
+                    Courier c = UserRegistry.getCourierById(v.getAssignedCourierID());
+                    if(c != null){
+                        courierName = c.getName();
+                    }
+                }
+
+                System.out.printf("  %-10s %-12s %-12s %-15s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(), courierName);
+            }
+
+            // Get vehicleID to release
+            System.out.print("\n  Enter Vehicle ID to release -> ");
+            String vehicleID = input.next();
+            input.nextLine();
+
+            Vehicle v = fleetManager.findByID(vehicleID);
+
+            if(v == null){
+                System.out.println("\n  [!] Vehicle \"" + vehicleID + "\" not found." );
+                return;
+            }
+
+            // Check if vehicle is already assigned
+            if(v.getStatus() != Vehicle.VehicleStatus.IN_USE){
+                System.out.println("\n  [!] Vehicle is not currently assigned to a courier.");
+                System.out.println("  [i] Current Status -> " + v.getStatus());
+                return;
+            }
+
+            // Courier info for display
+            String courierInfo = "Unknown";
+            if(v.getAssignedCourierID() != null){
+                Courier c = UserRegistry.getCourierById(v.getAssignedCourierID());
+
+                if(c != null){
+                    courierInfo = c.getName() + " (" + c.getPersonID() + ")";
+                }
+            }
+
+            // Show summary and confirmation
+            System.out.println("\n  ─────── Release Summary ───────");
+            System.out.println("  Vehicle : " + vehicleID + " (" + v.getType() + ")");
+            System.out.println("  Currently assigned to : " + courierInfo);
+            System.out.print("\n  Confirm release? (Y/N) -> ");
+            String confirm = input.next();
+            input.nextLine();
+
+            if(confirm.equalsIgnoreCase("Y")){
+                // Call FleetManager to release (will update both Vehicle and Courier)
+                fleetManager.releaseVehicle(vehicleID);
+                
+                System.out.println("\n╔═════════════════════════════════════════╗");
+                System.out.println("  ║      VEHICLE RELEASED SUCCESSFULLY      ║");
+                System.out.println("  ╚═════════════════════════════════════════╝");
+                System.out.println("  Vehicle \"" + vehicleID + "\" is now AVAILABLE.");
+            } else {
+                System.out.println("\n  [i] Release cancelled.");
+            }
+        } catch(VehicleNotFoundException e){
+                System.out.println("\n  [!] " + e.getMessage());
+        } catch (InputMismatchException e){
+            System.out.println("\n  [!] Invalid input!");
+            input.nextLine();
+        }
         
     }
 
@@ -411,15 +536,17 @@ public class FleetManagement{
         System.out.println("\n  ╔══════════════════════════════════════╗");
         System.out.println("  ║         FLEET MANAGEMENT MENU        ║");
         System.out.println("  ╠══════════════════════════════════════╣");
-        System.out.println("  ║  1.  Add Vehicle                     ║");
-        System.out.println("  ║  2.  View All Vehicles               ║");
-        System.out.println("  ║  3.  View Vehicle Details            ║");
-        System.out.println("  ║  4.  Update Vehicle Info             ║");
-        System.out.println("  ║  5.  Schedule Maintenance            ║");
-        System.out.println("  ║  6.  Complete Maintenance            ║");
-        System.out.println("  ║  7.  Remove Vehicle                  ║");
-        System.out.println("  ║  8.  View Vehicles Maint Status      ║");
-        System.out.println("  ║  0.  Return to Admin Portal          ║");
+        System.out.println("  ║  1.   Add Vehicle                    ║");
+        System.out.println("  ║  2.   View All Vehicles              ║");
+        System.out.println("  ║  3.   View Vehicle Details           ║");
+        System.out.println("  ║  4.   Update Vehicle Info            ║");
+        System.out.println("  ║  5.   Schedule Maintenance           ║");
+        System.out.println("  ║  6.   Complete Maintenance           ║");
+        System.out.println("  ║  7.   Remove Vehicle                 ║");
+        System.out.println("  ║  8.   View Vehicles Maint Status     ║");
+        System.out.println("  ║  9.   Assign Vehicle to Courier      ║");
+        System.out.println("  ║  10.  Release Vehicle From Courier   ║");
+        System.out.println("  ║  0.   Return to Admin Portal         ║");
         System.out.println("  ╚══════════════════════════════════════╝");
         System.out.print("  Choice -> ");
     }

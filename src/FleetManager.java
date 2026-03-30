@@ -5,78 +5,6 @@
     Does not Handle: User input or menus (FleetManagement job)
 */
 
-// ADD SAMPLE VEHICLE VHE501 and VHE502 AS IT"S ALREADY ASSIGNED TO COURIERS
-
-/*
- * ════════════════════════════════════════════════════════════════════════════
- *                   FLEET MANAGER - TODO LIST
- *            Methods to Add for Courier Integration
- * ════════════════════════════════════════════════════════════════════════════
- * 
- * PRIORITY 1: NEW METHOD NEEDED ⭐
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] Add method: findByAssignedCourier()
- * 
- *     /**
- *      * Find a vehicle assigned to a specific courier.
- *      * Used by: Courier Portal to show courier's vehicle
- *      *          Admin to check if courier has vehicle before removal
- *      *
- *      * @param courierId The courier ID to search for
- *      * @return Vehicle object if found, null if courier has no vehicle
- *      *
- *     public Vehicle findByAssignedCourier(String courierId) {
- *         for (Vehicle v : vehicles) {
- *             if (courierId.equals(v.getAssignedCourierID())) {
- *                 return v;  // Found the vehicle assigned to this courier
- *             }
- *         }
- *         return null;  // Courier has no assigned vehicle
- *     }
- * 
- * ────────────────────────────────────────────────────────────────────────────
- * PRIORITY 2: UPDATE EXISTING METHODS
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] Update displayAll() to show assigned courier:
- *     - Add "Assigned To" column
- *     - Show courier ID or "Unassigned"
- *     - Format: %-15s for column width
- * 
- *     Example addition:
- *     System.out.printf("  %-10s %-12s %-12s %-22s %-18s %-15s%n",
- *             "ID", "Plate", "Type", "Status", "Maintenance", "Assigned To");
- * 
- *     for (Vehicle v : vehicles) {
- *         String assignedTo = v.getAssignedCourierID() != null 
- *                            ? v.getAssignedCourierID() 
- *                            : "Unassigned";
- *         // ... add assignedTo to printf
- *     }
- * 
- * ────────────────────────────────────────────────────────────────────────────
- * PRIORITY 3: OPTIONAL HELPER METHODS
- * ────────────────────────────────────────────────────────────────────────────
- * [ ] Optional: getVehiclesInUse()
- *     - Returns List<Vehicle> where status == IN_USE
- *     - Used by: Admin to see which vehicles are assigned
- * 
- * [ ] Optional: getUnassignedVehicles()
- *     - Returns List<Vehicle> where assignedCourierID == null AND status == AVAILABLE
- *     - Used by: Admin when assigning vehicle to courier
- * 
- * ════════════════════════════════════════════════════════════════════════════
- * EXISTING METHODS (Already Implemented - No Changes Needed) ✅
- * ════════════════════════════════════════════════════════════════════════════
- * ✅ assignToCourier(vehicleId, courierId) - assigns vehicle to courier
- * ✅ releaseVehicle(vehicleId) - releases vehicle from courier
- * ✅ findById(vehicleId) - finds vehicle by ID
- * ✅ getAvailableVehicles() - gets vehicles with status AVAILABLE
- * ✅ addVehicle(), removeVehicle() - CRUD operations
- * ✅ saveToFile(), loadFromFile() - CSV storage (already saves assignedCourierID)
- * 
- * ════════════════════════════════════════════════════════════════════════════
- */
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -145,6 +73,28 @@ public class FleetManager {
         return vehicles.size();
     }
 
+    public List<Vehicle> getVehiclesByStatus(Vehicle.VehicleStatus status){
+        List<Vehicle> filteredList = new ArrayList<>();
+
+        for(Vehicle v : vehicles){
+            if(v.getStatus() == status){
+                filteredList.add(v);
+            }
+        }
+        return filteredList;
+    }
+
+    // For courier to show vehicle details
+    // For admin to check if courier has vehicle before release
+    public Vehicle findByAssignedCourier(String courierID){
+        for(Vehicle v : vehicles){
+            if(courierID.equals(v.getAssignedCourierID())){
+                return v;
+            }
+        }
+        return null;    // return null if no match, which means no assigned vehicle to Courier???
+    }
+
 
     // ---------- UPDATE OPERATIONS METHOD ----------
     // throws - warn callers this method might fail
@@ -199,7 +149,7 @@ public class FleetManager {
         // make VehicleStatus = AVAILABLE again
         v.setStatus(Vehicle.VehicleStatus.AVAILABLE);
 
-        System.out.println("  [DONE] Vehicle " + vehicleID + " released and now AVAILABLE.");
+        System.out.println("\n  [DONE] Vehicle " + vehicleID + " released and now AVAILABLE.");
         return true;
     }
 
@@ -238,8 +188,8 @@ public class FleetManager {
 
         System.out.println("  Total Vehicles:  " + vehicles.size() + "\n");
 
-        System.out.printf("  %-10s %-12s %-12s %-20s %-15s%n", "ID", "Plate", "Type", "Status", "Maintenance");
-        System.out.println("  " + "─".repeat(70));
+         System.out.printf("  %-10s %-12s %-12s %-22s %-18s %-15s%n", "ID", "Plate", "Type", "Status", "Maintenance", "Assigned To");
+         System.out.println("  " + "─".repeat(90));
 
         // Loop through all the elements and display each vehicle
         for(Vehicle v: vehicles){
@@ -253,22 +203,30 @@ public class FleetManager {
             }
             else{
                 maintenanceStatus = "Up To Date";
+
             }
 
-        System.out.printf("  %-10s %-12s %-12s %-20s %-18s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(),
-                v.getStatus(), maintenanceStatus);        
+            String assignedTo = v.getAssignedCourierID() != null ? v.getAssignedCourierID() : "Unassigned";
+
+            System.out.printf("  %-10s %-12s %-12s %-22s %-18s %-15s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(),
+                v.getStatus(), maintenanceStatus, assignedTo);        
         }
+    }
+
+    // Get all vehicles (for admin viewing in FleetManagement)
+    public List<Vehicle> getAllVehicles(){
+        return new ArrayList<>(vehicles);
     }
 
     // Vehicle Sample for VHE501 and VHE502, ALREADY ASSIGNED
     public void initializeData(){
-        Vehicle v1 = new Vehicle("VHL501", "WKL1234", Vehicle.VehicleType.VAN, 500.0);
+        Vehicle v1 = new Vehicle("VHE501", "WKL1234", Vehicle.VehicleType.VAN, 500.0);
         v1.setStatus(Vehicle.VehicleStatus.IN_USE);
-        v1.setAssignedCourierID("CR001");
+        v1.setAssignedCourierID("CRR01");
         vehicles.add(v1);
         
-        Vehicle v2 = new Vehicle("VHL502", "WKL5678", Vehicle.VehicleType.MOTORCYCLE, 50.0);
-        v2.setAssignedCourierID("CR002");
+        Vehicle v2 = new Vehicle("VHE502", "WKL5678", Vehicle.VehicleType.MOTORCYCLE, 50.0);
+        v2.setAssignedCourierID("CRR02");
         v2.setStatus(Vehicle.VehicleStatus.IN_USE);
         vehicles.add(v2);
     }

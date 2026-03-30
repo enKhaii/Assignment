@@ -12,9 +12,9 @@ public class UserRegistry{
 
     public static void initializeData(){
         // Admin Objects
-        admins.add(new Admin("ADM01", "CHONG123", "Chong Wen Liang", "chongwliang99", "cwenliang22@gmail.com", "017-284-1288", Admin.Role.SUPER_ADMIN));
-        admins.add(new Admin("ADM02", "ROHINKUMAR00", "Raj Rohin Kumar", "rohinkumar5421@", "rohinkumar092@hotmail.com", "011-4824-2995",  Admin.Role.OPERATIONS_MANAGER));
-        admins.add(new Admin("ADM03", "KYODUSLIM67", "Kyodus Lim Kai Yuan", "kyodus0123@$", "cwenliang22@gmail.com", "017-284-1288",  Admin.Role.DISPATCH_OFFICER));        
+        admins.add(new Admin("ADM01", "CHONG01", "Chong Wen Liang", "chongwliang123", "cwenliang22@gmail.com", "017-284-1288", Admin.Role.SUPER_ADMIN));
+        admins.add(new Admin("ADM02", "ROHINKUMAR02", "Raj Rohin Kumar", "rohinkumar456", "rohinkumar092@hotmail.com", "011-4824-2995",  Admin.Role.OPERATIONS_MANAGER));
+        admins.add(new Admin("ADM03", "KYODUSLIM03", "Kyodus Lim Kai Yuan", "kyodus789", "kyoduslim141@gmail.com", "014-198-6767",  Admin.Role.DISPATCH_OFFICER));        
         
         Courier c1 = new Courier("CRR01", "AHMAD01", "Ahmad Malik",
         "ahmad1234", "ahmad@courierpro.my", "012-345-6789", "D1234567");

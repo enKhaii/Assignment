@@ -3,13 +3,15 @@ import java.util.Scanner;
  
 public class CourierPortal {
  
-    private Courier courier;    // the logged-in courier
-    private Scanner input;      // shared Scanner from Main.java
+    private Courier courier;            // the logged-in courier
+    private Scanner input;              // shared Scanner from Main.java
+    private FleetManager fleetManager;  // for displaying vehicle details
  
     // Constructor
-    public CourierPortal(Courier courier, Scanner input) {
+    public CourierPortal(Courier courier, Scanner input, FleetManager fleetManager) {
         this.courier = courier;
         this.input = input;
+        this.fleetManager = fleetManager;
     }
  
     // ─── MAIN DISPLAY METHOD ──────────────────────────────────
@@ -29,7 +31,8 @@ public class CourierPortal {
                     case 4 -> markDelivered();
                     case 5 -> reportFailed();
                     case 6 -> courier.displayInfo();
-                    case 7 -> toggleDuty();
+                    case 7 -> viewVehicleDetails();
+                    case 8 -> toggleDuty();
                     case 0 -> {
                         System.out.println("\n  [i] Logging out...");
                         inCourierMenu = false;
@@ -133,17 +136,62 @@ public class CourierPortal {
  
         courier.reportFailedDelivery(id, reason);
     }
- 
+    
+    private void viewVehicleDetails(){
+        String courierID = courier.getPersonID();
+        Vehicle vehicle = fleetManager.findByAssignedCourier(courierID);
+
+        System.out.println("\n  ╔══════════════════════════════════════════╗");
+        System.out.println("  ║          VEHICLE SPECIFICATIONS          ║");
+        System.out.println("  ╚══════════════════════════════════════════╝");
+
+        if(vehicle == null){
+            System.out.println("\n  [!] You currently do not have a vehicle assigned.");
+            System.out.println("  [i] Please contact the Admin for assignment.");
+        }
+        else{
+            String maintennanceDueStatus;
+            if(vehicle.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
+                maintennanceDueStatus = "In Progress";
+            }
+            else if(vehicle.isMaintenanceDue()){
+                maintennanceDueStatus = "Yes - Overdue";
+            }
+            else{
+                maintennanceDueStatus = "No";
+            }
+
+            System.out.printf("  |  Vehicle ID   : %-24s |%n", vehicle.getVehicleID());
+            System.out.printf("  |  Vehicle Type : %-24s |%n", vehicle.getType());
+            System.out.printf("  |  Plate Number : %-24s |%n", vehicle.getPlateNumber());
+            System.out.println("  +------------------------------------------+");
+            
+            System.out.printf("  |  Max Capacity : %-24s |%n", String.format("%.1f kg", vehicle.getMaxLoadKg()));
+            System.out.printf("  |  Maint. Status: %-24s |%n", maintennanceDueStatus);
+            System.out.println("  +------------------------------------------+");
+        }
+    }
+
     private void toggleDuty() {
         courier.setDutyStatus(!courier.isOnDuty());
     }
  
     // ─── MENU DESIGN ─────────
     private void displayMenu() {
+        String courierID = courier.getPersonID();
+        Vehicle vehicle = fleetManager.findByAssignedCourier(courierID);
+
         System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║         COURIER (DRIVER) PORTAL          ║");
         System.out.println("  ╠══════════════════════════════════════════╣");
         System.out.printf ("  ║  %-40s║%n", "Driver : " + courier.getName());
+        if(vehicle == null){
+            System.out.printf ("  ║  %-40s║%n", "Vehicle : Not Assigned"  );
+        }
+        else{
+            String vehicleInfo = "Vehicle : [" + vehicle.getVehicleID() + "] - " + vehicle.getPlateNumber();
+            System.out.printf ("  ║  %-40s║%n", vehicleInfo);
+        }
         System.out.printf ("  ║  %-40s║%n", "Status : " + (courier.isOnDuty() ? "ON DUTY" : "OFF DUTY"));
         System.out.printf ("  ║  %-40s║%n", "Delivered Today : " + courier.getDeliveredCount());
         System.out.println("  ╠══════════════════════════════════════════╣");
@@ -156,7 +204,8 @@ public class CourierPortal {
         System.out.println("  ║                                          ║");
         System.out.println("  ║  [ MY INFO ]                             ║");
         System.out.println("  ║   6. View My Profile                     ║");
-        System.out.println("  ║   7. Toggle Duty Status                  ║");
+        System.out.println("  ║   7. View Vehicle Details                ║");
+        System.out.println("  ║   8. Toggle Duty Status                  ║");
         System.out.println("  ║                                          ║");
         System.out.println("  ║   0. Logout                              ║");
         System.out.println("  ╚══════════════════════════════════════════╝");

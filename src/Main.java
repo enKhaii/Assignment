@@ -65,7 +65,7 @@ public class Main {
             if (user != null) {
                 System.out.println("  Access Granted! Welcome, " + user.getName());
                 // Create CourierPortal with the logged-in courier + shared scanner
-                CourierPortal portal = new CourierPortal(user, input);
+                CourierPortal portal = new CourierPortal(user, input, fleetManager);
                 portal.show();
             } else {
                 System.out.println("\n  [!] Invalid credentials, please try again.");
@@ -131,6 +131,7 @@ public class Main {
 
             System.out.print("  Choice -> ");
             int choice = input.nextInt();
+            input.nextLine();
             switch(choice){
                 case 1 -> assignDriverToShipment();
                 case 2 -> shipmentManagement.show();
@@ -180,6 +181,7 @@ public class Main {
         // Courier selection
         System.out.print("\n  Enter Courier ID -> ");
         String courierID = input.next();
+        input.nextLine();
 
         Courier courier = UserRegistry.getCourierById(courierID);
 
@@ -203,6 +205,7 @@ public class Main {
         // Retreive shipment so can assign
         System.out.print("  Enter Tracking ID -> ");
         String trackingID = input.next();
+        input.nextLine();
 
         Shipment shipment = shipmentRegistry.findByTrackingID(trackingID);
 
@@ -221,19 +224,18 @@ public class Main {
             System.out.println("\n  [!] Shipment already assigned to courier \"" + shipment.getCourierID() + "\".");
             System.out.print("  Reassign to " + courier.getName() + "? (Y/N) -> ");
             String confirm = input.next();
+            input.nextLine();
             if(!confirm.equalsIgnoreCase("Y")){
                 System.out.println("\n  [i] Assignment cancelled.");
                 return;
             }   
 
+            // Remove the shipment from old Courier if REASSIGNED
             Courier oldCourier = UserRegistry.getCourierById(shipment.getCourierID());
             // getAssignedShipments = ArrayList
             if(oldCourier != null){
                 oldCourier.getAssignedShipments().remove(shipment);
             }
-
-
-            // Remove the shipment from old Courier if REASSIGNED
         }
 
         courier.receiveShipment(shipment);
@@ -272,6 +274,7 @@ public class Main {
         // Admin can view details or reassign shipment
         System.out.print("\n  Enter Tracking ID to view details (or 0 to cancel) -> ");
         String trackingID = input.next();
+        input.nextLine();
 
         // use .equals bc string
         if(trackingID.equals("0")){
@@ -295,9 +298,9 @@ public class Main {
         s.displayTrackingHistory();
 
         System.out.println("\n  What would you like to do?");
-        System.out.println("   1. Reassign to another courier");
-        System.out.println("   2. Mark as OUT_FOR_DELIVERY (retry)");
-        System.out.println("   0. Back");
+        System.out.println("    1. Reassign to another courier");
+        System.out.println("    2. Mark as OUT_FOR_DELIVERY (retry)");
+        System.out.println("    0. Back");
         System.out.print("  Choice -> ");
         
         int choice = input.nextInt();
@@ -307,6 +310,7 @@ public class Main {
                 // Reassign to another courier
                 System.out.print("\n  Enter new Courier ID -> ");
                 String newCourierID = input.next();
+                input.nextLine();
 
                 Courier newCourier = UserRegistry.getCourierById(newCourierID);
 
@@ -336,7 +340,7 @@ public class Main {
             case 3 -> {
                 System.out.print("\n  Confirm cancellation? (Y/N) -> ");
                 String confirm = input.next();
-
+                input.nextLine();
 
                 if(confirm.equalsIgnoreCase("Y")){
                     shipmentRegistry.cancelShipment(trackingID);
@@ -368,6 +372,7 @@ public class Main {
         if(choice == 2){
             System.out.print("  Enter Courier ID -> ");
             String courierID = input.next();
+            input.nextLine();
 
             Courier courier = UserRegistry.getCourierById(courierID);
 
@@ -402,6 +407,7 @@ public class Main {
     public static void viewAdminProfile(){
         System.out.print("\n  Your Admin ID -> ");
         String id = input.next();
+        input.nextLine();
 
         Admin user = UserRegistry.getAdminById(id);
         if(user != null){
