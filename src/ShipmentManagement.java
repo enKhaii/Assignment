@@ -38,7 +38,7 @@ public class ShipmentManagement {
                         System.out.println("\n  [i] Returning to Admin Portal...");
                         inShipmentMenu = false;
                     }
-                    default -> System.out.println("  [!] Invalid option. Please try again.");
+                    default -> System.out.println("\n  [!] Invalid option. Please try again.");
                 }
             } catch(InputMismatchException e){
                 System.out.println("\n  [!] Invalid input! Please enter a number.");

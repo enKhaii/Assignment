@@ -47,8 +47,24 @@ public class CourierPortal {
     }
  
     // ─── OPERATIONS ───────────────────────────────────────────
+    private boolean checkVehicleAssignment(){
+        // If null, means no vehicle, means cannot continue operation
+        if(courier.getAssignedVehicleID() == null){
+            System.out.println("\n  ╔═════════════════════════════════════════════════════╗");
+            System.out.println("  ║               [!] NO VEHICLE ASSIGNED               ║");
+            System.out.println("  ╚═════════════════════════════════════════════════════╝");
+            System.out.println("  You cannot perform delivery operations without a vehicle.");
+            System.out.println("  Please contact Admin to assign a vehicle to you.");
+            System.out.println();
+            return false;
+        }
+        return true;
+    }
  
     private void pickUpShipment() {
+        // If no vehicle assigned, stop operation
+        if(!checkVehicleAssignment()) return;
+
         System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║              PICK UP SHIPMENT            ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
@@ -59,6 +75,8 @@ public class CourierPortal {
     }
  
     private void updateStatus() {
+        if(!checkVehicleAssignment()) return;
+
         System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║          UPDATE SHIPMENT STATUS          ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
@@ -92,6 +110,8 @@ public class CourierPortal {
     }
  
     private void markDelivered() {
+        if(!checkVehicleAssignment()) return;
+
         System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║             MARK AS DELIVERED            ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
@@ -107,6 +127,8 @@ public class CourierPortal {
     }
  
     private void reportFailed() {
+        if(!checkVehicleAssignment()) return;
+
         System.out.println("\n  ╔══════════════════════════════════════════╗");
         System.out.println("  ║          REPORT FAILED DELIVERY          ║");
         System.out.println("  ╚══════════════════════════════════════════╝");
@@ -146,7 +168,7 @@ public class CourierPortal {
         System.out.println("  ╚══════════════════════════════════════════╝");
 
         if(vehicle == null){
-            System.out.println("\n  [!] You currently do not have a vehicle assigned.");
+            System.out.println("  [!] You currently do not have a vehicle assigned.");
             System.out.println("  [i] Please contact the Admin for assignment.");
         }
         else{

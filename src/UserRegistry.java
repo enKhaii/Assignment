@@ -1,6 +1,6 @@
 /*
     UserRegistry - stores main objects (Sender, Courier, Admin), also consists method for login
-    Registry -
+    Registry - central object management and access
 */
 
 import java.util.ArrayList;
@@ -70,6 +70,7 @@ public class UserRegistry{
         return null;
     }
 
+    
     // Iterates throught stored admin objects
     // return null if no matches, return full admin object if match credentials
     public static Admin checkAdmin(String id, String password){
@@ -81,6 +82,15 @@ public class UserRegistry{
             }
         }
         return null;
+    }
+    
+    // Add new Admin if registered
+    public static void addAdmin(Admin newAdmin){
+        admins.add(newAdmin);
+    }
+
+    public static ArrayList<Admin> getAllAdmins() {
+        return admins;
     }
 
 
@@ -108,5 +118,10 @@ public class UserRegistry{
  
     public static ArrayList<Courier> getAllCouriers() {
         return couriers;
+    }
+
+    // Add new Courier if registered
+    public static void addCourier(Courier newCourier){
+        couriers.add(newCourier);
     }
 }
