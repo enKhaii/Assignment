@@ -10,6 +10,8 @@ public class Main {
     static ShipmentRegistry shipmentRegistry = new ShipmentRegistry();
     static ShipmentManagement shipmentManagement = new ShipmentManagement(shipmentRegistry, input);
 
+    static SenderManagement senderManagement = new SenderManagement(input, shipmentRegistry);
+
     static QuickTrack quickTrack = new QuickTrack(shipmentRegistry, input);
 
     public static void main(String[] args){
@@ -43,9 +45,8 @@ public class Main {
 
     // SENDER PORTAL (1)
     public static void senderPortal(){
-        System.out.println("Sender");
+        senderManagement.start();  
     }
-
     // COURIER(DRIVER) PORTAL (2)
     public static void courierPortal(){
         System.out.println("\n  ╔══════════════════════════════════════════╗");
