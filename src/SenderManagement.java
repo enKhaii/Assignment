@@ -20,7 +20,7 @@ public class SenderManagement {
         this.shipmentRegistry = shipmentRegistry; // Connect to the main database
         
         // Dummy account for easy testing
-        Sender testUser = new Sender("SND200", "Lim Yi Ming", "yiming@email.com", "0123456789");
+        Sender testUser = new Sender("SND200", "SND200", "Lim Yi Ming", "123456", "yiming@email.com", "0123456789", Sender.MemberTier.STANDARD);
         senderList.add(testUser);
     }
     
@@ -76,8 +76,10 @@ public class SenderManagement {
         System.out.print("Enter Phone: ");
         String phone = input.nextLine();
         
-        Sender sender = new Sender(newId, name, email, phone);
-        senderList.add(sender); 
+        System.out.print("Set a Password: "); 
+        String password = input.nextLine();
+        
+        Sender sender = new Sender(newId, newId, name, password, email, phone, Sender.MemberTier.STANDARD);
         
         System.out.println("\n[SUCCESS] Registration complete!");
         System.out.println("Your fixed Sender ID is: " + newId);
@@ -133,7 +135,7 @@ public class SenderManagement {
                 } else if (choice == 5) {
                     cancelShipment(sender);
                 } else if (choice == 6) {
-                     sender.displayInfo();
+                     viewMyProfile(sender);;
                 } else if (choice == 0) {
                     System.out.println("Logging out...");
                     inMenu = false; 
