@@ -73,8 +73,16 @@ public class SenderManagement {
         String name = input.nextLine();
         System.out.print("Enter Email: ");
         String email = input.nextLine();
-        System.out.print("Enter Phone: ");
-        String phone = input.nextLine();
+        String phone = "";
+        while (true) {
+            System.out.print("Enter Phone (Numbers only): ");
+            phone = input.nextLine();
+            if (phone.matches("[0-9]+")) {
+                break; 
+            } else {
+                System.out.println("\n[!] Error: Invalid phone number. Please enter numbers only.");
+            }
+        }
         
         System.out.print("Set a Password: "); 
         String password = input.nextLine();
