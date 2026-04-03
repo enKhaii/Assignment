@@ -20,7 +20,7 @@ public class SenderManagement {
         this.shipmentRegistry = shipmentRegistry; // Connect to the main database
         
         // Dummy account for easy testing
-        Sender testUser = new Sender("SND200", "SND200", "Lim Yi Ming", "123456", "yiming@email.com", "0123456789", Sender.MemberTier.STANDARD);
+        Sender testUser = new Sender("SND200", "Lim Yi Ming", "yiming@gmail.com", "012-345-6789", Sender.MemberTier.STANDARD);
         senderList.add(testUser);
     }
     
@@ -86,10 +86,8 @@ public class SenderManagement {
             }
         }
         
-        System.out.print("  Set a Password -> "); 
-        String password = input.nextLine();
         
-        Sender sender = new Sender(newId, newId, name, password, email, phone, Sender.MemberTier.STANDARD);
+        Sender sender = new Sender(newId, name, email, phone, Sender.MemberTier.STANDARD);
         
         System.out.println("\n  [DONE] Registration complete!\n");
         System.out.println("  Your fixed Sender ID is: " + newId);
@@ -97,7 +95,7 @@ public class SenderManagement {
     }
     
     private Sender findExistingSender() {
-        System.out.print("\n  Enter your Sender ID (e.g., SND200) -> ");
+        System.out.print("\n  Enter your Sender ID (e.g. SND200) -> ");
         String searchId = input.nextLine();
         
         for (int i = 0; i < senderList.size(); i++) {
@@ -119,9 +117,9 @@ public class SenderManagement {
         
         while (inMenu == true) {
             System.out.println("\n  ╔═════════════════════════════════════════════════╗");
-            System.out.println("  ║           SENDER PORTAL - " + sender.getPersonID() + "             ║");
-            System.out.println("  ╠════════════════════════════════════════════════════╣");
-            System.out.println("  ║  1. Create New Shipment                            ║");
+            System.out.println("  ║             SENDER PORTAL - " + sender.getPersonID() + "              ║");
+            System.out.println("  ╠═════════════════════════════════════════════════╣");
+            System.out.println("  ║  1. Create New Shipment                         ║");
             System.out.println("  ║  2. View My Shipments                           ║");
             System.out.println("  ║  3. Track a Shipment                            ║");
             System.out.println("  ║  4. Pay for Shipment                            ║");
@@ -204,7 +202,7 @@ public class SenderManagement {
             System.out.println("  ║           SHIPMENT CREATED SUCCESSFULLY           ║");
             System.out.println("  ╚═══════════════════════════════════════════════════╝");
             System.out.println("  Tracking ID -> " + trackingId);
-            System.out.println("\n  Total Fee to Pay -> RM " + newShipment.getTotalFee());
+            System.out.printf("\n  Total Fee to Pay -> RM%.2f%n ", newShipment.getTotalFee());
             System.out.println("  Status -> " + newShipment.getStatus());
             System.out.println("\n  [i] Please proceed to 'Pay for Shipment' to confirm shipment.");
             
@@ -215,7 +213,7 @@ public class SenderManagement {
     }
     
     private Parcel createParcel() {
-        System.out.println("\n ───────── Parcel Details ─────────");
+        System.out.println("\n  ───────── Parcel Details ─────────");
         System.out.println("  Content Type:");
         System.out.println("   1. DOCUMENTS");
         System.out.println("   2. ELECTRONICS");
@@ -223,6 +221,7 @@ public class SenderManagement {
         System.out.println("   4. FRAGILE");
         System.out.println("   5. FOOD");
         System.out.println("   6. GENERAL");
+        System.out.print("  Choice -> ");
         int typeChoice = input.nextInt();
         input.nextLine();
         
@@ -233,7 +232,7 @@ public class SenderManagement {
         else if (typeChoice == 4) contentType = Parcel.ContentType.FRAGILE; 
         else if (typeChoice == 5) contentType = Parcel.ContentType.FOOD; 
         
-        System.out.print("  Description -> ");
+        System.out.print("\n  Description -> ");
         String description = input.nextLine();
         System.out.print("  Weight (kg) -> ");
         double weight = input.nextDouble();
@@ -260,10 +259,13 @@ public class SenderManagement {
             System.out.println("\n  ╔══════════════════════════════════════════════════════════╗");
             System.out.println("  ║                       MY SHIPMENTS                       ║");
             System.out.println("  ╚══════════════════════════════════════════════════════════╝");
-            System.out.println("  Total: " + myShipments.size() + " shipment(s)");
+            System.out.println("  Total: " + myShipments.size() + " shipment(s)\n");
+
+            System.out.printf("  %-15s %-20s %-10s", "Tracking ID", "Status", "Total Fee");
+            System.out.println("\n  " + "─".repeat(47));
             for (int i = 0; i < myShipments.size(); i++) {
                 Shipment s = myShipments.get(i);
-                s.displaySummary(); 
+                System.out.printf("  %-15s %-20s RM %-10.2f%n", s.getTrackingID(), s.getStatus(), s.getTotalFee());
             }
         }
         
@@ -287,7 +289,7 @@ public class SenderManagement {
             System.out.println("\n  [!] Shipment not found or belongs to another sender.");
         }
     // Pause before returning to menu
-        System.out.println("\n  Press ENTER to return to dashboard...");
+        System.out.println("\n\n  Press ENTER to return to dashboard...");
         input.nextLine();
     }
     
@@ -300,7 +302,7 @@ public class SenderManagement {
         
         if (s != null && s.getSenderID().equals(sender.getPersonID())) {
             if (s.isPaid()) {
-                System.out.println(" \n [i] This shipment is already paid.");
+                System.out.println(" \n  [i] This shipment is already paid.");
             } else {
                 System.out.println("\n  ╔════════════════════════════════════════════════╗");
                 System.out.println("  ║              PAYMENT CONFIRMATION              ║");
@@ -329,15 +331,12 @@ public class SenderManagement {
                     System.out.println("  Your shipment will be processed shortly.");
                     System.out.println("  We will notify you when a courier is assigned.");
                 } else {
-                    System.out.println("\n  [i]Payment Cancelled.");
+                    System.out.println("\n  [i] Payment Cancelled.");
                 }
             }
         } else {
             System.out.println("\n  [!] Shipment not found. Please try again.");
         }
-    // Pause before returning to menu
-        System.out.println("\n  Press ENTER to return to dashboard...");
-        input.nextLine();
     }
     
     // --- FEATURE 5: Cancel Shipment ---
@@ -370,7 +369,6 @@ public class SenderManagement {
         if (confirm.equalsIgnoreCase("Y")) {
             try {
                 shipmentRegistry.cancelShipment(trackingId); 
-                System.out.println("\n  [DONE] Shipment cancelled successfully.");
 
                 if (s.isPaid()) {
                     System.out.println("\n  [i] Refund will be processed within 3-5 business days.");
@@ -396,7 +394,7 @@ public class SenderManagement {
         // Show shipment statistics
         List<Shipment> myShipments = shipmentRegistry.findBySender(sender.getPersonID());
         
-        System.out.println("\n  SHIPMENT STATISTICS:");
+        System.out.println("  SHIPMENT STATISTICS:");
         System.out.println("  ─────────────────────────────────────────────────────────");
         System.out.println("  Total Shipments: " + myShipments.size());
         

@@ -66,7 +66,7 @@ public class AdminPortal {
                 case 6 -> shipmentManagement.show();
                 case 7 -> fleetManagement.show();
                 case 8 -> displayDriverWorkload();
-                case 9 -> viewAdminProfile();
+                case 9 -> viewAdminProfile(user);
                 case 0 -> {
                     System.out.println("\n  [i] Logging out...");
                     active = false;
@@ -607,18 +607,9 @@ public class AdminPortal {
         }
     }
     
-    private void viewAdminProfile(){
-        System.out.print("\n  Your Admin ID -> ");
-        String id = input.next();
-        input.nextLine();
-
-        Admin user = UserRegistry.getAdminById(id);
-        if(user != null){
-            user.displayInfo();
-        }
-        else{
-            System.out.println("\n  >> Error: Admin ID not found.");
-        }
+    private void viewAdminProfile(Admin admin){
+        System.out.println();
+        admin.displayInfo();
     }
 
        // HELPER METHOD FOR COURIER DELIVERY LIST DISPLAYING (OPTION 7)

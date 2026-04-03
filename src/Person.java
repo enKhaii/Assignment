@@ -12,12 +12,23 @@
 public abstract class Person{  
     private String personID, loginID, name, password, email, phoneNum;
 
-    // Parameterized Constructor (When create object, we call this)
+    // Parameterized Constructor - OBJECT that needs login (ADMIN, COURIER)
     public Person(String personID, String loginID, String name, String password, String email, String phoneNum){
         this.personID = personID;
         this.loginID = loginID;
         setName(name);
         this.password = password;
+        this.email = email;
+        this.phoneNum = phoneNum;
+    }
+
+    // METHOD OVERLOADING
+    // OBJECT that doesn't needs login (SENDER)
+    public Person(String personID, String name, String email, String phoneNum){
+        this.personID = personID;
+        this.loginID = "N/A";
+        setName(name);
+        this.password = "N/A";
         this.email = email;
         this.phoneNum = phoneNum;
     }

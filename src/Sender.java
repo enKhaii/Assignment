@@ -14,8 +14,8 @@ public class Sender extends Person {
     private MemberTier tier;
 
     // Parameter Contructor
-    public Sender(String personID, String loginID, String name, String password, String email, String phone, MemberTier tier) {
-        super(personID, loginID, name, password, email, phone);
+    public Sender(String personID, String name, String email, String phone, MemberTier tier) {
+        super(personID, name, email, phone);
         this.tier = tier;
     }
 
@@ -33,11 +33,11 @@ public class Sender extends Person {
         System.out.println("  ┌──────────────────────────────────────────┐");
         System.out.println("  │              SENDER PROFILE              │");
         System.out.println("  ├──────────────────────────────────────────┤");
-        System.out.printf ("  │  ID       : %-27s│%n", getPersonID());
-        System.out.printf ("  │  Name     : %-27s│%n", getName());
-        System.out.printf ("  │  Email    : %-27s│%n", getEmail());
-        System.out.printf ("  │  Phone    : %-27s│%n", getPhoneNum());
-        System.out.printf ("  │  Tier     : %-27s│%n", tier);
+        System.out.printf ("  │  ID       : %-29s│%n", getPersonID());
+        System.out.printf ("  │  Name     : %-29s│%n", getName());
+        System.out.printf ("  │  Email    : %-29s│%n", getEmail());
+        System.out.printf ("  │  Phone    : %-29s│%n", getPhoneNum());
+        System.out.printf ("  │  Tier     : %-29s│%n", tier);
         System.out.println("  └──────────────────────────────────────────┘");
         System.out.println();
     }

@@ -55,15 +55,15 @@ public class Admin extends Person{
     @Override
     public void displayInfo(){
         // %-?s, the - means left allignment, default will be right allignment
-        System.out.println("\n  ╔══════════════════════════════════════╗");
-        System.out.println("  ║           ADMIN INFORMATION          ║");
-        System.out.println("  ╠══════════════════════════════════════╣");
-        System.out.printf ("  ║  ID         : %-23s║%n", getPersonID());
-        System.out.printf ("  ║  Name       : %-23s║%n", getName());
-        System.out.printf ("  ║  Email      : %-23s║%n", getEmail());
-        System.out.printf ("  ║  Role       : %-23s║%n", adminRole);
-        System.out.printf ("  ║  Department : %-23s║%n", department);
-        System.out.println("  ╚══════════════════════════════════════╝");
+        System.out.println("\n  ╔═══════════════════════════════════════════╗");
+        System.out.println("  ║             ADMIN INFORMATION             ║");
+        System.out.println("  ╠═══════════════════════════════════════════╣");
+        System.out.printf ("  ║  ID         : %-28s║%n", getPersonID());
+        System.out.printf ("  ║  Name       : %-28s║%n", getName());
+        System.out.printf ("  ║  Email      : %-28s║%n", getEmail());
+        System.out.printf ("  ║  Role       : %-28s║%n", adminRole);
+        System.out.printf ("  ║  Department : %-28s║%n", department);
+        System.out.println("  ╚═══════════════════════════════════════════╝");
         System.out.println();
     }
 }

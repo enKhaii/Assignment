@@ -85,7 +85,7 @@ public class ShipmentRegistry {
         }
 
         s.updateStatus(Shipment.ShipmentStatus.CANCELLED, "Cancelled Due to Unforeseen Reasons");
-        System.out.println("  [DONE] Shipment " + trackingID + " cancelled.");
+        System.out.println("\n  [DONE] Shipment " + trackingID + " cancelled successfully.");
         return true;
     } 
 
