@@ -31,13 +31,15 @@ public class SenderManagement {
         boolean keepRunning = true;
         
         while (keepRunning == true) {
-            System.out.println("\n================================================");
-            System.out.println("             WELCOME TO SENDER PORTAL             ");
-            System.out.println("================================================");
-            System.out.println("1. Register New Sender");
-            System.out.println("2. Enter Sender ID (Login)");
-            System.out.println("0. Back to Main System");
-            System.out.print("Enter your choice: ");
+            System.out.println("\n  ╔════════════════════════════════════════════════════╗");
+            System.out.println("  ║              WELCOME TO SENDER PORTAL              ║");
+            System.out.println("  ╚════════════════════════════════════════════════════╝");
+            System.out.println("  Send packages quickly and easily!\n");
+            System.out.println("  Option:");
+            System.out.println("   1. Register New Sender");
+            System.out.println("   2. Enter Sender ID (Login)");
+            System.out.println("   0. Back to Main Menu");
+            System.out.print("  Enter your choice -> ");
             
             try {
                 int choice = input.nextInt();
@@ -52,60 +54,60 @@ public class SenderManagement {
                         senderMainMenu(existingSender); 
                     }
                 } else if (choice == 0) {
-                    System.out.println("Returning to main system...");
+                    System.out.println("  Returning to main menu...");
                     keepRunning = false; 
                 } else {
-                    System.out.println("Invalid option! Please try again.");
+                    System.out.println("\n  [!] Invalid option! Please try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Error: Please enter a valid number!");
+                System.out.println("\n  Error >> Please enter a valid number!");
                 input.nextLine(); 
             }
         }
     }
     
     private Sender registerNewSender() {
-        System.out.println("\n--- SENDER REGISTRATION ---");
+        System.out.println("\n  ───────── SENDER REGISTRATION ─────────");
         nextSenderId++; 
         String newId = "SND" + nextSenderId; 
         
-        System.out.print("Enter Full Name: ");
+        System.out.print("  Enter Full Name -> ");
         String name = input.nextLine();
-        System.out.print("Enter Email: ");
+        System.out.print("  Enter Email -> ");
         String email = input.nextLine();
         String phone = "";
         while (true) {
-            System.out.print("Enter Phone (Numbers only): ");
+            System.out.print("  Enter Phone (Numbers only) -> ");
             phone = input.nextLine();
             if (phone.matches("[0-9]+")) {
                 break; 
             } else {
-                System.out.println("\n[!] Error: Invalid phone number. Please enter numbers only.");
+                System.out.println("\n  [!] Invalid phone number. Please enter numbers only.");
             }
         }
         
-        System.out.print("Set a Password: "); 
+        System.out.print("  Set a Password -> "); 
         String password = input.nextLine();
         
         Sender sender = new Sender(newId, newId, name, password, email, phone, Sender.MemberTier.STANDARD);
         
-        System.out.println("\n[SUCCESS] Registration complete!");
-        System.out.println("Your fixed Sender ID is: " + newId);
+        System.out.println("\n  [DONE] Registration complete!\n");
+        System.out.println("  Your fixed Sender ID is: " + newId);
         return sender;
     }
     
     private Sender findExistingSender() {
-        System.out.print("\nEnter your Sender ID (e.g., SND200): ");
+        System.out.print("\n  Enter your Sender ID (e.g., SND200) -> ");
         String searchId = input.nextLine();
         
         for (int i = 0; i < senderList.size(); i++) {
             Sender currentSender = senderList.get(i);
             if (currentSender.getPersonID().equalsIgnoreCase(searchId)) {
-                System.out.println("\nWelcome back, " + currentSender.getName() + "!");
+                System.out.println("\n  Welcome back, " + currentSender.getName() + "!");
                 return currentSender;
             }
         }
-        System.out.println("Error: Sender ID not found. Please register first.");
+        System.out.println("\n  [!] Sender ID not found. Please register first.");
         return null;
     }
     
@@ -116,17 +118,18 @@ public class SenderManagement {
         boolean inMenu = true;
         
         while (inMenu == true) {
-            System.out.println("\n------------------------------------------------");
-            System.out.println("SENDER DASHBOARD - ID: " + sender.getPersonID());
-            System.out.println("------------------------------------------------");
-            System.out.println("1. Create New Shipment (寄包裹)");
-            System.out.println("2. View My Shipments (查看我的订单)");
-            System.out.println("3. Track a Shipment (追踪包裹)");
-            System.out.println("4. Pay for Shipment (付款)");
-            System.out.println("5. Cancel Shipment (取消包裹)");
-            System.out.println("6. View My Profile (查看资料)");
-            System.out.println("0. Logout");
-            System.out.print("Choice: ");
+            System.out.println("\n  ╔═════════════════════════════════════════════════╗");
+            System.out.println("  ║           SENDER PORTAL - " + sender.getPersonID() + "             ║");
+            System.out.println("  ╠════════════════════════════════════════════════════╣");
+            System.out.println("  ║  1. Create New Shipment                            ║");
+            System.out.println("  ║  2. View My Shipments                           ║");
+            System.out.println("  ║  3. Track a Shipment                            ║");
+            System.out.println("  ║  4. Pay for Shipment                            ║");
+            System.out.println("  ║  5. Cancel Shipment                             ║");
+            System.out.println("  ║  6. View My Profile                             ║");
+            System.out.println("  ║  0. Logout                                      ║");
+            System.out.println("  ╚═════════════════════════════════════════════════╝");
+            System.out.print("  Choice -> ");
             
             try {
                 int choice = input.nextInt();
@@ -145,13 +148,13 @@ public class SenderManagement {
                 } else if (choice == 6) {
                      viewMyProfile(sender);;
                 } else if (choice == 0) {
-                    System.out.println("Logging out...");
+                    System.out.println("  Logging out...");
                     inMenu = false; 
                 } else {
-                    System.out.println("Invalid option!");
+                    System.out.println("\n  [!] Invalid option. Please try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Error: Please enter a valid number!");
+                System.out.println("\n  Error >> Please enter a valid number!");
                 input.nextLine(); 
             }
         }
@@ -159,18 +162,22 @@ public class SenderManagement {
     
     // --- FEATURE 1: Create Shipment ---
     private void createShipment(Sender sender) {
-        System.out.println("\n--- CREATE NEW SHIPMENT ---");
+        System.out.println("\n  ╔═══════════════════════════════════════════════════╗");
+        System.out.println("  ║                CREATE NEW SHIPMENT                ║");
+        System.out.println("  ╚═══════════════════════════════════════════════════╝");
         try {
-            System.out.print("Pickup Address: ");
+            System.out.print("  Pickup Address -> ");
             String pickupAddress = input.nextLine();
-            System.out.print("Delivery Address: ");
+            System.out.print("  Delivery Address -> ");
             String deliveryAddress = input.nextLine();
-            System.out.print("Distance (km): ");
+            System.out.print("  Distance (km) -> ");
             double distance = input.nextDouble();
             input.nextLine();
             
-            System.out.println("Shipping Speed: 1. STANDARD (3-5 Days) | 2. EXPRESS (1-2 Days)");
-            System.out.print("Choice: ");
+            System.out.println("\n  Shipping Speed: ");
+            System.out.println("   1. STANDARD (RM5.00/kg, 3-5 Days)");
+            System.out.println("   2. EXPRESS (RM9.50/kg, 1-2 Days)");
+            System.out.print("  Choice -> ");
             int speedChoice = input.nextInt();
             input.nextLine();
             
@@ -184,49 +191,59 @@ public class SenderManagement {
             // Call the helper method to create a parcel
             Parcel parcel = createParcel();
             
-            // Get a new Tracking ID from the team's system
+            // Get a new Tracking ID 
             String trackingId = shipmentRegistry.generateTrackingID();
             
-            // Create the shipment using the team's class
+            // Create the shipment 
             Shipment newShipment = new Shipment(trackingId, sender.getPersonID(), parcel, pickupAddress, deliveryAddress, distance, speed);
             
-            // Save it to the team's system
+            // Save it to the system
             shipmentRegistry.addShipment(newShipment);
-            
-            System.out.println("Total Fee to pay: RM " + newShipment.getTotalFee());
-            System.out.println("Status: " + newShipment.getStatus());
+
+            System.out.println("\n  ╔═══════════════════════════════════════════════════╗");
+            System.out.println("  ║           SHIPMENT CREATED SUCCESSFULLY           ║");
+            System.out.println("  ╚═══════════════════════════════════════════════════╝");
+            System.out.println("  Tracking ID -> " + trackingId);
+            System.out.println("\n  Total Fee to Pay -> RM " + newShipment.getTotalFee());
+            System.out.println("  Status -> " + newShipment.getStatus());
+            System.out.println("\n  [i] Please proceed to 'Pay for Shipment' to confirm shipment.");
             
         } catch (Exception e) {
-            System.out.println("Error reading input. Please try again.");
+            System.out.println("\n  Error >> Invalid reading input. Please try again.");
             input.nextLine();
         }
     }
     
     private Parcel createParcel() {
-        System.out.println("\n-- Parcel Details --");
-        System.out.print("Content Type (1.DOCUMENTS, 2.ELECTRONICS, 3.CLOTHING, 4.FRAGILE, 5.FOOD): ");
+        System.out.println("\n ───────── Parcel Details ─────────");
+        System.out.println("  Content Type:");
+        System.out.println("   1. DOCUMENTS");
+        System.out.println("   2. ELECTRONICS");
+        System.out.println("   3. CLOTHING");
+        System.out.println("   4. FRAGILE");
+        System.out.println("   5. FOOD");
+        System.out.println("   6. GENERAL");
         int typeChoice = input.nextInt();
         input.nextLine();
         
-        // This MUST match the teammate's Parcel class ContentType enum
-        // Assuming teammate's Parcel has standard ContentTypes based on the initialized data
-        Parcel.ContentType contentType = Parcel.ContentType.DOCUMENTS; // Default
-        if (typeChoice == 2) contentType = Parcel.ContentType.ELECTRONICS;
+        Parcel.ContentType contentType = Parcel.ContentType.GENERAL;
+        if (typeChoice == 1) contentType = Parcel.ContentType.DOCUMENTS;
+        else if (typeChoice == 2) contentType = Parcel.ContentType.ELECTRONICS;
         else if (typeChoice == 3) contentType = Parcel.ContentType.CLOTHING;
-        // else if (typeChoice == 4) contentType = Parcel.ContentType.FRAGILE; // Uncomment if team has this
-        // else if (typeChoice == 5) contentType = Parcel.ContentType.FOOD; // Uncomment if team has this
+        else if (typeChoice == 4) contentType = Parcel.ContentType.FRAGILE; 
+        else if (typeChoice == 5) contentType = Parcel.ContentType.FOOD; 
         
-        System.out.print("Description: ");
+        System.out.print("  Description -> ");
         String description = input.nextLine();
-        System.out.print("Weight (kg): ");
+        System.out.print("  Weight (kg) -> ");
         double weight = input.nextDouble();
-        System.out.print("Length (cm): ");
+        System.out.print("  Length (cm) -> ");
         double length = input.nextDouble();
-        System.out.print("Width (cm): ");
+        System.out.print("  Width (cm) -> ");
         double width = input.nextDouble();
-        System.out.print("Height (cm): ");
+        System.out.print("  Height (cm) -> ");
         double height = input.nextDouble();
-        System.out.print("Declared Value (RM): ");
+        System.out.print("  Declared Value (RM) -> ");
         double value = input.nextDouble();
         input.nextLine();
         
@@ -238,90 +255,135 @@ public class SenderManagement {
         List<Shipment> myShipments = shipmentRegistry.findBySender(sender.getPersonID());
         
         if (myShipments.isEmpty()) {
-            System.out.println("\n[!] You have no shipments yet.");
+            System.out.println("\n  [!] You have no shipments yet.");
         } else {
-            System.out.println("\n--- MY SHIPMENTS ---");
+            System.out.println("\n  ╔══════════════════════════════════════════════════════════╗");
+            System.out.println("  ║                       MY SHIPMENTS                       ║");
+            System.out.println("  ╚══════════════════════════════════════════════════════════╝");
+            System.out.println("  Total: " + myShipments.size() + " shipment(s)");
             for (int i = 0; i < myShipments.size(); i++) {
                 Shipment s = myShipments.get(i);
-                s.displaySummary(); // Call the display method from team's code
+                s.displaySummary(); 
             }
         }
         
          // Pause before returning to menu
-        System.out.println("\nPress ENTER to return to dashboard...");
+        System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine(); 
     }
     
     // --- FEATURE 3: Track Shipment ---
     private void trackShipment(Sender sender) {
-        System.out.print("\nEnter Tracking ID: ");
+        System.out.print("\n  Enter Tracking ID -> ");
         String trackingId = input.nextLine();
         
         Shipment s = shipmentRegistry.findByTrackingID(trackingId);
         
+        // invalid tracking ID and verify shipment ownership
         if (s != null && s.getSenderID().equals(sender.getPersonID())) {
-            s.displayFullDetails(); // Team's code
-            s.displayTrackingHistory(); // Team's code
+            s.displayFullDetails();
+            s.displayTrackingHistory(); 
         } else {
-            System.out.println("Error: Shipment not found or belongs to another sender.");
+            System.out.println("\n  [!] Shipment not found or belongs to another sender.");
         }
     // Pause before returning to menu
-        System.out.println("\nPress ENTER to return to dashboard...");
+        System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine();
     }
     
     // --- FEATURE 4: Pay for Shipment ---
     private void payForShipment(Sender sender) {
-        System.out.print("\nEnter Tracking ID to pay: ");
+        System.out.print("\n  Enter Tracking ID to pay -> ");
         String trackingId = input.nextLine();
         
         Shipment s = shipmentRegistry.findByTrackingID(trackingId);
         
         if (s != null && s.getSenderID().equals(sender.getPersonID())) {
             if (s.isPaid()) {
-                System.out.println("This shipment is already paid.");
+                System.out.println(" \n [i] This shipment is already paid.");
             } else {
-                System.out.println("Total Amount Due: RM " + s.getTotalFee());
-                System.out.print("Confirm Payment? (Y/N): ");
+                System.out.println("\n  ╔════════════════════════════════════════════════╗");
+                System.out.println("  ║              PAYMENT CONFIRMATION              ║");
+                System.out.println("  ╚════════════════════════════════════════════════╝");
+                System.out.println("  Tracking ID: " + trackingId);
+                System.out.printf("  Amount Due: RM %.2f%n", s.getTotalFee());
+                System.out.println();
+
+                System.out.println("  Fee Breakdown:");
+                System.out.printf("    Base Fee      : RM %.2f%n", s.getBaseFee());
+                System.out.printf("    Distance Fee  : RM %.2f%n", s.getDistanceFee());
+                System.out.printf("    Insurance Fee : RM %.2f%n", s.getInsuranceFee());
+                System.out.println("  " + "─".repeat(60));
+                System.out.printf("  TOTAL           : RM %.2f%n", s.getTotalFee());
+                System.out.println();
+
+                System.out.print("  Confirm Payment? (Y/N) -> ");
                 String confirm = input.nextLine();
                 if (confirm.equalsIgnoreCase("Y")) {
-                    // Update status using team's method
-                    s.updateStatus(Shipment.ShipmentStatus.PAID, "Paid by Sender");
-                    System.out.println("Payment Successful! Thank you.");
+                    // Update status
+                    s.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
+
+                    System.out.println("\n  ╔════════════════════════════════════════════╗");
+                    System.out.println("  ║             PAYMENT SUCCESSFUL             ║");
+                    System.out.println("  ╚════════════════════════════════════════════╝");
+                    System.out.println("  Your shipment will be processed shortly.");
+                    System.out.println("  We will notify you when a courier is assigned.");
                 } else {
-                    System.out.println("Payment Cancelled.");
+                    System.out.println("\n  [i]Payment Cancelled.");
                 }
             }
         } else {
-            System.out.println("Error: Shipment not found.");
+            System.out.println("\n  [!] Shipment not found. Please try again.");
         }
     // Pause before returning to menu
-        System.out.println("\nPress ENTER to return to dashboard...");
+        System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine();
     }
     
     // --- FEATURE 5: Cancel Shipment ---
     private void cancelShipment(Sender sender) {
-        System.out.print("\nEnter Tracking ID to cancel: ");
+        System.out.print("\n  Enter Tracking ID to cancel -> ");
         String trackingId = input.nextLine();
         
         Shipment s = shipmentRegistry.findByTrackingID(trackingId);
-        if (s != null && s.getSenderID().equals(sender.getPersonID())) {
-            System.out.print("Are you sure you want to cancel? (Y/N): ");
-            String confirm = input.nextLine();
-            if (confirm.equalsIgnoreCase("Y")) {
-                try {
-                    // Uses the team's cancel method which handles exceptions
-                    shipmentRegistry.cancelShipment(trackingId); 
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
+        if (s == null) {
+            System.out.println("\n  [!] Shipment not found.");
+            return;
+        }    
+        if(!s.getSenderID().equals(sender.getPersonID())) {
+            System.out.println("\n  [!] This shipment does not belong to you.");
+            return;
+        }
+        if (!s.canBeCancelled()) {
+            System.out.println("\n  [!] Cannot cancel shipment in status -> " + s.getStatus());
+            System.out.println("  [i] Only PENDING_PAYMENT or PAID shipments can be cancelled.");
+            return;
+        }
+
+        System.out.println("\n  Shipment to cancel:");
+        System.out.println("  Tracking ID: " + trackingId);
+        System.out.println("  Status: " + s.getStatus());
+        System.out.printf("  Total Fee: RM %.2f%n", s.getTotalFee());
+        
+        System.out.print("\n  Are you sure you want to cancel? (Y/N) -> ");
+        String confirm = input.nextLine();
+        if (confirm.equalsIgnoreCase("Y")) {
+            try {
+                shipmentRegistry.cancelShipment(trackingId); 
+                System.out.println("\n  [DONE] Shipment cancelled successfully.");
+
+                if (s.isPaid()) {
+                    System.out.println("\n  [i] Refund will be processed within 3-5 business days.");
                 }
+            } catch (Exception e) {
+                System.out.println("\n  Error >> " + e.getMessage());
             }
         } else {
-            System.out.println("Error: Shipment not found.");
+            System.out.println("\n  [i] Cancellation aborted.");
         }
+    
     // Pause before returning to menu
-        System.out.println("\nPress ENTER to return to dashboard...");
+        System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine();
     }
 
@@ -330,8 +392,34 @@ public class SenderManagement {
         System.out.println();
         
         sender.displayInfo(); 
+
+        // Show shipment statistics
+        List<Shipment> myShipments = shipmentRegistry.findBySender(sender.getPersonID());
+        
+        System.out.println("\n  SHIPMENT STATISTICS:");
+        System.out.println("  ─────────────────────────────────────────────────────────");
+        System.out.println("  Total Shipments: " + myShipments.size());
+        
+        int delivered = 0;
+        int inTransit = 0;
+        int pending = 0;
+        
+        for (Shipment s : myShipments) {
+            switch (s.getStatus()) {
+                case DELIVERED -> delivered++;
+                case IN_TRANSIT, OUT_FOR_DELIVERY, PICKED_UP -> inTransit++;
+                case PENDING_PAYMENT, PAID -> pending++;
+                default -> {} // ignore other status
+            }
+        }
+        
+        System.out.println("  Delivered: " + delivered);
+        System.out.println("  In Transit: " + inTransit);
+        System.out.println("  Pending: " + pending);
+        System.out.println();
+        
         // Pause before returning to menu
-        System.out.println("\nPress ENTER to return to dashboard...");
+        System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine(); 
     }
 }
