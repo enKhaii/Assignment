@@ -82,7 +82,7 @@ public class SenderManagement {
             if (phone.matches("[0-9]+")) {
                 break; 
             } else {
-                System.out.println("\n  [!] Invalid phone number. Please enter numbers only.");
+                System.out.println("\n  [!] Invalid phone number. Please enter numbers only.\n");
             }
         }
         
@@ -202,7 +202,7 @@ public class SenderManagement {
             System.out.println("  ║           SHIPMENT CREATED SUCCESSFULLY           ║");
             System.out.println("  ╚═══════════════════════════════════════════════════╝");
             System.out.println("  Tracking ID -> " + trackingId);
-            System.out.printf("\n  Total Fee to Pay -> RM%.2f%n ", newShipment.getTotalFee());
+            System.out.printf("\n  Total Fee to Pay -> RM%.2f%n", newShipment.getTotalFee());
             System.out.println("  Status -> " + newShipment.getStatus());
             System.out.println("\n  [i] Please proceed to 'Pay for Shipment' to confirm shipment.");
             
