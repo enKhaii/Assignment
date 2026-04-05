@@ -22,6 +22,9 @@ public class SenderManagement {
         // Dummy account for easy testing
         Sender testUser = new Sender("SND200", "Lim Yi Ming", "yiming@gmail.com", "012-345-6789", Sender.MemberTier.STANDARD);
         senderList.add(testUser);
+        testUser.setPassword("123456"); 
+        
+        senderList.add(testUser);
     }
     
     // --------------------------------------------------------
@@ -89,8 +92,9 @@ public class SenderManagement {
         
         System.out.print("  Set a Password -> "); 
         String password = input.nextLine();
-        Sender sender = new Sender(newId, name, email, phone, Sender.MemberTier.STANDARD)；
+        Sender sender = new Sender(newId, name, email, phone, Sender.MemberTier.STANDARD) ;
         sender.setPassword(password);
+        senderList.add(sender);
         
         System.out.println("\n  [DONE] Registration complete!\n");
         System.out.println("  Your fixed Sender ID is: " + newId);
@@ -434,16 +438,16 @@ public class SenderManagement {
         input.nextLine(); 
     }
 
-    private String getValidString(String message) {
-        String text = "";
+   private String getValidString(String message) {
         while (true) {
             System.out.print(message);
-            text = input.nextLine().trim(); 
+
+            String text = input.nextLine().trim(); 
             
             if (!text.isEmpty()) {
                 return text;
             } else {
-                System.out.println("\n[!] Error: Input cannot be empty. Please try again.");
+                System.out.println("\n  [!] Error: Input cannot be empty. Please try again.");
             }
         }
     }
