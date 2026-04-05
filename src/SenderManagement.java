@@ -87,7 +87,10 @@ public class SenderManagement {
         }
         
         
-        Sender sender = new Sender(newId, name, email, phone, Sender.MemberTier.STANDARD);
+        System.out.print("  Set a Password -> "); 
+        String password = input.nextLine();
+        Sender sender = new Sender(newId, name, email, phone, Sender.MemberTier.STANDARD)；
+        sender.setPassword(password);
         
         System.out.println("\n  [DONE] Registration complete!\n");
         System.out.println("  Your fixed Sender ID is: " + newId);
@@ -96,13 +99,23 @@ public class SenderManagement {
     
     private Sender findExistingSender() {
         System.out.print("\n  Enter your Sender ID (e.g. SND200) -> ");
-        String searchId = input.nextLine();
+        String searchId = input.nextLine().trim();
         
         for (int i = 0; i < senderList.size(); i++) {
             Sender currentSender = senderList.get(i);
+        
             if (currentSender.getPersonID().equalsIgnoreCase(searchId)) {
-                System.out.println("\n  Welcome back, " + currentSender.getName() + "!");
-                return currentSender;
+                
+                System.out.print("  Enter Password -> ");
+                String passInput = input.nextLine();
+                
+                if (currentSender.getPassword().equals(passInput)) {
+                    System.out.println("\n  Welcome back, " + currentSender.getName() + "!");
+                    return currentSender; 
+                } else {
+                    System.out.println("\n  [!] Error: Incorrect password. Login failed.");
+                    return null;
+                }
             }
         }
         System.out.println("\n  [!] Sender ID not found. Please register first.");
@@ -419,5 +432,19 @@ public class SenderManagement {
         // Pause before returning to menu
         System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine(); 
+    }
+
+    private String getValidString(String message) {
+        String text = "";
+        while (true) {
+            System.out.print(message);
+            text = input.nextLine().trim(); 
+            
+            if (!text.isEmpty()) {
+                return text;
+            } else {
+                System.out.println("\n[!] Error: Input cannot be empty. Please try again.");
+            }
+        }
     }
 }
