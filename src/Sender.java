@@ -12,6 +12,7 @@ public class Sender extends Person {
     }
 
     private MemberTier tier;
+    private String password;
 
     // Parameter Contructor
     public Sender(String personID, String name, String email, String phone, MemberTier tier) {
@@ -26,6 +27,14 @@ public class Sender extends Person {
 
     public void setTier(MemberTier tier) {
         this.tier = tier;
+    }
+
+    public void setPassword(String password) {
+    this.password = password;
+}
+
+    public String getPassword() {
+        return this.password;
     }
 
     @Override
