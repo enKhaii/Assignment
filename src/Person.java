@@ -23,12 +23,12 @@ public abstract class Person{
     }
 
     // METHOD OVERLOADING
-    // OBJECT that doesn't needs login (SENDER)
-    public Person(String personID, String name, String email, String phoneNum){
+    // OBJECT that doesn't needs loginID (SENDER)
+    public Person(String personID, String name, String password, String email, String phoneNum){
         this.personID = personID;
-        this.loginID = "N/A";
+        this.loginID = "N/A";   // N/A for display purpose
         setName(name);
-        this.password = "N/A";
+        this.password = password;
         this.email = email;
         this.phoneNum = phoneNum;
     }

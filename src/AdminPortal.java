@@ -35,13 +35,13 @@ public class AdminPortal {
             System.out.println("\n  [ SHIPMENT CONTROL ]");
             System.out.println("   2. Assign Driver to Shipment");    
             System.out.println("   3. Update Shipment Status");       
-            System.out.println("   4. Calculate/Review Shipping Fees");
-            System.out.println("   5. Handle Delivery Failures");     
+            System.out.println("   4. Handle Delivery Failures");     
             System.out.println("\n  [ FLEET & LOGISTICS ]");
-            System.out.println("   6. View All Shipments");
-            System.out.println("   7. Manage Fleet & Maintenance");   
-            System.out.println("   8. View Driver Delivery Lists");    
+            System.out.println("   5. View All Shipments");
+            System.out.println("   6. Manage Fleet & Maintenance");   
+            System.out.println("   7. View Driver Delivery Lists");    
             System.out.println("\n  [ SYSTEM ]");
+            System.out.println("   8. View Financial Revenue Report");
             System.out.println("   9. View My Profile");
             System.out.println("   0. Back to Main Menu (Logout)");
             System.out.println("  ──────────────────────────────────────────");
@@ -61,11 +61,11 @@ public class AdminPortal {
                 }
                 case 2 -> assignDriverToShipment();
                 case 3 -> shipmentManagement.show();
-                case 4 -> shipmentManagement.show();
-                case 5 -> handleDeliveryFailure();
-                case 6 -> shipmentManagement.show();
-                case 7 -> fleetManagement.show();
-                case 8 -> displayDriverWorkload();
+                case 4 -> handleDeliveryFailure();
+                case 5 -> shipmentManagement.show();
+                case 6 -> fleetManagement.show();
+                case 7 -> displayDriverWorkload();
+                case 8 -> displayFinancialSummary(Main.shipmentRegistry.getAllShipments());
                 case 9 -> viewAdminProfile(user);
                 case 0 -> {
                     System.out.println("\n  [i] Logging out...");
@@ -120,16 +120,16 @@ public class AdminPortal {
             }
 
             // Get name
-            System.out.print("\n  Full Name -> ");
+            System.out.print("  Full Name -> ");
             String name = input.nextLine();
 
             // Get password
-            System.out.print("\n  Password (no spaces) -> ");
+            System.out.print("  Password (no spaces) -> ");
             String password = input.next();
             input.nextLine();
 
             // Confirm password
-            System.out.print("\n  Confirm Password -> ");
+            System.out.print("  Confirm Password -> ");
             String confirmPassword = input.next();
             input.nextLine();
 
@@ -140,22 +140,39 @@ public class AdminPortal {
             }
 
             // Get email
-            System.out.print("\n  Email -> ");
-            
+            System.out.print("  Email -> ");
             String email = input.next();
             input.nextLine();
             
-            // Validate email format
-            if(!email.contains("@") || !email.contains(".")){
-                System.out.println("\n  [!] Invalid email format! Please try again.");
-                System.out.println("  [i] Example format -> abc123@gmail.com");
-                return;
+            boolean validEmail = false;
+            while(!validEmail){
+                // Validate email format
+                if(email.contains("@") || email.contains(".")){
+                    validEmail = true;
+                }
+                else{
+                    System.out.println("\n  [!] Invalid email format! Please try again.");
+                    System.out.println("  [i] Example format -> abc123@gmail.com");
+                }
             }
 
             // Get phone
-            System.out.print("\n  Phone (e.g. 012-345-6789) -> ");
-            String phone = input.next();
-            input.nextLine();
+            String phone = "";
+            boolean validPhone = false;
+            while(!validPhone){
+                // Validate phone number format
+                System.out.print("  Phone Number (XXX-XXXXXXX[X]) -> ");
+                phone = input.next();
+                input.nextLine();
+
+                // One for normal, one for 011 (1 more digit)
+                if(phone.matches("\\d{3}-\\d{7}") || phone.matches("\\d{3}-\\d{8}")){
+                    validPhone = true;
+                }
+                else{
+                    System.out.println("  [!] Invalid format! Please use the format 012-3456789 or 011-23456789.\n");
+                }
+            }
 
             // Select Admin Role
             System.out.println("\n  Select Admin Role:");
@@ -229,53 +246,81 @@ public class AdminPortal {
             }
 
             // Get name
-            System.out.print("\n  Full Name -> ");
+            System.out.print("  Full Name -> ");
             String name = input.nextLine();
 
             // Get password
-            System.out.print("\n  Password (no spaces) -> ");
+            System.out.print("  Password (no spaces) -> ");
             String password = input.next();
             input.nextLine();
 
             // Confirm password
-            System.out.print("\n  Confirm Password -> ");
+            System.out.print("  Confirm Password -> ");
             String confirmPassword = input.next();
             input.nextLine();
 
-            // Check if passworrd matches (password & confirmPassword)
-            if(!password.equals(confirmPassword)){
-                System.out.println("\n  [!] Passwords do not match! Please try again.");
-                return;
+            boolean validConfirmPassword = false;
+            while(!validConfirmPassword){
+                // Check if passworrd matches (password & confirmPassword)
+                if(password.equals(confirmPassword)){
+                    validConfirmPassword = true;
+                }
+                else{
+                    System.out.println("\n  [!] Passwords do not match! Please try again.");
+                }
             }
-
+                
             // Get email
-            System.out.print("\n  Email -> ");
-            
+            System.out.print("  Email -> ");
             String email = input.next();
             input.nextLine();
             
-            // Validate email format
-            if(!email.contains("@") || !email.contains(".")){
-                System.out.println("\n  [!] Invalid email format! Please try again.");
-                System.out.println("  [i] Example format -> abc123@gmail.com");
-                return;
+            boolean validEmail = false;
+            while(!validEmail){
+                // Validate email format
+                if(email.contains("@") || email.contains(".")){
+                    validEmail = true;
+                }
+                else{
+                    System.out.println("\n  [!] Invalid email format! Please try again.");
+                    System.out.println("  [i] Example format -> abc123@gmail.com");
+                }
             }
 
             // Get phone
-            System.out.print("\n  Phone (e.g. 012-345-6789) -> ");
-            String phone = input.next();
-            input.nextLine();
+            String phone = "";
+            boolean validPhone = false;
+            while(!validPhone){
+                // Validate phone number format
+                System.out.print("  Phone Number (XXX-XXXXXXX[X]) -> ");
+                phone = input.next();
+                input.nextLine();
+
+                // One for normal, one for 011 (1 more digit)
+                if(phone.matches("\\d{3}-\\d{7}") || phone.matches("\\d{3}-\\d{8}")){
+                    validPhone = true;
+                }
+                else{
+                    System.out.println("  [!] Invalid format! Please use the format 012-3456789 or 011-23456789.\n");
+                }
+            }
 
             // Get license number
-            System.out.print("\n  Driver's License Number (e.g. D???????) -> ");
+            System.out.print("  Driver's License Number (e.g. D???????) -> ");
             String licenseNumber = input.next();
             input.nextLine();
-
-            // Validate license number
-            if(licenseNumber.trim().isEmpty() || licenseNumber.length() < 5){
-                System.out.println("\n  [!] Invalid license number! Please try again.");
-                return;
+            
+            boolean validLicenseNumber = false;
+            while(!validLicenseNumber){
+                // Validate license number
+                if(licenseNumber.trim().isEmpty() || licenseNumber.length() < 5){
+                    System.out.println("\n  [!] Invalid license number! Please try again.");
+                }
+                else{
+                    validLicenseNumber = true;
+                }
             }
+            
 
             // Show Summary
             Courier newCourier = new Courier(courierID, loginID, name, password, email, phone, licenseNumber);
@@ -394,7 +439,7 @@ public class AdminPortal {
         }
 
         if(!courier.isOnDuty()){
-            System.out.println("\n  [!] Courier\"" + courierID + "\" is OFF DUTY. Cannot assign shipments");
+            System.out.println("\n  [!] Courier\"" + courierID + "\" is OFF DUTY. Cannot assign shipments.");
             System.out.println("  [i] Courier must be ON DUTY first.");
             return;
         }
@@ -450,7 +495,7 @@ public class AdminPortal {
         System.out.println("  Destination : " + shipment.getDeliveryAddress());
     }
 
-    // OPTION 5
+    // OPTION 4
     private void handleDeliveryFailure(){
         System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
         System.out.println("  ║               HANDLE DELIVERY FAILURES                 ║");
@@ -552,7 +597,7 @@ public class AdminPortal {
         }
     }
 
-    // OPTION 8
+    // OPTION 7
     private void displayDriverWorkload(){
         System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
         System.out.println("  ║                 DRIVER DELIVERY LISTS                  ║");
@@ -607,12 +652,46 @@ public class AdminPortal {
         }
     }
     
+    // OPTION 8
+    private void displayFinancialSummary(List<Shipment> myShipment){
+        double totalCollected = 0.0;
+        double totalPending = 0.0;
+        int paidShipments = 0;
+        int pendingShipments = 0;
+
+        for(Shipment s : myShipment){
+            switch(s.getStatus()){
+                case DELIVERED, IN_TRANSIT, OUT_FOR_DELIVERY, PAID -> {
+                    totalCollected += s.getTotalFee();
+                    paidShipments++;
+                }
+                case PENDING_PAYMENT -> {
+                    totalPending += s.getTotalFee();
+                    pendingShipments++;
+                }
+                default -> {}   // to ignore other enum cases
+            }
+        }
+
+        System.out.println("\n  ╔══════════════════════════════════════════╗");
+        System.out.println("  ║          FINANCIAL SUMMARY REPORT        ║");
+        System.out.println("  ╠══════════════════════════════════════════╣");
+        System.out.printf("  ║  Total Revenue Collected : RM %-9.2f  ║%n", totalCollected);
+        System.out.printf("  ║  Paid Shipments          : %-12d  ║%n", paidShipments);
+        System.out.println("  ╠══════════════════════════════════════════╣");
+        System.out.printf("  ║  Pending Revenue         : RM %-9.2f  ║%n", totalPending);
+        System.out.printf("  ║  Unpaid Shipments        : %-12d  ║%n", pendingShipments);
+        System.out.println("  ╚══════════════════════════════════════════╝");
+    }
+
+
+    // OPTION 9
     private void viewAdminProfile(Admin admin){
         System.out.println();
         admin.displayInfo();
     }
 
-       // HELPER METHOD FOR COURIER DELIVERY LIST DISPLAYING (OPTION 7)
+    // HELPER METHOD FOR COURIER DELIVERY LIST DISPLAYING (OPTION 7)
     private void displayCourierDeliveryList(Courier courier){
         System.out.println("\n  ┌────────────────────────────────────────────────────────┐");
         System.out.printf("  │  COURIER: %-45s│%n", courier.getName() + " (" + courier.getPersonID() + ")");

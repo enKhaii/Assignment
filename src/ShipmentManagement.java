@@ -32,8 +32,7 @@ public class ShipmentManagement {
                     case 3 -> searchByTrackingID();
                     case 4 -> searchBySenderID();
                     case 5 -> viewShipmentDetails();
-                    case 6 -> reviewShippingFees();
-                    case 7 -> updateShipmentStatus();
+                    case 6 -> updateShipmentStatus();
                     case 0 -> {
                         System.out.println("\n  [i] Returning to Admin Portal...");
                         inShipmentMenu = false;
@@ -168,46 +167,6 @@ public class ShipmentManagement {
         }
     }
 
-    private void reviewShippingFees(){
-        System.out.print("  Enter Tracking ID -> ");
-        String trackingID = input.next();
-
-        Shipment s = shipmentRegistry.findByTrackingID(trackingID);
-
-        if(s == null){
-            System.out.println("\n  [!] Shipment \"" + trackingID + "\" not found.");
-            return;  
-        }
-
-        // Retrieve the parcel object to variable 'p'
-        Parcel p = s.getParcel();
-
-        System.out.println("\n  ╔════════════════════════════════════════════════════════╗");
-        System.out.println("  ║                  SHIPPING FEE BREAKDOWN                ║");
-        System.out.println("  ╚════════════════════════════════════════════════════════╝");
-        System.out.println("  Tracking ID: " + s.getTrackingID());
-        System.out.println("\n  PARCEL DETAILS:");
-        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
-        System.out.println("  Content Type      : " + p.getContentType());
-        System.out.printf("  Weight            : %.2f kg%n", p.getWeight());
-        System.out.printf("  Dimensions        : %.1f x %.1f x %.1f cm%n", p.getLength(), p.getWidth(), p.getHeight());
-        System.out.printf("  Volumetric Weight : %.2f kg%n", p.getVolumetricWeight());
-        System.out.printf("  Chargeable Weight : %.2f kg%n", p.getChargeableWeight());
-        System.out.printf("  Declared Value    : RM %.2f%n", p.getDeclaredValue());
-        System.out.println("\n  FEE CALCULATION:");
-        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
-        System.out.printf("  Base Fee          : RM %.2f (%.2f kg x RM %.2f/kg)%n", s.getBaseFee(), p.getChargeableWeight(), s.getSpeed().getRatePerKg());
-        System.out.printf("  Distance Fee      : RM %.2f (%.1f km x RM 0.05/km)%n", s.getDistanceFee(), s.getDistance());
-        System.out.printf("  Insurance Fee     : RM %.2f%n", s.getInsuranceFee());
-        System.out.printf("  TOTAL FEE         : RM %.2f%n", s.getTotalFee());
-        System.out.println("\n  DELIVERY DETAILS:");
-        System.out.println("  ────────────────────────────────────────────────────────────────────────────────────");
-        System.out.println("  Shipping Speed    : " + s.getSpeed() + " (" + s.getSpeed().getDeliveryTime() + ")");
-        System.out.println("  Distance          : " + s.getDistance() + " km");
-        System.out.println("  Pickup Address    : " + s.getPickupAddress());
-        System.out.println("  Delivery Address  : " + s.getDeliveryAddress());
-    }
-
     private void updateShipmentStatus(){
         System.out.print("  Enter Tracking ID -> ");
         String trackingID = input.next();
@@ -226,15 +185,15 @@ public class ShipmentManagement {
         System.out.println("  Current Status: " + s.getStatus());
         System.out.println();
         System.out.println("  Update to:");
-        System.out.println("  1. PENDING_PAYMENT");
-        System.out.println("  2. PAID");
-        System.out.println("  3. PICKED_UP");
-        System.out.println("  4. IN_TRANSIT");
-        System.out.println("  5. OUT_FOR_DELIVERY");
-        System.out.println("  6. DELIVERED");
-        System.out.println("  7. FAILED_ATTEMPT");
-        System.out.println("  8. CANCELLED");
-        System.out.println("  0. Cancel");
+        System.out.println("   1. PENDING_PAYMENT");
+        System.out.println("   2. PAID");
+        System.out.println("   3. PICKED_UP");
+        System.out.println("   4. IN_TRANSIT");
+        System.out.println("   5. OUT_FOR_DELIVERY");
+        System.out.println("   6. DELIVERED");
+        System.out.println("   7. FAILED_ATTEMPT");
+        System.out.println("   8. CANCELLED");
+        System.out.println("   0. Cancel");
         System.out.print("  Choice -> ");
 
         int choice = input.nextInt();
@@ -279,8 +238,7 @@ public class ShipmentManagement {
         System.out.println("  ║  3.  Search By Tracking ID           ║");
         System.out.println("  ║  4.  Search By Sender ID             ║");
         System.out.println("  ║  5.  View Shipment Details           ║");
-        System.out.println("  ║  6.  Review Shipping Fees            ║");
-        System.out.println("  ║  7.  Update Shipment Status          ║");
+        System.out.println("  ║  6.  Update Shipment Status          ║");
         System.out.println("  ║  0.  Return to Admin Portal          ║");
         System.out.println("  ╚══════════════════════════════════════╝");
         System.out.print("  Choice -> ");

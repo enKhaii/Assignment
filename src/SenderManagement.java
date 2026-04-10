@@ -8,22 +8,18 @@ public class SenderManagement {
     private ArrayList<Sender> senderList;
     private Scanner input;
     
-    // IMPORTANT: Add a connection to the team's ShipmentRegistry!
+    // Connection to ShipmentRegistry
     private ShipmentRegistry shipmentRegistry; 
     
     private int nextSenderId = 200; 
     
-    // Constructor updated to receive the team's ShipmentRegistry
     public SenderManagement(Scanner input, ShipmentRegistry shipmentRegistry) {
         this.senderList = new ArrayList<Sender>();
         this.input = input;
         this.shipmentRegistry = shipmentRegistry; // Connect to the main database
         
-        // Dummy account for easy testing
-        Sender testUser = new Sender("SND200", "Lim Yi Ming", "yiming@gmail.com", "012-345-6789", Sender.MemberTier.STANDARD);
-        senderList.add(testUser);
-        testUser.setPassword("123456"); 
-        
+        // Dummy account
+        Sender testUser = new Sender("SND200", "Lim Yi Ming", "123456", "yiming@gmail.com", "012-3456789", Sender.MemberTier.STANDARD);
         senderList.add(testUser);
     }
     
@@ -92,15 +88,14 @@ public class SenderManagement {
         
         System.out.print("  Set a Password -> "); 
         String password = input.nextLine();
-        Sender sender = new Sender(newId, name, email, phone, Sender.MemberTier.STANDARD) ;
-        sender.setPassword(password);
+        Sender sender = new Sender(newId, name, password, email, phone, Sender.MemberTier.STANDARD) ;
         senderList.add(sender);
         
         System.out.println("\n  [DONE] Registration complete!\n");
         System.out.println("  Your fixed Sender ID is: " + newId);
         return sender;
     }
-    
+
     private Sender findExistingSender() {
         System.out.print("\n  Enter your Sender ID (e.g. SND200) -> ");
         String searchId = input.nextLine().trim();
@@ -436,19 +431,5 @@ public class SenderManagement {
         // Pause before returning to menu
         System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine(); 
-    }
-
-   private String getValidString(String message) {
-        while (true) {
-            System.out.print(message);
-
-            String text = input.nextLine().trim(); 
-            
-            if (!text.isEmpty()) {
-                return text;
-            } else {
-                System.out.println("\n  [!] Error: Input cannot be empty. Please try again.");
-            }
-        }
     }
 }

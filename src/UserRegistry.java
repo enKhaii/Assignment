@@ -12,17 +12,17 @@ public class UserRegistry{
 
     public static void initializeData(){
         // Admin Objects
-        admins.add(new Admin("ADM01", "CHONG01", "Chong Wen Liang", "chongwliang123", "cwenliang22@gmail.com", "017-284-1288", Admin.Role.SUPER_ADMIN));
-        admins.add(new Admin("ADM02", "ROHINKUMAR02", "Raj Rohin Kumar", "rohinkumar456", "rohinkumar092@hotmail.com", "011-4824-2995",  Admin.Role.OPERATIONS_MANAGER));
-        admins.add(new Admin("ADM03", "KYODUSLIM03", "Kyodus Lim Kai Yuan", "kyodus789", "kyoduslim141@gmail.com", "014-198-6767",  Admin.Role.DISPATCH_OFFICER));        
+        admins.add(new Admin("ADM01", "CHONG01", "Chong Wen Liang", "chongwliang123", "cwenliang22@gmail.com", "017-2841288", Admin.Role.SUPER_ADMIN));
+        admins.add(new Admin("ADM02", "ROHINKUMAR02", "Raj Rohin Kumar", "rohinkumar456", "rohinkumar092@hotmail.com", "011-48242995",  Admin.Role.OPERATIONS_MANAGER));
+        admins.add(new Admin("ADM03", "KYODUSLIM03", "Kyodus Lim Kai Yuan", "kyodus789", "kyoduslim141@gmail.com", "014-1986767",  Admin.Role.DISPATCH_OFFICER));        
         
         Courier c1 = new Courier("CRR01", "AHMAD01", "Ahmad Malik",
-        "ahmad1234", "ahmad@courierpro.my", "012-345-6789", "D1234567");
+        "ahmad1234", "ahmad@courierpro.my", "012-3456789", "D1234567");
         c1.setDutyStatus(true);
         c1.setAssignedVehicleID("VHE501");
         
         Courier c2 = new Courier("CRR02", "RAZIF02", "Mohd Razif bin Johari",
-        "razif5678", "razif@courierpro.my", "019-876-5432", "D7654321");
+        "razif5678", "razif@courierpro.my", "019-8765432", "D7654321");
         c2.setDutyStatus(true);
         c2.setAssignedVehicleID("VHE502");
         

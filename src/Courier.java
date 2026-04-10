@@ -137,7 +137,7 @@ public class Courier extends Person {
         Shipment s = findShipment(trackingID);
 
         s.updateStatus(newStatus, note);
-        System.out.println("\n  [DONE] Status updated to " + newStatus + " for " + trackingID);
+        System.out.println("\n  [DONE] Status updated to " + newStatus + " for " + trackingID + ".");
     }
 
     /**
