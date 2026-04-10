@@ -137,6 +137,7 @@ public class SenderManagement {
             System.out.println("  ║  4. Pay for Shipment                            ║");
             System.out.println("  ║  5. Cancel Shipment                             ║");
             System.out.println("  ║  6. View My Profile                             ║");
+            System.out.println("  ║  7. Upgrade Membership                          ║");
             System.out.println("  ║  0. Logout                                      ║");
             System.out.println("  ╚═════════════════════════════════════════════════╝");
             System.out.print("  Choice -> ");
@@ -157,6 +158,8 @@ public class SenderManagement {
                     cancelShipment(sender);
                 } else if (choice == 6) {
                      viewMyProfile(sender);;
+                } else if (choice == 7) {             
+                     manageMembership(sender);
                 } else if (choice == 0) {
                     System.out.println("  Logging out...");
                     inMenu = false; 
@@ -431,5 +434,84 @@ public class SenderManagement {
         // Pause before returning to menu
         System.out.println("\n  Press ENTER to return to dashboard...");
         input.nextLine(); 
+    }
+
+   // --- FEATURE 7: Manage Membership (Upgrade / Downgrade) ---
+    private void manageMembership(Sender sender) {
+        System.out.println("\n  ╔═══════════════════════════════════════════════════╗");
+        System.out.println("  ║                MANAGE MEMBERSHIP                  ║");
+        System.out.println("  ╚═══════════════════════════════════════════════════╝");
+        System.out.println("  Current Tier: " + sender.getTier());
+
+        if (sender.getTier() == Sender.MemberTier.STANDARD) {
+            System.out.println("\n  Available Actions:");
+            System.out.println("   1. Upgrade to PREMIUM  (RM 50.00)  - 10% discount on shipments");
+            System.out.println("   2. Upgrade to BUSINESS (RM 200.00) - Corporate billing & Free Insurance");
+            System.out.println("   0. Cancel");
+            
+            System.out.print("\n  Select your choice -> ");
+            String choice = input.nextLine().trim();
+            
+            if (choice.equals("1")) {
+                sender.setTier(Sender.MemberTier.PREMIUM);
+                System.out.println("\n  [SUCCESS] Paid RM 50.00. You are now a PREMIUM member!");
+            } else if (choice.equals("2")) {
+                sender.setTier(Sender.MemberTier.BUSINESS);
+                System.out.println("\n  [SUCCESS] Paid RM 200.00. You are now a BUSINESS member!");
+            } else {
+                System.out.println("\n  [i] Action cancelled.");
+            }
+            
+        } else if (sender.getTier() == Sender.MemberTier.PREMIUM) {
+            System.out.println("\n  Available Actions:");
+            System.out.println("   1. Upgrade to BUSINESS (RM 150.00) - Corporate billing & Free Insurance");
+            System.out.println("   2. Downgrade to STANDARD (Free)    - Lose priority support and discounts");
+            System.out.println("   0. Cancel");
+            
+            System.out.print("\n  Select your choice -> ");
+            String choice = input.nextLine().trim();
+            
+            if (choice.equals("1")) {
+                sender.setTier(Sender.MemberTier.BUSINESS);
+                System.out.println("\n  [SUCCESS] Paid RM 150.00. You are now a BUSINESS member!");
+            } else if (choice.equals("2")) {
+                System.out.print("  Are you sure you want to lose your Premium benefits? (Y/N) -> ");
+                if (input.nextLine().trim().equalsIgnoreCase("Y")) {
+                    sender.setTier(Sender.MemberTier.STANDARD);
+                    System.out.println("\n  [DONE] You have been downgraded to STANDARD. Monthly billing cancelled.");
+                } else {
+                    System.out.println("\n  [i] Smart choice! Keeping PREMIUM tier.");
+                }
+            } else {
+                System.out.println("\n  [i] Action cancelled.");
+            }
+            
+        } else if (sender.getTier() == Sender.MemberTier.BUSINESS) {
+            System.out.println("\n  Available Actions:");
+            System.out.println("   1. Downgrade to PREMIUM  - Keep 10% discount, lose free insurance");
+            System.out.println("   2. Downgrade to STANDARD - Cancel all subscriptions and benefits");
+            System.out.println("   0. Cancel");
+            
+            System.out.print("\n  Select your choice -> ");
+            String choice = input.nextLine().trim();
+            
+            if (choice.equals("1")) {
+                sender.setTier(Sender.MemberTier.PREMIUM);
+                System.out.println("\n  [DONE] Downgraded to PREMIUM. Next billing will be RM 50.00.");
+            } else if (choice.equals("2")) {
+                System.out.print("  Are you sure you want to cancel your Business subscription? (Y/N) -> ");
+                if (input.nextLine().trim().equalsIgnoreCase("Y")) {
+                    sender.setTier(Sender.MemberTier.STANDARD);
+                    System.out.println("\n  [DONE] You have been downgraded to STANDARD. All subscriptions cancelled.");
+                } else {
+                    System.out.println("\n  [i] Keeping BUSINESS tier.");
+                }
+            } else {
+                System.out.println("\n  [i] Action cancelled.");
+            }
+        }
+        
+        System.out.println("\n  Press ENTER to return to dashboard...");
+        input.nextLine();
     }
 }
