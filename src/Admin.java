@@ -43,12 +43,6 @@ public class Admin extends Person{
     public void setDepartment(String department){
         this.department = department;
     }
-
-    // Method for can assign routes or not (return true if role are correct)
-    public boolean canAssignRoutes(){
-        return adminRole == Role.SUPER_ADMIN || adminRole == Role.OPERATIONS_MANAGER;
-    }
-
     
     // Override ensures we access the ADMIN displayInfo instead of PERSON displayInfo
     // prevent general displayInfo to be displayed
