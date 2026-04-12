@@ -14,9 +14,9 @@ public class Admin extends Person{
     private String department;
 
 
-    public Admin(String staffID, String loginID, String name, String password, String email, String phone, Role adminRole) {
+    public Admin(String personID, String loginID, String name, String password, String email, String phoneNum, Role adminRole) {
         // super = accessing parent class(Person) variable
-        super(staffID, loginID, name, password, email, phone);        
+        super(personID, loginID, name, password, email, phoneNum);        
         this.department = switch(adminRole){
             case SUPER_ADMIN -> "Executive HQ";
             case OPERATIONS_MANAGER -> "Logistics & Warehousing";
