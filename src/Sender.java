@@ -14,8 +14,8 @@ public class Sender extends Person {
     private MemberTier tier;
 
     // Parameter Contructor
-    public Sender(String personID, String name, String password, String email, String phone, MemberTier tier) {
-        super(personID, name, password, email, phone);
+    public Sender(String personID, String name, String password, String email, String phoneNum, MemberTier tier) {
+        super(personID, name, password, email, phoneNum);
         this.tier = tier;
     }
 

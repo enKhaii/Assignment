@@ -459,9 +459,9 @@ public class SenderManagement {
 
    // --- FEATURE 7: Manage Membership (Upgrade / Downgrade) ---
     private void manageMembership(Sender sender) {
-        System.out.println("\n  ╔═══════════════════════════════════════════════════╗");
-        System.out.println("  ║                MANAGE MEMBERSHIP                  ║");
-        System.out.println("  ╚═══════════════════════════════════════════════════╝");
+        System.out.println("\n  ╔═════════════════════════════════════════════════╗");
+        System.out.println("  ║                MANAGE MEMBERSHIP                ║");
+        System.out.println("  ╚═════════════════════════════════════════════════╝");
         System.out.println("  Current Tier: " + sender.getTier());
 
         if (sender.getTier() == Sender.MemberTier.STANDARD) {
@@ -525,7 +525,7 @@ public class SenderManagement {
                     sender.setTier(Sender.MemberTier.STANDARD);
                     System.out.println("\n  [DONE] You have been downgraded to STANDARD. All subscriptions cancelled.");
                 } else {
-                    System.out.println("\n  [i] Keeping BUSINESS tier.");
+                    System.out.println("\n  [i] Excellent choice! Keeping BUSINESS tier.");
                 }
             } else {
                 System.out.println("\n  [i] Action cancelled.");

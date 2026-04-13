@@ -62,6 +62,7 @@ public class Courier extends Person {
      * View all shipments assigned today.
      */
     public void viewDailyDeliveryList() {
+        try{
         System.out.println("\n  ╔════════════════════════════════════════════╗");
         System.out.println("  ║             DAILY DELIVERY LIST            ║");
         System.out.printf ("  ║  Driver  : %-30s  ║%n", getName());
@@ -85,7 +86,11 @@ public class Courier extends Person {
             }
         }
         System.out.println("  ╚════════════════════════════════════════════╝");
+        
+    }catch (Exception e){
+        System.out.println("\n  [!] An unexpected error occurred while loading the delivery list.");
     }
+   } 
 
     /**
      * Courier confirms physical pickup of a package.

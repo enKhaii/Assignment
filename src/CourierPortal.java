@@ -90,8 +90,15 @@ public class CourierPortal {
         System.out.println("   2. OUT_FOR_DELIVERY");
         System.out.print("  Choice -> ");
  
-        int choice = input.nextInt();
-        input.nextLine();
+        int choice = -1;
+        try{
+            choice = input.nextInt();
+            input.nextLine();
+        }catch(InputMismatchException e){
+            System.out.println("\n  [!] Invalid input! Please enter a number.");
+            input.nextLine(); // clear wrong input
+            return;
+        }
  
         Shipment.ShipmentStatus newStatus = switch (choice) {
             case 1 -> Shipment.ShipmentStatus.IN_TRANSIT;
@@ -145,8 +152,15 @@ public class CourierPortal {
         System.out.println("   5. Other");
         System.out.print("  Choice -> ");
  
-        int choice = input.nextInt();
-        input.nextLine();
+        int choice = -1;
+        try{
+            choice = input.nextInt();
+            input.nextLine();
+        }catch(InputMismatchException e){
+            System.out.println("\n  [!] Invalid input! Please enter a number.");
+            input.nextLine(); // clear wrong input
+            return;
+        }
  
         String reason = switch (choice) {
             case 1 -> "Receiver not home";
