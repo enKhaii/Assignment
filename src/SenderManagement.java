@@ -323,21 +323,40 @@ public class SenderManagement {
                 System.out.println("  ║              PAYMENT CONFIRMATION              ║");
                 System.out.println("  ╚════════════════════════════════════════════════╝");
                 System.out.println("  Tracking ID: " + trackingId);
-                System.out.printf("  Amount Due: RM %.2f%n", s.getTotalFee());
+            
+                double originalTotal = s.getTotalFee();
+                double discount = 0.0;
+                String discountReason = "";
+
+                if (sender.getTier() == Sender.MemberTier.PREMIUM) {
+                    discount = originalTotal * 0.10; 
+                    discountReason = "PREMIUM 10% Off";
+                } else if (sender.getTier() == Sender.MemberTier.BUSINESS) {
+                    discount = s.getInsuranceFee();
+                    discountReason = "BUSINESS Free Insurance";
+                }
+
+                double finalAmount = originalTotal - discount;
+
+                System.out.printf("  Amount Due: RM %.2f%n", finalAmount);
                 System.out.println();
 
                 System.out.println("  Fee Breakdown:");
                 System.out.printf("    Base Fee      : RM %.2f%n", s.getBaseFee());
                 System.out.printf("    Distance Fee  : RM %.2f%n", s.getDistanceFee());
                 System.out.printf("    Insurance Fee : RM %.2f%n", s.getInsuranceFee());
+                
+                if (discount > 0) {
+                    System.out.printf("    Discount      :-RM %.2f (%s)%n", discount, discountReason);
+                }
+                
                 System.out.println("  " + "─".repeat(60));
-                System.out.printf("  TOTAL           : RM %.2f%n", s.getTotalFee());
+                System.out.printf("  FINAL TOTAL     : RM %.2f%n", finalAmount); 
                 System.out.println();
 
                 System.out.print("  Confirm Payment? (Y/N) -> ");
                 String confirm = input.nextLine();
                 if (confirm.equalsIgnoreCase("Y")) {
-                    // Update status
                     s.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
 
                     System.out.println("\n  ╔════════════════════════════════════════════╗");
@@ -352,6 +371,8 @@ public class SenderManagement {
         } else {
             System.out.println("\n  [!] Shipment not found. Please try again.");
         }
+        System.out.println("\n  Press ENTER to return to dashboard...");
+        input.nextLine();
     }
     
     // --- FEATURE 5: Cancel Shipment ---
