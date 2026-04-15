@@ -31,8 +31,7 @@ public class ShipmentManagement {
                     case 2 -> filterByStatus();
                     case 3 -> searchByTrackingID();
                     case 4 -> searchBySenderID();
-                    case 5 -> viewShipmentDetails();
-                    case 6 -> updateShipmentStatus();
+                    case 5 -> updateShipmentStatus();
                     case 0 -> {
                         System.out.println("\n  [i] Returning to Admin Portal...");
                         inShipmentMenu = false;
@@ -119,6 +118,13 @@ public class ShipmentManagement {
         else{
             System.out.println("\n  [DONE] Shipment Found.");
             s.displayFullDetails();
+
+            System.out.print("\n  View Tracking History? (Y/N) -> ");
+            String showHistory = input.next();
+
+            if(showHistory.equalsIgnoreCase("Y")){
+                s.displayTrackingHistory();
+            }
         }
     }
 
@@ -143,26 +149,6 @@ public class ShipmentManagement {
             
             for (Shipment s : results) {
                 System.out.printf("  %-15s %-20s RM %-10.2f%n", s.getTrackingID(), s.getStatus(), s.getTotalFee());
-            }
-        }
-    }
-
-    private void viewShipmentDetails(){
-        System.out.print("  Enter Tracking ID -> ");
-        String trackingID = input.next();
-
-        Shipment s = shipmentRegistry.findByTrackingID(trackingID);
-
-        if(s == null){
-            System.out.println("\n  [!] Shipment \"" + trackingID + "\" not found.");
-        }
-        else{
-            s.displayFullDetails();
-            System.out.print("\n  View Tracking History? (Y/N) -> ");
-            String showHistory = input.next();
-
-            if(showHistory.equalsIgnoreCase("Y")){
-                s.displayTrackingHistory();
             }
         }
     }
@@ -237,8 +223,7 @@ public class ShipmentManagement {
         System.out.println("  ║  2.  Filter By Status                ║");
         System.out.println("  ║  3.  Search By Tracking ID           ║");
         System.out.println("  ║  4.  Search By Sender ID             ║");
-        System.out.println("  ║  5.  View Shipment Details           ║");
-        System.out.println("  ║  6.  Update Shipment Status          ║");
+        System.out.println("  ║  5.  Update Shipment Status          ║");
         System.out.println("  ║  0.  Return to Admin Portal          ║");
         System.out.println("  ╚══════════════════════════════════════╝");
         System.out.print("  Choice -> ");

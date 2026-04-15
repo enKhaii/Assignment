@@ -140,19 +140,19 @@ public class AdminPortal {
             }
 
             // Get email
-            System.out.print("  Email -> ");
-            String email = input.next();
-            input.nextLine();
-            
+            String email = "";
             boolean validEmail = false;
             while(!validEmail){
+                System.out.print("  Email -> ");
+                email = input.next();
+                input.nextLine();
                 // Validate email format
                 if(email.contains("@") || email.contains(".")){
                     validEmail = true;
                 }
                 else{
                     System.out.println("\n  [!] Invalid email format! Please try again.");
-                    System.out.println("  [i] Example format -> abc123@gmail.com");
+                    System.out.println("  [i] Example format -> abc123@gmail.com\n");
                 }
             }
 
@@ -270,20 +270,20 @@ public class AdminPortal {
                 }
             }
                 
-            // Get email
-            System.out.print("  Email -> ");
-            String email = input.next();
-            input.nextLine();
-            
+            String email = "";
             boolean validEmail = false;
             while(!validEmail){
+                // Get email
+                System.out.print("  Email -> ");
+                email = input.next();
+                input.nextLine();
                 // Validate email format
                 if(email.contains("@") || email.contains(".")){
                     validEmail = true;
                 }
                 else{
                     System.out.println("\n  [!] Invalid email format! Please try again.");
-                    System.out.println("  [i] Example format -> abc123@gmail.com");
+                    System.out.println("  [i] Example format -> abc123@gmail.com\n");
                 }
             }
 
@@ -305,16 +305,16 @@ public class AdminPortal {
                 }
             }
 
-            // Get license number
-            System.out.print("  Driver's License Number (e.g. D???????) -> ");
-            String licenseNumber = input.next();
-            input.nextLine();
-            
+            String licenseNumber = "";
             boolean validLicenseNumber = false;
             while(!validLicenseNumber){
+                // Get license number
+                System.out.print("  Driver's License Number (e.g. D???????) -> ");
+                licenseNumber = input.next();
+                input.nextLine();
                 // Validate license number
                 if(licenseNumber.trim().isEmpty() || licenseNumber.length() < 5){
-                    System.out.println("\n  [!] Invalid license number! Please try again.");
+                    System.out.println("\n  [!] Invalid license number! Please try again.\n");
                 }
                 else{
                     validLicenseNumber = true;

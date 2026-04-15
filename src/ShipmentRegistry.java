@@ -116,26 +116,26 @@ public class ShipmentRegistry {
     public void initializeData(){
         // Sample Shipment 1 - Electronic (Express)
         Parcel parcel1 = new Parcel(Parcel.ContentType.ELECTRONICS,"Laptop - Lenovo Legion 5 Gen 10", 3.5, 40, 40, 10, 6000.00);
-        Shipment shipment1 = new Shipment("TRK10001", "SDN101", parcel1, "24 Jalan TS 6 Taman Indsutri, 47510 Subang Jaya, Selangor", "14th Floor, Blok B Megan Avenue Ii, 50540 Kuala Lumpur", 30.0, Shipment.ShippingSpeed.EXPRESS);
+        Shipment shipment1 = new Shipment("TRK10001", "SND101", parcel1, "24 Jalan TS 6 Taman Indsutri, 47510 Subang Jaya, Selangor", "14th Floor, Blok B Megan Avenue Ii, 50540 Kuala Lumpur", 30.0, Shipment.ShippingSpeed.EXPRESS);
         shipments.add(shipment1);
         shipment1.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
 
         // Sample Shipment 2 - Documents (Standard)        System.out.printf("  %-12s %-15s %-20s%n",
         Parcel parcel2 = new Parcel(Parcel.ContentType.DOCUMENTS, "Legal documents - Contract paper", 0.5, 30, 20, 2, 100.00);
-        Shipment shipment2 = new Shipment("TRK10002", "SDN102", parcel2, "12 Lorong Keramat 21 Kampung Datok Keramat, 54000 Kuala Lumpur", "9 Jalan Ambong Kanan 1 Kepong Baru, 52100 Kuala Lumpur", 10.0, Shipment.ShippingSpeed.STANDARD);
+        Shipment shipment2 = new Shipment("TRK10002", "SND102", parcel2, "12 Lorong Keramat 21 Kampung Datok Keramat, 54000 Kuala Lumpur", "9 Jalan Ambong Kanan 1 Kepong Baru, 52100 Kuala Lumpur", 10.0, Shipment.ShippingSpeed.STANDARD);
         shipments.add(shipment2);
         shipment2.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
         shipment2.updateStatus(Shipment.ShipmentStatus.PICKED_UP, "Picked up from Sender");
 
         // Sample Shipment 3 - Clothing (Standard - PENDING PAYMENT)
         Parcel parcel3 = new Parcel(Parcel.ContentType.CLOTHING, "Winter Jacket and Accessories", 1.2, 50, 40, 15, 250.00);
-        Shipment shipment3 = new Shipment("TRK10003", "SDN101", parcel3, "18, Jalan Todak 2, 13700 Perai, Pulau Pinang", "No 88, Jalan Sultan Ismail, 20200 Kuala Terengganu, Terengganu", 400.0, Shipment.ShippingSpeed.STANDARD);
+        Shipment shipment3 = new Shipment("TRK10003", "SND101", parcel3, "18, Jalan Todak 2, 13700 Perai, Pulau Pinang", "No 88, Jalan Sultan Ismail, 20200 Kuala Terengganu, Terengganu", 400.0, Shipment.ShippingSpeed.STANDARD);
         shipments.add(shipment3);
         // no status updated cause it stays PENDING_PAYMENT
 
         // Sample Shipment 4 - Fragile (Express)
         Parcel parcel4 = new Parcel(Parcel.ContentType.FRAGILE, "Glass Vase - Antique", 2.0, 35, 35, 40, 800.00);
-        Shipment shipment4 = new Shipment("TRK10004", "SDN102", parcel4, "15, Jalan Merdeka, Taman Melaka Raya, 75000 Melaka, Melaka", "26, Jalan BU 4A, Taman Bachang Utama, 75300 Bachang, Melaka", 15.0, Shipment.ShippingSpeed.EXPRESS);
+        Shipment shipment4 = new Shipment("TRK10004", "SND102", parcel4, "15, Jalan Merdeka, Taman Melaka Raya, 75000 Melaka, Melaka", "26, Jalan BU 4A, Taman Bachang Utama, 75300 Bachang, Melaka", 15.0, Shipment.ShippingSpeed.EXPRESS);
         shipments.add(shipment4);
         shipment4.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
         shipment4.updateStatus(Shipment.ShipmentStatus.PICKED_UP, "Picked up from Sender");
@@ -143,7 +143,7 @@ public class ShipmentRegistry {
 
         // Sample Shipment 5 - Food (Express)
         Parcel parcel5 = new Parcel(Parcel.ContentType.FOOD, "Fresh Seafood - Premium Lobster", 5.0, 60, 40, 20, 500.00);
-        Shipment shipment5 = new Shipment("TRK10005", "SDN101", parcel5, "167, Jalan Sungai Keladi 2, 42000 Port Klang, Selangor", "6226, Jalan Kota Raja, Kawasan 1, 41000 Klang, Selangor", 20.0, Shipment.ShippingSpeed.EXPRESS);
+        Shipment shipment5 = new Shipment("TRK10005", "SND101", parcel5, "167, Jalan Sungai Keladi 2, 42000 Port Klang, Selangor", "6226, Jalan Kota Raja, Kawasan 1, 41000 Klang, Selangor", 20.0, Shipment.ShippingSpeed.EXPRESS);
         shipments.add(shipment5);
         shipment5.updateStatus(Shipment.ShipmentStatus.PAID, "Payment confirmed");
         shipment5.updateStatus(Shipment.ShipmentStatus.PICKED_UP, "Picked up from Sender");
