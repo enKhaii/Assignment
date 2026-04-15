@@ -330,10 +330,10 @@ public class SenderManagement {
 
                 if (sender.getTier() == Sender.MemberTier.PREMIUM) {
                     discount = originalTotal * 0.10; 
-                    discountReason = "PREMIUM 10% Off";
+                    discountReason = "PREMIUM Tier, 10% Off";
                 } else if (sender.getTier() == Sender.MemberTier.BUSINESS) {
                     discount = s.getInsuranceFee();
-                    discountReason = "BUSINESS Free Insurance";
+                    discountReason = "BUSINESS Tier, Free Insurance";
                 }
 
                 double finalAmount = originalTotal - discount;
