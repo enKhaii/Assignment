@@ -633,6 +633,7 @@ public class AdminPortal {
         }
         else{
             for(Courier courier : allCouriers){
+                System.out.println();
                 displayCourierDeliveryList(courier);
                 System.out.println();
             }
@@ -643,7 +644,7 @@ public class AdminPortal {
                 totalShipments += c.getAssignedShipments().size();
             }
 
-            System.out.println("  ╔═════════════════════════════════════════════════════╗");
+            System.out.println("\n  ╔═════════════════════════════════════════════════════╗");
             System.out.println("  ║                      SUMMARY                        ║ ");
             System.out.println("  ╠═════════════════════════════════════════════════════╣");
             System.out.printf("  ║ %-51s ║\n", "Total Couriers  : " + allCouriers.size());

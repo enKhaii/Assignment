@@ -169,9 +169,9 @@ public class FleetManagement{
             v.displayInfo();
 
             System.out.println("\n  What would you like to update?");
-            System.out.println("  1. Plate Number");
-            System.out.println("  2. Status");
-            System.out.println("  0. Cancel");
+            System.out.println("   1. Plate Number");
+            System.out.println("   2. Status");
+            System.out.println("   0. Cancel");
             System.out.print("  Choice -> ");
             int choice = input.nextInt();
             input.nextLine();
@@ -186,9 +186,9 @@ public class FleetManagement{
                 }
                 case 2 -> {
                     System.out.println(" \n  Status Options:");
-                    System.out.println("  1. AVAILABLE");
-                    System.out.println("  2. IN_USE");
-                    System.out.println("  3. UNDER_MAINTENANCE");
+                    System.out.println("   1. AVAILABLE");
+                    System.out.println("   2. IN_USE");
+                    System.out.println("   3. UNDER_MAINTENANCE");
                     System.out.print("  Choice -> ");
                     int statusChoice = input.nextInt();
                     input.nextLine();
@@ -231,6 +231,12 @@ public class FleetManagement{
         // if Status = IN_USE, stop operation
         if(v.getStatus() == Vehicle.VehicleStatus.IN_USE){
             System.out.println("\n  [!] Cannot schedule maintenance - vehicle is currently in use.");
+            return;
+        }
+
+        // if Status = UNDER_MAINTENANCE, stop operation bc already in maintenance
+        if(v.getStatus() == Vehicle.VehicleStatus.UNDER_MAINTENANCE){
+            System.out.println("\n  [!] Cannot schedule maintenance - vehicle already under maintenance.");
             return;
         }
 
