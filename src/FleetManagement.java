@@ -368,6 +368,11 @@ public class FleetManagement{
 
             Vehicle v = fleetManager.findByID(vehicleID);
 
+            if(v == null){
+                System.out.println("\n  [!] Vehicle \"" + vehicleID + "\" not found.");
+                return;
+            }
+
             if(!v.isAvailable()){
                 System.out.println("\n  [!] Vehicle \"" + vehicleID + "\" is not available.");
                 System.out.println("  [i] Current Status -> " + v.getStatus());
@@ -437,7 +442,7 @@ public class FleetManagement{
                 System.out.println("\n  ╔═══════════════════════════════════════╗");
                 System.out.println("  ║     VEHICLE ASSIGNED SUCCESSFULLY     ║");
                 System.out.println("  ╚═══════════════════════════════════════╝");
-                System.out.println("  [i] " + courier.getName() + " can now use " + vehicleID + ".");
+                System.out.println("\n  [i] " + courier.getName() + " can now use " + vehicleID + ".\n");
             }
             else{
                 System.out.println("\n  [i] Assignment cancelled.");
@@ -465,7 +470,7 @@ public class FleetManagement{
             }
 
             System.out.println("\n  Vehicles Currently Assigned:");
-            System.out.printf("  %-10s %-12s %-12s %-15s%n", "Vehicle ID", "Plate", "Type", "Assigned To");
+            System.out.printf("  %-12s %-12s %-12s %-15s%n", "Vehicle ID", "Plate", "Type", "Assigned To");
             System.out.println("  " + "─".repeat(60));
 
             for(Vehicle v : inUse){
@@ -477,7 +482,7 @@ public class FleetManagement{
                     }
                 }
 
-                System.out.printf("  %-10s %-12s %-12s %-15s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(), courierName);
+                System.out.printf("  %-12s %-12s %-12s %-15s%n", v.getVehicleID(), v.getPlateNumber(), v.getType(), courierName);
             }
 
             // Get vehicleID to release
@@ -521,10 +526,10 @@ public class FleetManagement{
                 // Call FleetManager to release (will update both Vehicle and Courier)
                 fleetManager.releaseVehicle(vehicleID);
                 
-                System.out.println("\n╔═════════════════════════════════════════╗");
+                System.out.println("\n  ╔═════════════════════════════════════════╗");
                 System.out.println("  ║      VEHICLE RELEASED SUCCESSFULLY      ║");
                 System.out.println("  ╚═════════════════════════════════════════╝");
-                System.out.println("  Vehicle \"" + vehicleID + "\" is now AVAILABLE.");
+                System.out.println("\n  [i] Vehicle \"" + vehicleID + "\" is now AVAILABLE.");
             } else {
                 System.out.println("\n  [i] Release cancelled.");
             }

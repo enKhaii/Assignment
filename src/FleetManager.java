@@ -122,7 +122,7 @@ public class FleetManager {
             courier.setAssignedVehicleID(vehicleID);
         }
 
-        System.out.println("  [DONE] Vehicle " + vehicleID + " assigned to courier " + courierID + ".");
+        System.out.println("\n  [DONE] Vehicle " + vehicleID + " assigned to courier " + courierID + ".");
         return true; 
     }
 

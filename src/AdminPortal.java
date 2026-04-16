@@ -129,15 +129,22 @@ public class AdminPortal {
             input.nextLine();
 
             // Confirm password
-            System.out.print("  Confirm Password -> ");
-            String confirmPassword = input.next();
-            input.nextLine();
+            String confirmPassword = "";
 
-            // Check if passworrd matches (password & confirmPassword)
-            if(!password.equals(confirmPassword)){
-                System.out.println("\n  [!] Passwords do not match! Please try again.");
-                return;
-            }
+            boolean validConfirmPassword = false;
+            do{
+                // Check if passworrd matches (password & confirmPassword)
+                System.out.print("  Confirm Password -> ");
+                confirmPassword = input.next();
+                input.nextLine();
+
+                if(password.equals(confirmPassword)){
+                    validConfirmPassword = true;
+                }
+                else{
+                    System.out.println("\n  [!] Passwords do not match! Please try again.\n");
+                }
+            }while(!validConfirmPassword);
 
             // Get email
             String email = "";
@@ -230,7 +237,7 @@ public class AdminPortal {
         System.out.println("  ╚══════════════════════════════════════════════════════════╝");
 
         try{
-            // Generate Admin ID
+            // Generate Courier ID
             String courierID = "CRR" + String.format("%02d", UserRegistry.getAllCouriers().size() + 1);
             System.out.println("  [i] Courier ID (auto-generated) -> " + courierID);
 
@@ -255,20 +262,22 @@ public class AdminPortal {
             input.nextLine();
 
             // Confirm password
-            System.out.print("  Confirm Password -> ");
-            String confirmPassword = input.next();
-            input.nextLine();
+            String confirmPassword = "";
 
             boolean validConfirmPassword = false;
-            while(!validConfirmPassword){
+            do{
                 // Check if passworrd matches (password & confirmPassword)
+                System.out.print("  Confirm Password -> ");
+                confirmPassword = input.next();
+                input.nextLine();
+
                 if(password.equals(confirmPassword)){
                     validConfirmPassword = true;
                 }
                 else{
-                    System.out.println("\n  [!] Passwords do not match! Please try again.");
+                    System.out.println("\n  [!] Passwords do not match! Please try again.\n");
                 }
-            }
+            }while(!validConfirmPassword);
                 
             String email = "";
             boolean validEmail = false;
@@ -631,7 +640,7 @@ public class AdminPortal {
 
             displayCourierDeliveryList(courier);
         }
-        else{
+        else if(choice ==1){
             for(Courier courier : allCouriers){
                 System.out.println();
                 displayCourierDeliveryList(courier);
@@ -650,6 +659,9 @@ public class AdminPortal {
             System.out.printf("  ║ %-51s ║\n", "Total Couriers  : " + allCouriers.size());
             System.out.printf("  ║ %-51s ║\n", "Total Shipments : " + totalShipments);
             System.out.println("  ╚═════════════════════════════════════════════════════╝");
+        }
+        else{
+            System.out.println("\n  [!] Invalid option. Please try again.");
         }
     }
     
@@ -702,7 +714,7 @@ public class AdminPortal {
         System.out.println("  └────────────────────────────────────────────────────────┘");
         
         if(courier.getAssignedShipments().isEmpty()){
-            System.out.println("  No shipments assigned.");
+            System.out.println("  [i] No shipments assigned.");
         } 
         else{
             System.out.printf("  %-15s %-34s %-15s%n", "Tracking ID", "Destination", "Status");
