@@ -36,8 +36,8 @@ public class AdminPortal {
             System.out.println("   2. Assign Driver to Shipment");    
             System.out.println("   3. Update Shipment Status");       
             System.out.println("   4. Handle Delivery Failures");     
-            System.out.println("\n  [ FLEET & LOGISTICS ]");
             System.out.println("   5. View All Shipments");
+            System.out.println("\n  [ FLEET & LOGISTICS ]");
             System.out.println("   6. Manage Fleet & Maintenance");   
             System.out.println("   7. View Driver Delivery Lists");    
             System.out.println("\n  [ SYSTEM ]");
