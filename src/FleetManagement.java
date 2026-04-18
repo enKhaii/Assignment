@@ -67,7 +67,7 @@ public class FleetManagement{
             if(!Character.isLetterOrDigit(c)){
                 return false;   // if there's symbols(\ , . - +), return false,
             }
-            if(Character.isDigit(c)){   // to use isDigit/Letter, need to use Character.?????
+            if(Character.isLetter(c)){   // to use isDigit/Letter, need to use Character.?????
                 hasLetter = true;
             }
             if(Character.isDigit(c)){

@@ -396,9 +396,9 @@ public class SenderManagement {
         }
 
         System.out.println("\n  Shipment to cancel:");
-        System.out.println("  Tracking ID: " + trackingId);
-        System.out.println("  Status: " + s.getStatus());
-        System.out.printf("  Total Fee: RM %.2f%n", s.getTotalFee());
+        System.out.println("   Tracking ID -> " + trackingId);
+        System.out.println("   Status -> " + s.getStatus());
+        System.out.printf("   Total Fee -> RM %.2f%n", s.getTotalFee());
         
         System.out.print("\n  Are you sure you want to cancel? (Y/N) -> ");
         String confirm = input.nextLine();

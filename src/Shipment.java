@@ -287,4 +287,22 @@ public class Shipment {
                 log.getShipmentStatus(), log.getNote());
         }
     }
+
+    // POLYMORPHISM
+    @Override
+    public boolean equals(Object obj){
+        // check if they are exact same in memory
+        if(this == obj){
+            return true;
+        }
+
+        // check if the object is actually a "Shipment"
+        if(!(obj instanceof Shipment)){
+            return false;
+        }
+
+        // Cast object to Shipment and compare Tracking ID
+        Shipment otherShipment = (Shipment) obj;
+        return this.trackingID.equals(otherShipment.trackingID);
+    }
 }

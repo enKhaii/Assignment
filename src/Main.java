@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -25,19 +26,25 @@ public class Main {
 
         boolean running = true;
         while(running){
-            displayMainMenu();
-            System.out.print("  Select portal -> ");
-            int choice = input.nextInt();
-            switch(choice){
-                case 1 -> senderPortal();
-                case 2 -> courierPortal();
-                case 3 -> adminLogin();
-                case 4 -> quickTrack.track();
-                case 0 -> {
-                    System.out.println("\n  Thank you for using CourierPro. Goodbye!\n");
-                    running = false;
+            try{
+                displayMainMenu();
+                System.out.print("  Select portal -> ");
+                int choice = input.nextInt();
+                input.nextLine(); // clear buffer
+                switch(choice){
+                    case 1 -> senderPortal();
+                    case 2 -> courierPortal();
+                    case 3 -> adminLogin();
+                    case 4 -> quickTrack.track();
+                    case 0 -> {
+                        System.out.println("\n  Thank you for using CourierPro. Goodbye!\n");
+                        running = false;
+                    }
+                    default -> System.out.println("  [!] Invalid option. Please try again.");
                 }
-                default -> System.out.println("  [!] Invalid option. Please try again.");
+            } catch(InputMismatchException e){
+                System.out.println("\n  [!] Invalid input! Please enter a number.");
+                input.nextLine(); // clear buffer to reset input
             }
         }
         input.close();

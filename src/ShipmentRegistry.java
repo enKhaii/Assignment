@@ -25,6 +25,13 @@ public class ShipmentRegistry {
     }
 
     public void addShipment(Shipment shipment){
+        // Use OVERRIDEN equals() to check for duplicates
+        for(Shipment existingShipment : shipments){
+            if(existingShipment.equals(shipment)){
+                System.out.println("\n  [!] Error >> This shipment already exists in the registry!\n");
+            }
+        }
+
         shipments.add(shipment);
         System.out.println("\n  [DONE] Shipment created: " + shipment.getTrackingID());
     }

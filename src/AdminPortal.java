@@ -65,7 +65,7 @@ public class AdminPortal {
                 case 5 -> shipmentManagement.show();
                 case 6 -> fleetManagement.show();
                 case 7 -> displayDriverWorkload();
-                case 8 -> displayFinancialSummary(Main.shipmentRegistry.getAllShipments());
+                case 8 -> displayFinancialSummary(this.shipmentRegistry.getAllShipments());
                 case 9 -> viewAdminProfile(user);
                 case 0 -> {
                     System.out.println("\n  [i] Logging out...");
@@ -686,15 +686,15 @@ public class AdminPortal {
             }
         }
 
-        System.out.println("\n  ╔══════════════════════════════════════════╗");
-        System.out.println("  ║          FINANCIAL SUMMARY REPORT        ║");
-        System.out.println("  ╠══════════════════════════════════════════╣");
-        System.out.printf("  ║  Total Revenue Collected : RM %-9.2f  ║%n", totalCollected);
-        System.out.printf("  ║  Paid Shipments          : %-12d  ║%n", paidShipments);
-        System.out.println("  ╠══════════════════════════════════════════╣");
-        System.out.printf("  ║  Pending Revenue         : RM %-9.2f  ║%n", totalPending);
-        System.out.printf("  ║  Unpaid Shipments        : %-12d  ║%n", pendingShipments);
-        System.out.println("  ╚══════════════════════════════════════════╝");
+        System.out.println("\n  ╔════════════════════════════════════════════╗");
+        System.out.println("  ║          FINANCIAL SUMMARY REPORT          ║");
+        System.out.println("  ╠════════════════════════════════════════════╣");
+        System.out.printf("  ║  Total Revenue Collected : RM %-9.2f    ║%n", totalCollected);
+        System.out.printf("  ║  Paid Shipments          : %-12d    ║%n", paidShipments);
+        System.out.println("  ╠════════════════════════════════════════════╣");
+        System.out.printf("  ║  Pending Revenue         : RM %-9.2f    ║%n", totalPending);
+        System.out.printf("  ║  Unpaid Shipments        : %-12d    ║%n", pendingShipments);
+        System.out.println("  ╚════════════════════════════════════════════╝");
     }
 
 
